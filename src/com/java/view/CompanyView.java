@@ -20,6 +20,11 @@ public class CompanyView {
 	/**
 	 * The required connection can be obtained by the static method
 	 * ConnectionDB.getInstance
+	 *
+	 * @param connectionDB
+	 *            can be obtained by the static method ConnectionDB.getInstance
+	 * @throws ComputerDBException
+	 *             Application Exception
 	 */
 	public CompanyView(ConnectionDB connectionDB) throws ComputerDBException {
 		this.companyDAO = new CompanyDAO(connectionDB);

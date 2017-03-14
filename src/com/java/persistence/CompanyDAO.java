@@ -21,7 +21,9 @@ public class CompanyDAO {
 	 * The ConnectionDB could be get by using the static method getInstance() of
 	 * the ConnectionDB class
 	 *
-	 * @param connection
+	 * @param connectionDB
+	 *            could be get by using the static method getInstance() of the
+	 *            ConnectionDB class
 	 */
 	public CompanyDAO(ConnectionDB connectionDB) {
 		this.connectionDB = connectionDB;

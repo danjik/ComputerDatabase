@@ -21,6 +21,11 @@ public class ComputerView {
 	/**
 	 * The required connection can be obtained by the static method
 	 * ConnectionDB.getInstance
+	 *
+	 * @param connectionDB
+	 *            can be obtained by the static method ConnectionDB.getInstance
+	 * @throws ComputerDBException
+	 *             Application Exception
 	 */
 	public ComputerView(ConnectionDB connectionDB) throws ComputerDBException {
 		computerDAO = new ComputerDAO(connectionDB);

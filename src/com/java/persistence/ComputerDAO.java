@@ -24,12 +24,14 @@ public class ComputerDAO {
 	 * The ConnectionDB could be get by using the static method getInstance() of
 	 * the ConnectionDB class
 	 *
-	 * @param connection
+	 * @param connectionDB
+	 *            could be get by using the static method getInstance() of the
+	 *            ConnectionDB class
 	 */
-	public ComputerDAO(ConnectionDB connection) {
-		if (connection == null)
+	public ComputerDAO(ConnectionDB connectionDB) {
+		if (connectionDB == null)
 			throw new NullPointerException("Connection null");
-		this.connectionDB = connection;
+		this.connectionDB = connectionDB;
 		logger = LogManager.getRootLogger();
 	}
 

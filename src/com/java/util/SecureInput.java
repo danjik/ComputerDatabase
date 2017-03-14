@@ -13,6 +13,15 @@ public class SecureInput {
 	private static Scanner scan = new Scanner(System.in);
 	private static Logger logger = LogManager.getRootLogger();
 
+	/**
+	 * Get a secure valid positive int
+	 *
+	 * @param label
+	 *            the label to print
+	 * @return valid positive int
+	 * @throws ComputerDBException
+	 *             Application Exception
+	 */
 	public static int secureInputInt(String label) throws ComputerDBException {
 		int secureInt = -1;
 		String strSecureInt;
@@ -31,6 +40,15 @@ public class SecureInput {
 		return secureInt;
 	}
 
+	/**
+	 * Get a secure valid positive long
+	 *
+	 * @param label
+	 *            the label to print
+	 * @return valid positive long
+	 * @throws ComputerDBException
+	 *             Application Exception
+	 */
 	public static long secureInputLong(String label) throws ComputerDBException {
 		long secureLong = -1;
 		String strSecureLong;
@@ -49,6 +67,13 @@ public class SecureInput {
 		return secureLong;
 	}
 
+	/**
+	 * Get a secure valid string
+	 *
+	 * @param label
+	 *            the label to print
+	 * @return valid positive string
+	 */
 	public static String secureInputString(String label) {
 		String secureString;
 		System.out.print("Which " + label + " ? ");
@@ -57,6 +82,15 @@ public class SecureInput {
 
 	}
 
+	/**
+	 * Get a secure valid date match dd/MM/yyyy
+	 *
+	 * @param label
+	 *            the label to print
+	 * @return valid positive date match dd/MM/yyyy
+	 * @throws ComputerDBException
+	 *             Application Exception
+	 */
 	public static Date secureInputDate(String label) throws ComputerDBException {
 		Date secureDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

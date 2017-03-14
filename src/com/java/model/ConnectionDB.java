@@ -13,14 +13,15 @@ import org.apache.logging.log4j.Logger;
 import com.java.util.ComputerDBException;
 
 /**
+ * Get a instance of the Computer Database connection by using the static method
+ * getInstance
+ *
+ * Environment available : 1 = test database
  *
  * @author excilys
  *
- *         Get a instance of the Computer Database connection by using the
- *         static method getInstance
  *
- *         Environment available : 1 = test database
- *
+ * 
  */
 public class ConnectionDB {
 	private static ConnectionDB conn = null;
