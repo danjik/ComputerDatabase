@@ -1,4 +1,4 @@
-package com.java.view;
+package com.java.presentation;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.java.model.Company;
 import com.java.model.Page;
-import com.java.persistence.CompanyDAO;
+import com.java.service.CompanyService;
 import com.java.util.ComputerDBException;
-import com.java.util.SecureInput;
 
-public class CompanyView {
+public class CompanyPresentation {
 	private Page<Company> pageCompany;
-	private Logger logger;
+	private CompanyService companyService = new CompanyService();
+	private Logger logger = LogManager.getRootLogger();
 
 	/**
 	 * The required connection can be obtained by the static method
@@ -22,13 +22,12 @@ public class CompanyView {
 	 * @throws ComputerDBException
 	 *             Application Exception
 	 */
-	public CompanyView() throws ComputerDBException {
-		pageCompany = new Page<>(CompanyDAO.INSTANCE.getAllCompany());
-		logger = LogManager.getRootLogger();
+	public CompanyPresentation() throws ComputerDBException {
+		pageCompany = new Page<>(companyService.getAllCompany());
 	}
 
 	public void listAllCompany() throws ComputerDBException {
-		List<Company> lisCompany = CompanyDAO.INSTANCE.getAllCompany();
+		List<Company> lisCompany = companyService.getAllCompany();
 		lisCompany.forEach(company -> {
 			System.out.println(company);
 		});

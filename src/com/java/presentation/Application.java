@@ -1,17 +1,14 @@
-package com.java.application;
+package com.java.presentation;
 
 import com.java.util.ComputerDBException;
-import com.java.util.SecureInput;
-import com.java.view.CompanyView;
-import com.java.view.ComputerView;
 
 public class Application {
 	public static void main(String[] args) {
 		int choice = 0;
 		long id;
 		try {
-			ComputerView computerView = new ComputerView();
-			CompanyView companyView = new CompanyView();
+			ComputerPresentation computerView = new ComputerPresentation();
+			CompanyPresentation companyView = new CompanyPresentation();
 			do {
 				try {
 					printMenu();

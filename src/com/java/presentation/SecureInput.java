@@ -1,4 +1,4 @@
-package com.java.util;
+package com.java.presentation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.java.util.ComputerDBException;
 
 public class SecureInput {
 	private static Scanner scan = new Scanner(System.in);

@@ -1,4 +1,4 @@
-package com.java.view;
+package com.java.presentation;
 
 import java.util.Date;
 import java.util.List;
@@ -8,29 +8,27 @@ import org.apache.logging.log4j.Logger;
 
 import com.java.model.Computer;
 import com.java.model.Page;
-import com.java.persistence.ComputerDAO;
+import com.java.service.ComputerService;
 import com.java.util.ComputerDBException;
-import com.java.util.SecureInput;
 
-public class ComputerView {
+public class ComputerPresentation {
 	private Page<Computer> pageComputer;
 	private Logger logger;
+	private ComputerService computerService = new ComputerService();
 
 	/**
-	 * The required connection can be obtained by the static method
-	 * ConnectionDB.getInstance
 	 *
 	 * @throws ComputerDBException
 	 *             Application Exception
 	 */
-	public ComputerView() throws ComputerDBException {
-		pageComputer = new Page<>(ComputerDAO.INSTANCE.getAllComputer());
+	public ComputerPresentation() throws ComputerDBException {
+		pageComputer = new Page<>(computerService.getAllComputer());
 		logger = LogManager.getRootLogger();
 	}
 
 	public void printComputerDetails(long idToSelect) throws ComputerDBException {
 		logger.debug("Access to computer n°" + idToSelect);
-		Computer computer = ComputerDAO.INSTANCE.getComputerById(idToSelect);
+		Computer computer = computerService.getComputerById(idToSelect);
 		if (computer == null) {
 			logger.debug("No computer has this id");
 			System.out.println("No computer has this id");
@@ -54,20 +52,20 @@ public class ComputerView {
 		int companyId = SecureInput.secureInputInt("company id");
 		Computer newComputer = new Computer.Builder().name(name).introduced(introduced).discontinued(discontinued)
 				.companyId(companyId).build();
-		long id = ComputerDAO.INSTANCE.createComputer(newComputer);
+		long id = computerService.createComputer(newComputer);
 		logger.debug("createComputer : Computer " + newComputer + " well created with id : " + id);
 		this.updatePage();
 		System.out.println("Computer n°" + id + " well created");
 	}
 
 	public void countComputer() throws ComputerDBException {
-		int nbComputer = ComputerDAO.INSTANCE.getNbComputer();
+		int nbComputer = computerService.getNbComputer();
 		logger.debug("countComputer : " + nbComputer + " has been counted");
 		System.out.println("There is " + nbComputer + " computer inside the database");
 	}
 
 	public void listAllComputer() throws ComputerDBException {
-		List<Computer> listComputer = ComputerDAO.INSTANCE.getAllComputer();
+		List<Computer> listComputer = computerService.getAllComputer();
 		listComputer.forEach(computer -> {
 			System.out.println(computer);
 		});
@@ -86,13 +84,13 @@ public class ComputerView {
 
 	public void deleteComputer(long idToDelete) throws ComputerDBException {
 		logger.debug("deleteComputer : idToDelete = " + idToDelete);
-		Computer computer = ComputerDAO.INSTANCE.getComputerById(idToDelete);
+		Computer computer = computerService.getComputerById(idToDelete);
 		if (computer == null) {
 			logger.debug("deleteComputer : No computer has this id : " + idToDelete);
 			System.out.println("No computer has this id : " + idToDelete);
 
 		} else {
-			ComputerDAO.INSTANCE.deleteComputer(idToDelete);
+			computerService.deleteComputer(idToDelete);
 			this.updatePage();
 			logger.debug("The computer n°" + idToDelete + " has been well deleted");
 			System.out.println("Computer n°" + idToDelete + " has been deleted");
@@ -102,7 +100,7 @@ public class ComputerView {
 
 	public void updateComputer(long idToUpdate) throws ComputerDBException {
 		logger.debug("updateComputer : idToUpdate = " + idToUpdate);
-		Computer computer = ComputerDAO.INSTANCE.getComputerById(idToUpdate);
+		Computer computer = computerService.getComputerById(idToUpdate);
 		if (computer == null) {
 			logger.debug("updateComputer : No computer has this id : " + idToUpdate);
 			System.out.println("No computer has this id : " + idToUpdate);
@@ -145,7 +143,7 @@ public class ComputerView {
 				}
 				if (choix < 5) {
 
-					ComputerDAO.INSTANCE.updateComputer(computer);
+					computerService.updateComputer(computer);
 					logger.debug("Computer n°" + idToUpdate + " has been modified to : " + computer);
 					this.updatePage();
 					System.out.println("Computer N°" + idToUpdate + " updated !");
@@ -156,6 +154,6 @@ public class ComputerView {
 
 	public void updatePage() throws ComputerDBException {
 		logger.debug("Computer page updated");
-		pageComputer.updatePage(ComputerDAO.INSTANCE.getAllComputer());
+		pageComputer.updatePage(computerService.getAllComputer());
 	}
 }
