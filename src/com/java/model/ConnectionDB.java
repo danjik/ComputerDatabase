@@ -21,7 +21,7 @@ import com.java.util.ComputerDBException;
  * @author excilys
  *
  *
- * 
+ *
  */
 public class ConnectionDB {
 	private static ConnectionDB conn = null;
@@ -33,7 +33,6 @@ public class ConnectionDB {
 
 	private ConnectionDB(String database) throws ComputerDBException {
 		try {
-			// TODO Put it on properties
 			Configuration config = new PropertiesConfiguration("database.properties");
 			String username = config.getString("username");
 			String password = config.getString("password");
@@ -42,21 +41,10 @@ public class ConnectionDB {
 			String url = new String("jdbc:mysql://localhost:3306/" + database + "?zeroDateTimeBehavior=convertToNull");
 			connection = DriverManager.getConnection(url, username, password);
 			logger.debug("Success to connect database : " + database);
-		} catch (InstantiationException e) {
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException
+				| ConfigurationException e) {
 			logger.error("ConnectionDB : " + e.getMessage());
-			throw new ComputerDBException("ConnectionDB " + e.getMessage());
-		} catch (IllegalAccessException e) {
-			logger.error("ConnectionDB : " + e.getMessage());
-			throw new ComputerDBException("ConnectionDB " + e.getMessage());
-		} catch (ClassNotFoundException e) {
-			logger.error("ConnectionDB : " + e.getMessage());
-			throw new ComputerDBException("ConnectionDB " + e.getMessage());
-		} catch (SQLException e) {
-			logger.error("ConnectionDB : " + e.getMessage());
-			throw new ComputerDBException("ConnectionDB" + e.getMessage());
-		} catch (ConfigurationException e) {
-			logger.error("ConnectionDB : " + e.getMessage());
-			throw new ComputerDBException("ConnectionDB" + e.getMessage());
+			throw new ComputerDBException(e);
 		}
 	}
 

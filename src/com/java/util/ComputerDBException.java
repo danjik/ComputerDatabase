@@ -4,7 +4,7 @@ package com.java.util;
  * This Exception class is used to represent the exceptions thrown by the
  * application
  */
-public class ComputerDBException extends Exception {
+public class ComputerDBException extends RuntimeException {
 
 	private static final long serialVersionUID = -1133013962801264530L;
 

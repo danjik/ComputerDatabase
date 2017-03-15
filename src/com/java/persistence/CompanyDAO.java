@@ -33,10 +33,12 @@ public class CompanyDAO {
 	public List<Company> getAllCompany() throws ComputerDBException {
 		List<Company> listCompany = new ArrayList<>();
 		String query = "select * from company";
+		PreparedStatement selectPStatement;
+		ResultSet rs;
 		Company selectCompany = null;
 		try {
-			PreparedStatement selectPStatement = this.connectionDB.getConnection().prepareStatement(query);
-			ResultSet rs = selectPStatement.executeQuery();
+			selectPStatement = this.connectionDB.getConnection().prepareStatement(query);
+			rs = selectPStatement.executeQuery();
 			while (rs.next()) {
 				selectCompany = new Company();
 				selectCompany.setId(rs.getInt(1));
@@ -44,8 +46,9 @@ public class CompanyDAO {
 				listCompany.add(selectCompany);
 			}
 		} catch (SQLException e) {
-			logger.error("getAllCompany" + e.getMessage());
+			logger.error("getAllCompany" + e);
 			throw new ComputerDBException("getAllCompany " + e.getMessage());
+		} finally {
 		}
 		logger.debug("getAllCompany : " + listCompany.size() + " companies has been selected");
 
@@ -63,7 +66,7 @@ public class CompanyDAO {
 			}
 		} catch (SQLException e) {
 			logger.error("getNbCompany" + e.getMessage());
-			throw new ComputerDBException("getNbCompany " + e.getMessage());
+			throw new ComputerDBException("getNbCompany " + e);
 		}
 
 		return nbComputer;
@@ -84,7 +87,7 @@ public class CompanyDAO {
 			}
 		} catch (SQLException e) {
 			logger.error("getCompanyById" + e.getMessage());
-			throw new ComputerDBException("getCompanyById " + e.getMessage());
+			throw new ComputerDBException("getCompanyById " + e);
 		}
 		logger.debug("getCompanyById selectedCompany : " + selectCompany);
 

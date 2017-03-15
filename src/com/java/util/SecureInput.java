@@ -108,7 +108,7 @@ public class SecureInput {
 					cal.setTime(secureDate);
 				} catch (ParseException e) {
 					logger.error("secureInputDate : " + e.getMessage());
-					throw new ComputerDBException("secureInputDate " + e.getMessage());
+					throw new ComputerDBException("secureInputDate " + e);
 				}
 			} else {
 				secureDate = null;

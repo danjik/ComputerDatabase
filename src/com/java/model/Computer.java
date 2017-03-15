@@ -55,17 +55,51 @@ public class Computer {
 		this.id = id;
 	}
 
-	public boolean compareTo(Computer o) {
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (companyId ^ companyId >>> 32);
+		result = prime * result + (discontinued == null ? 0 : discontinued.hashCode());
+		result = prime * result + (int) (id ^ id >>> 32);
+		result = prime * result + (introduced == null ? 0 : introduced.hashCode());
+		result = prime * result + (name == null ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Computer other = (Computer) obj;
 		long secDis1 = this.getDiscontinued() == null ? 0 : this.getDiscontinued().getTime() / 1000;
-		long secDis2 = o.getDiscontinued() == null ? 0 : o.getDiscontinued().getTime() / 1000;
+		long secDis2 = other.getDiscontinued() == null ? 0 : other.getDiscontinued().getTime() / 1000;
 		long secIns1 = this.getIntroduced() == null ? 0 : this.getIntroduced().getTime() / 1000;
-		long secIns2 = o.getIntroduced() == null ? 0 : o.getIntroduced().getTime() / 1000;
-		if (this.getName().equals(o.getName()))
-			if (secDis1 == secDis2)
-				if (secIns1 == secIns2)
-					if (this.getCompanyId() == o.getCompanyId())
-						return true;
-		return false;
+		long secIns2 = other.getIntroduced() == null ? 0 : other.getIntroduced().getTime() / 1000;
+		if (companyId != other.companyId)
+			return false;
+		if (discontinued == null) {
+			if (other.discontinued != null)
+				return false;
+		} else if (secDis1 != secDis2)
+			return false;
+		if (id != other.id)
+			return false;
+		if (introduced == null) {
+			if (other.introduced != null)
+				return false;
+		} else if (secIns1 != secIns2)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 }

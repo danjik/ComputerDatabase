@@ -64,8 +64,9 @@ public class ComputerDAOTest {
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
 		long generateId = computerDAO.createComputer(newComputer);
+		newComputer.setId(generateId);
 		Computer testNewComputer = computerDAO.getComputerById(generateId);
-		assert testNewComputer.compareTo(newComputer);
+		assert testNewComputer.equals(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
@@ -137,7 +138,7 @@ public class ComputerDAOTest {
 		updateComputer.setCompanyId(10);
 		computerDAO.updateComputer(updateComputer);
 		Computer newUpdateComputer = computerDAO.getComputerById(updateComputer.getId());
-		assert updateComputer.compareTo(newUpdateComputer);
+		assert updateComputer.equals(newUpdateComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)

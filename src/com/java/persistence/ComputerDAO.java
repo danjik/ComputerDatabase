@@ -46,7 +46,7 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			logger.debug("getNbComputer  : " + e.getMessage());
-			throw new ComputerDBException("getNbComputer " + e.getMessage());
+			throw new ComputerDBException("getNbComputer " + e);
 		}
 
 		return nbComputer;
@@ -59,7 +59,7 @@ public class ComputerDAO {
 			PreparedStatement insertPStatement = this.connectionDB.getConnection().prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
 			if (newComputer.getName() == null || !newComputer.getName().matches("^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$"))
-				throw new IllegalArgumentException("The name must be composed at least by 3 chars");
+				throw new ComputerDBException("The name must be composed at least by 3 chars");
 			insertPStatement.setString(1, newComputer.getName());
 			if (newComputer.getIntroduced() != null)
 				insertPStatement.setTimestamp(2, new Timestamp(newComputer.getIntroduced().getTime()));
@@ -78,12 +78,8 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			logger.debug("createComputer  : " + e.getMessage());
-			throw new ComputerDBException("createComputer " + e.getMessage());
-		} catch (IllegalArgumentException e) {
-			logger.debug("createComputer  : " + e.getMessage());
-			throw new ComputerDBException("createComputer " + e.getMessage());
+			throw new ComputerDBException("createComputer " + e);
 		}
-
 		return generateId;
 
 	}
@@ -105,7 +101,7 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			logger.error("getComputerById  : " + e.getMessage());
-			throw new ComputerDBException("getComputerById " + e.getMessage());
+			throw new ComputerDBException("getComputerById " + e);
 		}
 
 		return selectComputer;
@@ -129,7 +125,7 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			logger.error("getAllComputer  : " + e.getMessage());
-			throw new ComputerDBException("getAllComputer " + e.getMessage());
+			throw new ComputerDBException("getAllComputer " + e);
 		}
 
 		logger.debug("getAllComputer : " + listComputer.size() + " computers has been selected");
@@ -144,7 +140,7 @@ public class ComputerDAO {
 			deletePStatement.executeUpdate();
 		} catch (SQLException e) {
 			logger.error("deleteComputer  : " + e.getMessage());
-			throw new ComputerDBException("deleteComputer " + e.getMessage());
+			throw new ComputerDBException("deleteComputer " + e);
 		}
 
 	}
@@ -155,7 +151,7 @@ public class ComputerDAO {
 			PreparedStatement updatePStatement = this.connectionDB.getConnection().prepareStatement(query);
 			if (updateComputer.getName() == null
 					|| !updateComputer.getName().matches("^[a-zA-Z][a-zA-Z -.0-9][a-zA-Z -.0-9]+$"))
-				throw new IllegalArgumentException("The name must be composed at least by 3 chars");
+				throw new ComputerDBException("The name must be composed at least by 3 chars");
 			updatePStatement.setString(1, updateComputer.getName());
 
 			if (updateComputer.getIntroduced() != null)
@@ -170,13 +166,9 @@ public class ComputerDAO {
 			updatePStatement.setLong(5, updateComputer.getId());
 			updatePStatement.executeUpdate();
 		} catch (SQLException e) {
-			logger.error("updateComputer  : " + e.getMessage());
-			throw new ComputerDBException("updateComputer " + e.getMessage());
-		} catch (IllegalArgumentException e) {
-			logger.debug("createComputer  : " + e.getMessage());
-			throw new ComputerDBException("createCommputer " + e.getMessage());
+			logger.error("updateComputer  : " + e);
+			throw new ComputerDBException("updateComputer " + e);
 		}
-
 	}
 
 }
