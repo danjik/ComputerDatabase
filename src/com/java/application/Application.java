@@ -1,8 +1,5 @@
 package com.java.application;
 
-import java.sql.SQLException;
-
-import com.java.model.ConnectionDB;
 import com.java.util.ComputerDBException;
 import com.java.util.SecureInput;
 import com.java.view.CompanyView;
@@ -13,9 +10,8 @@ public class Application {
 		int choice = 0;
 		long id;
 		try {
-			ConnectionDB connectionDB = ConnectionDB.getInstance();
-			ComputerView computerView = new ComputerView(connectionDB);
-			CompanyView companyView = new CompanyView(connectionDB);
+			ComputerView computerView = new ComputerView();
+			CompanyView companyView = new CompanyView();
 			do {
 				try {
 					printMenu();
@@ -61,10 +57,6 @@ public class Application {
 					System.out.println(e.getMessage());
 				}
 			} while (choice != 10);
-
-			connectionDB.getConnection().close();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		} catch (ComputerDBException e1) {
 			System.out.println(e1.getMessage());
 		}

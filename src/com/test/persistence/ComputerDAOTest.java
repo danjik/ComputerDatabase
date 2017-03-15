@@ -5,39 +5,23 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.java.model.Computer;
-import com.java.model.ConnectionDB;
 import com.java.persistence.ComputerDAO;
 import com.java.util.ComputerDBException;
 
 public class ComputerDAOTest {
-	ComputerDAO computerDAO;
-
-	@Before
-	public void setUp() throws ComputerDBException {
-		ConnectionDB connectionDB;
-		connectionDB = ConnectionDB.getInstance(ConnectionDB.SET_ENV_TEST);
-
-		computerDAO = new ComputerDAO(connectionDB);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testConnectionNotNull() {
-		computerDAO = new ComputerDAO(null);
-	}
 
 	@Test
 	public void testGetComputerById() throws ComputerDBException {
 		List<Computer> listAllComputer;
-		listAllComputer = computerDAO.getAllComputer();
+		listAllComputer = ComputerDAO.INSTANCE.getAllComputer();
 
 		Computer randomComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		long idToTest = randomComputer.getId();
 
-		Computer selectComputer = computerDAO.getComputerById(idToTest);
+		Computer selectComputer = ComputerDAO.INSTANCE.getComputerById(idToTest);
 		assert selectComputer.getId() == idToTest;
 
 	}
@@ -45,15 +29,15 @@ public class ComputerDAOTest {
 	@Test
 	public void testGetNbComputer() throws ComputerDBException {
 		int nbComputer;
-		nbComputer = computerDAO.getNbComputer();
+		nbComputer = ComputerDAO.INSTANCE.getNbComputer();
 
 		Computer newComputer = new Computer();
 		newComputer.setName("Nouveau computer");
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		computerDAO.createComputer(newComputer);
-		assert computerDAO.getNbComputer() == nbComputer + 1;
+		ComputerDAO.INSTANCE.createComputer(newComputer);
+		assert ComputerDAO.INSTANCE.getNbComputer() == nbComputer + 1;
 	}
 
 	@Test
@@ -63,9 +47,9 @@ public class ComputerDAOTest {
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		long generateId = computerDAO.createComputer(newComputer);
+		long generateId = ComputerDAO.INSTANCE.createComputer(newComputer);
 		newComputer.setId(generateId);
-		Computer testNewComputer = computerDAO.getComputerById(generateId);
+		Computer testNewComputer = ComputerDAO.INSTANCE.getComputerById(generateId);
 		assert testNewComputer.equals(newComputer);
 	}
 
@@ -76,7 +60,7 @@ public class ComputerDAOTest {
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		computerDAO.createComputer(newComputer);
+		ComputerDAO.INSTANCE.createComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
@@ -86,7 +70,7 @@ public class ComputerDAOTest {
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		computerDAO.createComputer(newComputer);
+		ComputerDAO.INSTANCE.createComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
@@ -96,15 +80,15 @@ public class ComputerDAOTest {
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		computerDAO.createComputer(newComputer);
+		ComputerDAO.INSTANCE.createComputer(newComputer);
 	}
 
 	@Test
 	public void testListAllComputer() throws ComputerDBException {
 		int nbComputer;
-		nbComputer = computerDAO.getNbComputer();
+		nbComputer = ComputerDAO.INSTANCE.getNbComputer();
 
-		List<Computer> listComputer = computerDAO.getAllComputer();
+		List<Computer> listComputer = ComputerDAO.INSTANCE.getAllComputer();
 
 		assert nbComputer == listComputer.size();
 	}
@@ -112,12 +96,12 @@ public class ComputerDAOTest {
 	@Test
 	public void testDeleteComputer() throws ComputerDBException {
 		List<Computer> listAllComputer;
-		listAllComputer = computerDAO.getAllComputer();
+		listAllComputer = ComputerDAO.INSTANCE.getAllComputer();
 
 		Computer deleteComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		long idToDelete = deleteComputer.getId();
-		computerDAO.deleteComputer(idToDelete);
-		assert computerDAO.getComputerById(idToDelete) == null;
+		ComputerDAO.INSTANCE.deleteComputer(idToDelete);
+		assert ComputerDAO.INSTANCE.getComputerById(idToDelete) == null;
 	}
 
 	@Test
@@ -126,7 +110,7 @@ public class ComputerDAOTest {
 
 		String randAlpha = new BigInteger(50, random).toString(32);
 		List<Computer> listAllComputer;
-		listAllComputer = computerDAO.getAllComputer();
+		listAllComputer = ComputerDAO.INSTANCE.getAllComputer();
 
 		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 
@@ -136,35 +120,35 @@ public class ComputerDAOTest {
 		Date updateIntroduced = new Date((long) (random.nextDouble() * new Date().getTime()));
 		updateComputer.setIntroduced(updateIntroduced);
 		updateComputer.setCompanyId(10);
-		computerDAO.updateComputer(updateComputer);
-		Computer newUpdateComputer = computerDAO.getComputerById(updateComputer.getId());
+		ComputerDAO.INSTANCE.updateComputer(updateComputer);
+		Computer newUpdateComputer = ComputerDAO.INSTANCE.getComputerById(updateComputer.getId());
 		assert updateComputer.equals(newUpdateComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateWrongCompanyIdComputer() throws ComputerDBException {
 		List<Computer> listAllComputer;
-		listAllComputer = computerDAO.getAllComputer();
+		listAllComputer = ComputerDAO.INSTANCE.getAllComputer();
 
 		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		updateComputer.setName(updateComputer.getName());
 		updateComputer.setDiscontinued(updateComputer.getDiscontinued());
 		updateComputer.setIntroduced(updateComputer.getIntroduced());
 		updateComputer.setCompanyId(1000000);
-		computerDAO.updateComputer(updateComputer);
+		ComputerDAO.INSTANCE.updateComputer(updateComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateComputerNullName() throws ComputerDBException {
 		List<Computer> listAllComputer;
-		listAllComputer = computerDAO.getAllComputer();
+		listAllComputer = ComputerDAO.INSTANCE.getAllComputer();
 
 		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		updateComputer.setName(null);
 		updateComputer.setDiscontinued(null);
 		updateComputer.setIntroduced(null);
 		updateComputer.setCompanyId(10);
-		computerDAO.updateComputer(updateComputer);
+		ComputerDAO.INSTANCE.updateComputer(updateComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
@@ -174,7 +158,7 @@ public class ComputerDAOTest {
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		computerDAO.updateComputer(newComputer);
+		ComputerDAO.INSTANCE.updateComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
@@ -184,6 +168,6 @@ public class ComputerDAOTest {
 		newComputer.setDiscontinued(null);
 		newComputer.setIntroduced(null);
 		newComputer.setCompanyId(10);
-		computerDAO.updateComputer(newComputer);
+		ComputerDAO.INSTANCE.updateComputer(newComputer);
 	}
 }

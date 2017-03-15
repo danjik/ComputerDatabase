@@ -6,14 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.java.model.Company;
-import com.java.model.ConnectionDB;
 import com.java.model.Page;
 import com.java.persistence.CompanyDAO;
 import com.java.util.ComputerDBException;
 import com.java.util.SecureInput;
 
 public class CompanyView {
-	private CompanyDAO companyDAO;
 	private Page<Company> pageCompany;
 	private Logger logger;
 
@@ -21,19 +19,16 @@ public class CompanyView {
 	 * The required connection can be obtained by the static method
 	 * ConnectionDB.getInstance
 	 *
-	 * @param connectionDB
-	 *            can be obtained by the static method ConnectionDB.getInstance
 	 * @throws ComputerDBException
 	 *             Application Exception
 	 */
-	public CompanyView(ConnectionDB connectionDB) throws ComputerDBException {
-		this.companyDAO = new CompanyDAO(connectionDB);
-		pageCompany = new Page<>(companyDAO.getAllCompany());
+	public CompanyView() throws ComputerDBException {
+		pageCompany = new Page<>(CompanyDAO.INSTANCE.getAllCompany());
 		logger = LogManager.getRootLogger();
 	}
 
 	public void listAllCompany() throws ComputerDBException {
-		List<Company> lisCompany = companyDAO.getAllCompany();
+		List<Company> lisCompany = CompanyDAO.INSTANCE.getAllCompany();
 		lisCompany.forEach(company -> {
 			System.out.println(company);
 		});

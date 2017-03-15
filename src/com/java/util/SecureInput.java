@@ -33,7 +33,8 @@ public class SecureInput {
 			try {
 				secureInt = Integer.valueOf(strSecureInt);
 			} catch (NumberFormatException e) {
-				throw new ComputerDBException("secureInputDate parsing error " + e.getMessage());
+				logger.error("secureInputInt : " + e.getMessage());
+				throw new ComputerDBException("secureInputDate parsing error " + e);
 			}
 
 		}
@@ -61,7 +62,8 @@ public class SecureInput {
 
 				secureLong = Long.valueOf(strSecureLong);
 			} catch (NumberFormatException e) {
-				throw new ComputerDBException("secureInputDate parsing error " + e.getMessage());
+				logger.error("secureInputLong : " + e.getMessage());
+				throw new ComputerDBException("secureInputDate parsing error " + e);
 			}
 		}
 		return secureLong;

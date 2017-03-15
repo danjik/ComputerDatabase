@@ -1,5 +1,6 @@
 package com.java.persistence;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,37 +13,28 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.java.model.Computer;
-import com.java.model.ConnectionDB;
 import com.java.util.ComputerDBException;
 
-public class ComputerDAO {
+public enum ComputerDAO implements IComputerDAO {
+	INSTANCE;
 
-	private ConnectionDB connectionDB;
-	private Logger logger;
+	private Logger logger = LogManager.getRootLogger();
 
 	/**
 	 * The ConnectionDB could be get by using the static method getInstance() of
 	 * the ConnectionDB class
-	 *
-	 * @param connectionDB
-	 *            could be get by using the static method getInstance() of the
-	 *            ConnectionDB class
 	 */
-	public ComputerDAO(ConnectionDB connectionDB) {
-		if (connectionDB == null)
-			throw new NullPointerException("Connection null");
-		this.connectionDB = connectionDB;
-		logger = LogManager.getRootLogger();
-	}
 
+	@Override
 	public int getNbComputer() throws ComputerDBException {
 		String query = "select count(*) from computer";
 		int nbComputer = -1;
-		try {
-			PreparedStatement selectPStatement = this.connectionDB.getConnection().prepareStatement(query);
-			ResultSet rs = selectPStatement.executeQuery();
-			while (rs.next()) {
-				nbComputer = rs.getInt(1);
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
+			try (ResultSet rs = selectPStatement.executeQuery()) {
+				while (rs.next()) {
+					nbComputer = rs.getInt(1);
+				}
 			}
 		} catch (SQLException e) {
 			logger.debug("getNbComputer  : " + e.getMessage());
@@ -52,12 +44,13 @@ public class ComputerDAO {
 		return nbComputer;
 	}
 
+	@Override
 	public long createComputer(Computer newComputer) throws ComputerDBException {
 		String query = "insert into computer(name,introduced,discontinued,company_id) values (?,?,?,?)";
 		long generateId = -1;
-		try {
-			PreparedStatement insertPStatement = this.connectionDB.getConnection().prepareStatement(query,
-					Statement.RETURN_GENERATED_KEYS);
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement insertPStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
+
 			if (newComputer.getName() == null || !newComputer.getName().matches("^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$"))
 				throw new ComputerDBException("The name must be composed at least by 3 chars");
 			insertPStatement.setString(1, newComputer.getName());
@@ -71,10 +64,10 @@ public class ComputerDAO {
 				insertPStatement.setTimestamp(3, null);
 			insertPStatement.setLong(4, newComputer.getCompanyId());
 			insertPStatement.executeUpdate();
-
-			ResultSet rs = insertPStatement.getGeneratedKeys();
-			while (rs.next()) {
-				generateId = rs.getLong(1);
+			try (ResultSet rs = insertPStatement.getGeneratedKeys()) {
+				while (rs.next()) {
+					generateId = rs.getLong(1);
+				}
 			}
 		} catch (SQLException e) {
 			logger.debug("createComputer  : " + e.getMessage());
@@ -84,20 +77,23 @@ public class ComputerDAO {
 
 	}
 
+	@Override
 	public Computer getComputerById(Long idToSelect) throws ComputerDBException {
 		String query = "select * from computer where id=?";
 		Computer selectComputer = null;
-		try {
-			PreparedStatement selectPStatement = this.connectionDB.getConnection().prepareStatement(query);
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
+
 			selectPStatement.setLong(1, idToSelect);
-			ResultSet rs = selectPStatement.executeQuery();
-			while (rs.next()) {
-				selectComputer = new Computer();
-				selectComputer.setId(rs.getInt(1));
-				selectComputer.setName(rs.getString(2));
-				selectComputer.setIntroduced(rs.getTimestamp(3));
-				selectComputer.setDiscontinued(rs.getTimestamp(4));
-				selectComputer.setCompanyId(rs.getInt(5));
+			try (ResultSet rs = selectPStatement.executeQuery()) {
+				while (rs.next()) {
+					selectComputer = new Computer();
+					selectComputer.setId(rs.getInt(1));
+					selectComputer.setName(rs.getString(2));
+					selectComputer.setIntroduced(rs.getTimestamp(3));
+					selectComputer.setDiscontinued(rs.getTimestamp(4));
+					selectComputer.setCompanyId(rs.getInt(5));
+				}
 			}
 		} catch (SQLException e) {
 			logger.error("getComputerById  : " + e.getMessage());
@@ -107,21 +103,23 @@ public class ComputerDAO {
 		return selectComputer;
 	}
 
+	@Override
 	public List<Computer> getAllComputer() throws ComputerDBException {
 		List<Computer> listComputer = new ArrayList<>();
 		String query = "select * from computer";
 		Computer selectComputer = null;
-		try {
-			PreparedStatement selectPStatement = this.connectionDB.getConnection().prepareStatement(query);
-			ResultSet rs = selectPStatement.executeQuery();
-			while (rs.next()) {
-				selectComputer = new Computer();
-				selectComputer.setId(rs.getInt(1));
-				selectComputer.setName(rs.getString(2));
-				selectComputer.setIntroduced(rs.getTimestamp(3));
-				selectComputer.setDiscontinued(rs.getTimestamp(4));
-				selectComputer.setCompanyId(rs.getInt(5));
-				listComputer.add(selectComputer);
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
+			try (ResultSet rs = selectPStatement.executeQuery()) {
+				while (rs.next()) {
+					selectComputer = new Computer();
+					selectComputer.setId(rs.getInt(1));
+					selectComputer.setName(rs.getString(2));
+					selectComputer.setIntroduced(rs.getTimestamp(3));
+					selectComputer.setDiscontinued(rs.getTimestamp(4));
+					selectComputer.setCompanyId(rs.getInt(5));
+					listComputer.add(selectComputer);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error("getAllComputer  : " + e.getMessage());
@@ -132,10 +130,11 @@ public class ComputerDAO {
 		return listComputer;
 	}
 
+	@Override
 	public void deleteComputer(long idToDelete) throws ComputerDBException {
 		String query = "delete from computer where id=?";
-		try {
-			PreparedStatement deletePStatement = this.connectionDB.getConnection().prepareStatement(query);
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement deletePStatement = conn.prepareStatement(query);) {
 			deletePStatement.setLong(1, idToDelete);
 			deletePStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -145,10 +144,11 @@ public class ComputerDAO {
 
 	}
 
+	@Override
 	public void updateComputer(Computer updateComputer) throws ComputerDBException {
 		String query = "update computer set name=?,  introduced=?,discontinued=?,company_id=? where id=?";
-		try {
-			PreparedStatement updatePStatement = this.connectionDB.getConnection().prepareStatement(query);
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement updatePStatement = conn.prepareStatement(query);) {
 			if (updateComputer.getName() == null
 					|| !updateComputer.getName().matches("^[a-zA-Z][a-zA-Z -.0-9][a-zA-Z -.0-9]+$"))
 				throw new ComputerDBException("The name must be composed at least by 3 chars");
