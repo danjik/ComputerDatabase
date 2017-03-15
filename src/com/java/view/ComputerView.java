@@ -42,7 +42,6 @@ public class ComputerView {
 	}
 
 	public void createComputer() throws ComputerDBException {
-		Computer newComputer = new Computer();
 		String regexName = "^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$";
 		String name;
 		do {
@@ -53,10 +52,8 @@ public class ComputerView {
 		Date discontinued = SecureInput.secureInputDate("discontinued");
 		Date introduced = SecureInput.secureInputDate("introduced");
 		int companyId = SecureInput.secureInputInt("company id");
-		newComputer.setName(name);
-		newComputer.setDiscontinued(discontinued);
-		newComputer.setIntroduced(introduced);
-		newComputer.setCompanyId(companyId);
+		Computer newComputer = new Computer.Builder().name(name).introduced(introduced).discontinued(discontinued)
+				.companyId(companyId).build();
 		long id = ComputerDAO.INSTANCE.createComputer(newComputer);
 		logger.debug("createComputer : Computer " + newComputer + " well created with id : " + id);
 		this.updatePage();

@@ -31,22 +31,16 @@ public class ComputerDAOTest {
 		int nbComputer;
 		nbComputer = ComputerDAO.INSTANCE.getNbComputer();
 
-		Computer newComputer = new Computer();
-		newComputer.setName("Nouveau computer");
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name("Nouveau computer").introduced(null).discontinued(null)
+				.companyId(10).build();
 		ComputerDAO.INSTANCE.createComputer(newComputer);
 		assert ComputerDAO.INSTANCE.getNbComputer() == nbComputer + 1;
 	}
 
 	@Test
 	public void testCreateComputer() throws ComputerDBException {
-		Computer newComputer = new Computer();
-		newComputer.setName("Nouveau computer");
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name("Nouveau computer").introduced(null).discontinued(null)
+				.companyId(10).build();
 		long generateId = ComputerDAO.INSTANCE.createComputer(newComputer);
 		newComputer.setId(generateId);
 		Computer testNewComputer = ComputerDAO.INSTANCE.getComputerById(generateId);
@@ -55,31 +49,22 @@ public class ComputerDAOTest {
 
 	@Test(expected = ComputerDBException.class)
 	public void testCreateComputerNullName() throws ComputerDBException {
-		Computer newComputer = new Computer();
-		newComputer.setName(null);
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name(null).introduced(null).discontinued(null).companyId(10)
+				.build();
 		ComputerDAO.INSTANCE.createComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testCreateComputerMinCharName() throws ComputerDBException {
-		Computer newComputer = new Computer();
-		newComputer.setName("aa");
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name("aa").introduced(null).discontinued(null).companyId(10)
+				.build();
 		ComputerDAO.INSTANCE.createComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testCreateComputerInvalidName() throws ComputerDBException {
-		Computer newComputer = new Computer();
-		newComputer.setName("3az");
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name("3az").introduced(null).discontinued(null).companyId(10)
+				.build();
 		ComputerDAO.INSTANCE.createComputer(newComputer);
 	}
 
@@ -153,21 +138,15 @@ public class ComputerDAOTest {
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateComputerMinCharName() throws ComputerDBException {
-		Computer newComputer = new Computer();
-		newComputer.setName("aa");
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name("aa").introduced(null).discontinued(null).companyId(10)
+				.build();
 		ComputerDAO.INSTANCE.updateComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateComputerInvalidName() throws ComputerDBException {
-		Computer newComputer = new Computer();
-		newComputer.setName("3az");
-		newComputer.setDiscontinued(null);
-		newComputer.setIntroduced(null);
-		newComputer.setCompanyId(10);
+		Computer newComputer = new Computer.Builder().name("3az").introduced(null).discontinued(null).companyId(10)
+				.build();
 		ComputerDAO.INSTANCE.updateComputer(newComputer);
 	}
 }

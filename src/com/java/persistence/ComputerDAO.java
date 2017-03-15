@@ -30,8 +30,8 @@ public enum ComputerDAO implements IComputerDAO {
 		String query = "select count(*) from computer";
 		int nbComputer = -1;
 		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
-				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
-			try (ResultSet rs = selectPStatement.executeQuery()) {
+				Statement selectPStatement = conn.createStatement();) {
+			try (ResultSet rs = selectPStatement.executeQuery(query)) {
 				while (rs.next()) {
 					nbComputer = rs.getInt(1);
 				}
@@ -87,12 +87,9 @@ public enum ComputerDAO implements IComputerDAO {
 			selectPStatement.setLong(1, idToSelect);
 			try (ResultSet rs = selectPStatement.executeQuery()) {
 				while (rs.next()) {
-					selectComputer = new Computer();
-					selectComputer.setId(rs.getInt(1));
-					selectComputer.setName(rs.getString(2));
-					selectComputer.setIntroduced(rs.getTimestamp(3));
-					selectComputer.setDiscontinued(rs.getTimestamp(4));
-					selectComputer.setCompanyId(rs.getInt(5));
+					selectComputer = new Computer.Builder().id(rs.getInt(1)).name(rs.getString(2))
+							.introduced(rs.getTimestamp(3)).discontinued(rs.getTimestamp(4)).companyId(rs.getInt(5))
+							.build();
 				}
 			}
 		} catch (SQLException e) {
@@ -109,15 +106,12 @@ public enum ComputerDAO implements IComputerDAO {
 		String query = "select * from computer";
 		Computer selectComputer = null;
 		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
-				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
-			try (ResultSet rs = selectPStatement.executeQuery()) {
+				Statement selectPStatement = conn.createStatement();) {
+			try (ResultSet rs = selectPStatement.executeQuery(query)) {
 				while (rs.next()) {
-					selectComputer = new Computer();
-					selectComputer.setId(rs.getInt(1));
-					selectComputer.setName(rs.getString(2));
-					selectComputer.setIntroduced(rs.getTimestamp(3));
-					selectComputer.setDiscontinued(rs.getTimestamp(4));
-					selectComputer.setCompanyId(rs.getInt(5));
+					selectComputer = new Computer.Builder().id(rs.getInt(1)).name(rs.getString(2))
+							.introduced(rs.getTimestamp(3)).discontinued(rs.getTimestamp(4)).companyId(rs.getInt(5))
+							.build();
 					listComputer.add(selectComputer);
 				}
 			}

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,10 @@ public enum CompanyDAO implements ICompanyDAO {
 		String query = "select * from company";
 		Company selectCompany = null;
 		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
-				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
-			try (ResultSet rs = selectPStatement.executeQuery()) {
+				Statement selectPStatement = conn.createStatement();) {
+			try (ResultSet rs = selectPStatement.executeQuery(query)) {
 				while (rs.next()) {
-					selectCompany = new Company();
-					selectCompany.setId(rs.getInt(1));
-					selectCompany.setName(rs.getString(2));
+					selectCompany = new Company.Builder().id(rs.getInt(1)).name(rs.getString(2)).build();
 					listCompany.add(selectCompany);
 				}
 			}
@@ -45,12 +44,12 @@ public enum CompanyDAO implements ICompanyDAO {
 	@Override
 	public int getNbCompany() throws ComputerDBException {
 		String query = "select count(*) from company";
-		int nbComputer = -1;
+		int nbCompany = -1;
 		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
-				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
-			try (ResultSet rs = selectPStatement.executeQuery()) {
+				Statement selectPStatement = conn.createStatement();) {
+			try (ResultSet rs = selectPStatement.executeQuery(query)) {
 				while (rs.next()) {
-					nbComputer = rs.getInt(1);
+					nbCompany = rs.getInt(1);
 				}
 			}
 		} catch (SQLException e) {
@@ -58,7 +57,7 @@ public enum CompanyDAO implements ICompanyDAO {
 			throw new ComputerDBException("getNbCompany " + e);
 		}
 
-		return nbComputer;
+		return nbCompany;
 	}
 
 	@Override
@@ -72,9 +71,7 @@ public enum CompanyDAO implements ICompanyDAO {
 			selectPStatement.setLong(1, idToTest);
 			try (ResultSet rs = selectPStatement.executeQuery()) {
 				while (rs.next()) {
-					selectCompany = new Company();
-					selectCompany.setId(rs.getInt(1));
-					selectCompany.setName(rs.getString(2));
+					selectCompany = new Company.Builder().id(rs.getInt(1)).name(rs.getString(2)).build();
 				}
 			}
 

@@ -3,11 +3,57 @@ package com.java.model;
 import java.util.Date;
 
 public class Computer {
-	private long companyId;
+	private long id;
 	private String name;
 	private Date discontinued;
 	private Date introduced;
-	private long id;
+	private long companyId;
+
+	public static class Builder {
+		private long id;
+		private String name;
+		private Date discontinued;
+		private Date introduced;
+		private long companyId;
+
+		public Builder id(long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder discontinued(Date discontinued) {
+			this.discontinued = discontinued;
+			return this;
+		}
+
+		public Builder introduced(Date introduced) {
+			this.introduced = introduced;
+			return this;
+		}
+
+		public Builder companyId(long companyId) {
+			this.companyId = companyId;
+			return this;
+		}
+
+		public Computer build() {
+			return new Computer(id, name, discontinued, introduced, companyId);
+		}
+	}
+
+	private Computer(long id, String name, Date discontinued, Date introduced, long companyId) {
+		super();
+		this.companyId = companyId;
+		this.name = name;
+		this.discontinued = discontinued;
+		this.introduced = introduced;
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {

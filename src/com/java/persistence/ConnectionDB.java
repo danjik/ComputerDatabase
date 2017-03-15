@@ -16,12 +16,6 @@ import com.java.util.ComputerDBException;
  * Get a instance of the Computer Database connection by using the static method
  * getInstance
  *
- * Environment available : 1 = test database
- *
- * @author excilys
- *
- *
- *
  */
 public enum ConnectionDB {
 	CONNECTION;
@@ -42,11 +36,18 @@ public enum ConnectionDB {
 		try {
 			config = new PropertiesConfiguration("database.properties");
 
+			String typeconn = config.getString("typeconn");
+			String typedb = config.getString("typedb");
+			String host = config.getString("host");
+			String port = config.getString("port");
+			String database = config.getString("database");
+			String param = config.getString("param");
+
 			String username = config.getString("username");
 			String password = config.getString("password");
-			String database = config.getString("database");
+
 			logger.debug("Test to connect to the database : " + database + " with username : " + username);
-			String url = new String("jdbc:mysql://localhost:3306/" + database + "?zeroDateTimeBehavior=convertToNull");
+			String url = new String(typeconn + ":" + typedb + "://" + host + ":" + port + "/" + database + param);
 			return DriverManager.getConnection(url, username, password);
 		} catch (ConfigurationException | SQLException e) {
 			logger.error("ConnectionDB : " + e.getMessage());

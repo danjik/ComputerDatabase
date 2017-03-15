@@ -1,8 +1,33 @@
 package com.java.model;
 
 public class Company {
+
 	private long id;
 	private String name;
+
+	public static class Builder {
+		private long id;
+		private String name;
+
+		public Builder id(long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Company build() {
+			return new Company(id, name);
+		}
+	}
+
+	private Company(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	public long getId() {
 		return id;
