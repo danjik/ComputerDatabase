@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.java.model.Computer;
+import com.java.model.ComputerDTO;
 import com.java.service.ComputerService;
 import com.java.util.ComputerDBException;
 
@@ -18,13 +18,13 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testGetComputerById() throws ComputerDBException {
-		List<Computer> listAllComputer;
+		List<ComputerDTO> listAllComputer;
 		listAllComputer = computerService.getAllComputer();
 
-		Computer randomComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
+		ComputerDTO randomComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		long idToTest = randomComputer.getId();
 
-		Computer selectComputer = computerService.getComputerById(idToTest);
+		ComputerDTO selectComputer = computerService.getComputerById(idToTest);
 		assert selectComputer.getId() == idToTest;
 
 	}
@@ -34,41 +34,41 @@ public class ComputerDAOTest {
 		int nbComputer;
 		nbComputer = computerService.getNbComputer();
 
-		Computer newComputer = new Computer.Builder().name("Nouveau computer").introduced(null).discontinued(null)
-				.companyId(10).build();
-		computerService.createComputer(newComputer);
+		ComputerDTO newComputerDTO = new ComputerDTO.Builder().name("Nouveau computer").introduced(null)
+				.discontinued(null).companyId(10).build();
+		computerService.createComputer(newComputerDTO);
 		assert computerService.getNbComputer() == nbComputer + 1;
 	}
 
 	@Test
 	public void testCreateComputer() throws ComputerDBException {
-		Computer newComputer = new Computer.Builder().name("Nouveau computer").introduced(null).discontinued(null)
-				.companyId(10).build();
-		long generateId = computerService.createComputer(newComputer);
-		newComputer.setId(generateId);
-		Computer testNewComputer = computerService.getComputerById(generateId);
-		assert testNewComputer.equals(newComputer);
+		ComputerDTO newComputerDTO = new ComputerDTO.Builder().name("Nouveau computer").introduced(null)
+				.discontinued(null).companyId(10).build();
+		long generateId = computerService.createComputer(newComputerDTO);
+		newComputerDTO.setId(generateId);
+		ComputerDTO testNewComputerDTO = computerService.getComputerById(generateId);
+		assert testNewComputerDTO.equals(newComputerDTO);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testCreateComputerNullName() throws ComputerDBException {
-		Computer newComputer = new Computer.Builder().name(null).introduced(null).discontinued(null).companyId(10)
-				.build();
-		computerService.createComputer(newComputer);
+		ComputerDTO newComputerDTO = new ComputerDTO.Builder().name(null).introduced(null).discontinued(null)
+				.companyId(10).build();
+		computerService.createComputer(newComputerDTO);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testCreateComputerMinCharName() throws ComputerDBException {
-		Computer newComputer = new Computer.Builder().name("aa").introduced(null).discontinued(null).companyId(10)
-				.build();
-		computerService.createComputer(newComputer);
+		ComputerDTO newComputerDTO = new ComputerDTO.Builder().name("aa").introduced(null).discontinued(null)
+				.companyId(10).build();
+		computerService.createComputer(newComputerDTO);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testCreateComputerInvalidName() throws ComputerDBException {
-		Computer newComputer = new Computer.Builder().name("3az").introduced(null).discontinued(null).companyId(10)
-				.build();
-		computerService.createComputer(newComputer);
+		ComputerDTO newComputerDTO = new ComputerDTO.Builder().name("3az").introduced(null).discontinued(null)
+				.companyId(10).build();
+		computerService.createComputer(newComputerDTO);
 	}
 
 	@Test
@@ -76,17 +76,17 @@ public class ComputerDAOTest {
 		int nbComputer;
 		nbComputer = computerService.getNbComputer();
 
-		List<Computer> listComputer = computerService.getAllComputer();
+		List<ComputerDTO> listComputer = computerService.getAllComputer();
 
 		assert nbComputer == listComputer.size();
 	}
 
 	@Test
 	public void testDeleteComputer() throws ComputerDBException {
-		List<Computer> listAllComputer;
+		List<ComputerDTO> listAllComputer;
 		listAllComputer = computerService.getAllComputer();
 
-		Computer deleteComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
+		ComputerDTO deleteComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		long idToDelete = deleteComputer.getId();
 		computerService.deleteComputer(idToDelete);
 		assert computerService.getComputerById(idToDelete) == null;
@@ -97,10 +97,10 @@ public class ComputerDAOTest {
 		SecureRandom random = new SecureRandom();
 
 		String randAlpha = new BigInteger(50, random).toString(32);
-		List<Computer> listAllComputer;
+		List<ComputerDTO> listAllComputer;
 		listAllComputer = computerService.getAllComputer();
 
-		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
+		ComputerDTO updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 
 		updateComputer.setName("Update computer " + randAlpha);
 		LocalDate updateDiscontinued = new Timestamp((long) (random.nextDouble() * new Date().getTime()))
@@ -111,16 +111,16 @@ public class ComputerDAOTest {
 		updateComputer.setIntroduced(updateIntroduced);
 		updateComputer.setCompanyId(10);
 		computerService.updateComputer(updateComputer);
-		Computer newUpdateComputer = computerService.getComputerById(updateComputer.getId());
+		ComputerDTO newUpdateComputer = computerService.getComputerById(updateComputer.getId());
 		assert updateComputer.equals(newUpdateComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateWrongCompanyIdComputer() throws ComputerDBException {
-		List<Computer> listAllComputer;
+		List<ComputerDTO> listAllComputer;
 		listAllComputer = computerService.getAllComputer();
 
-		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
+		ComputerDTO updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		updateComputer.setName(updateComputer.getName());
 		updateComputer.setDiscontinued(updateComputer.getDiscontinued());
 		updateComputer.setIntroduced(updateComputer.getIntroduced());
@@ -130,10 +130,10 @@ public class ComputerDAOTest {
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateComputerNullName() throws ComputerDBException {
-		List<Computer> listAllComputer;
+		List<ComputerDTO> listAllComputer;
 		listAllComputer = computerService.getAllComputer();
 
-		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
+		ComputerDTO updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		updateComputer.setName(null);
 		updateComputer.setDiscontinued(null);
 		updateComputer.setIntroduced(null);
@@ -143,15 +143,15 @@ public class ComputerDAOTest {
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateComputerMinCharName() throws ComputerDBException {
-		Computer newComputer = new Computer.Builder().name("aa").introduced(null).discontinued(null).companyId(10)
+		ComputerDTO newComputer = new ComputerDTO.Builder().name("aa").introduced(null).discontinued(null).companyId(10)
 				.build();
 		computerService.updateComputer(newComputer);
 	}
 
 	@Test(expected = ComputerDBException.class)
 	public void testUpdateComputerInvalidName() throws ComputerDBException {
-		Computer newComputer = new Computer.Builder().name("3az").introduced(null).discontinued(null).companyId(10)
-				.build();
+		ComputerDTO newComputer = new ComputerDTO.Builder().name("3az").introduced(null).discontinued(null)
+				.companyId(10).build();
 		computerService.updateComputer(newComputer);
 	}
 }

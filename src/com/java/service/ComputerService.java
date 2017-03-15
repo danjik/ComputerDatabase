@@ -1,24 +1,30 @@
 package com.java.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.java.model.Computer;
+import com.java.mapper.ComputerMapper;
+import com.java.model.ComputerDTO;
 import com.java.persistence.ComputerDAO;
 import com.java.persistence.IComputerDAO;
 
 public class ComputerService {
 	private IComputerDAO iComputerDAO = ComputerDAO.INSTANCE;
 
-	public List<Computer> getAllComputer() {
-		return iComputerDAO.getAllComputer();
+	public List<ComputerDTO> getAllComputer() {
+		List<ComputerDTO> listAllComputerDTO = new ArrayList<>();
+		iComputerDAO.getAllComputer().forEach(computer -> {
+			listAllComputerDTO.add(ComputerMapper.INSTANCE.toComputerDTO(computer));
+		});
+		return listAllComputerDTO;
 	}
 
-	public Computer getComputerById(long idToSelect) {
-		return iComputerDAO.getComputerById(idToSelect);
+	public ComputerDTO getComputerById(long idToSelect) {
+		return ComputerMapper.INSTANCE.toComputerDTO(iComputerDAO.getComputerById(idToSelect));
 	}
 
-	public long createComputer(Computer newComputer) {
-		return iComputerDAO.createComputer(newComputer);
+	public long createComputer(ComputerDTO newComputer) {
+		return iComputerDAO.createComputer(ComputerMapper.INSTANCE.toComputer(newComputer));
 	}
 
 	public int getNbComputer() {
@@ -29,8 +35,8 @@ public class ComputerService {
 		iComputerDAO.deleteComputer(idToDelete);
 	}
 
-	public void updateComputer(Computer computer) {
-		iComputerDAO.updateComputer(computer);
+	public void updateComputer(ComputerDTO computer) {
+		iComputerDAO.updateComputer(ComputerMapper.INSTANCE.toComputer(computer));
 	}
 
 }

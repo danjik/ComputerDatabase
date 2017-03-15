@@ -6,13 +6,13 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.java.model.Computer;
+import com.java.model.ComputerDTO;
 import com.java.model.Page;
 import com.java.service.ComputerService;
 import com.java.util.ComputerDBException;
 
 public class ComputerPresentation {
-	private Page<Computer> pageComputer;
+	private Page<ComputerDTO> pageComputerDTO;
 	private Logger logger;
 	private ComputerService computerService = new ComputerService();
 
@@ -22,19 +22,19 @@ public class ComputerPresentation {
 	 *             Application Exception
 	 */
 	public ComputerPresentation() throws ComputerDBException {
-		pageComputer = new Page<>(computerService.getAllComputer());
+		pageComputerDTO = new Page<>(computerService.getAllComputer());
 		logger = LogManager.getRootLogger();
 	}
 
 	public void printComputerDetails(long idToSelect) throws ComputerDBException {
 		logger.debug("Access to computer n°" + idToSelect);
-		Computer computer = computerService.getComputerById(idToSelect);
-		if (computer == null) {
+		ComputerDTO computerDTO = computerService.getComputerById(idToSelect);
+		if (computerDTO == null) {
 			logger.debug("No computer has this id");
 			System.out.println("No computer has this id");
 		} else {
-			logger.debug("Computer found : " + computer);
-			System.out.println(computer);
+			logger.debug("Computer found : " + computerDTO);
+			System.out.println(computerDTO);
 		}
 
 	}
@@ -50,10 +50,10 @@ public class ComputerPresentation {
 		LocalDate discontinued = SecureInput.secureInputDate("discontinued");
 		LocalDate introduced = SecureInput.secureInputDate("introduced");
 		int companyId = SecureInput.secureInputInt("company id");
-		Computer newComputer = new Computer.Builder().name(name).introduced(introduced).discontinued(discontinued)
-				.companyId(companyId).build();
-		long id = computerService.createComputer(newComputer);
-		logger.debug("createComputer : Computer " + newComputer + " well created with id : " + id);
+		ComputerDTO newComputerDTO = new ComputerDTO.Builder().name(name).introduced(introduced)
+				.discontinued(discontinued).companyId(companyId).build();
+		long id = computerService.createComputer(newComputerDTO);
+		logger.debug("createComputer : Computer " + newComputerDTO + " well created with id : " + id);
 		this.updatePage();
 		System.out.println("Computer n°" + id + " well created");
 	}
@@ -65,26 +65,26 @@ public class ComputerPresentation {
 	}
 
 	public void listAllComputer() throws ComputerDBException {
-		List<Computer> listComputer = computerService.getAllComputer();
-		listComputer.forEach(computer -> {
-			System.out.println(computer);
+		List<ComputerDTO> listComputerDTO = computerService.getAllComputer();
+		listComputerDTO.forEach(computerDTO -> {
+			System.out.println(computerDTO);
 		});
 	}
 
 	public void listComputerByPage() throws ComputerDBException {
-		System.out.println("There is currently " + pageComputer.getNbPage() + " page");
+		System.out.println("There is currently " + pageComputerDTO.getNbPage() + " page");
 		int page;
 		do {
 			page = SecureInput.secureInputInt("page");
-		} while (page < 0 || page > pageComputer.getNbPage());
+		} while (page < 0 || page > pageComputerDTO.getNbPage());
 		logger.debug("Access to company page n°" + page);
-		pageComputer.getPageInRange(page).forEach(computer -> System.out.println(computer));
+		pageComputerDTO.getPageInRange(page).forEach(computer -> System.out.println(computer));
 
 	}
 
 	public void deleteComputer(long idToDelete) throws ComputerDBException {
 		logger.debug("deleteComputer : idToDelete = " + idToDelete);
-		Computer computer = computerService.getComputerById(idToDelete);
+		ComputerDTO computer = computerService.getComputerById(idToDelete);
 		if (computer == null) {
 			logger.debug("deleteComputer : No computer has this id : " + idToDelete);
 			System.out.println("No computer has this id : " + idToDelete);
@@ -100,7 +100,7 @@ public class ComputerPresentation {
 
 	public void updateComputer(long idToUpdate) throws ComputerDBException {
 		logger.debug("updateComputer : idToUpdate = " + idToUpdate);
-		Computer computer = computerService.getComputerById(idToUpdate);
+		ComputerDTO computer = computerService.getComputerById(idToUpdate);
 		if (computer == null) {
 			logger.debug("updateComputer : No computer has this id : " + idToUpdate);
 			System.out.println("No computer has this id : " + idToUpdate);
@@ -154,6 +154,6 @@ public class ComputerPresentation {
 
 	public void updatePage() throws ComputerDBException {
 		logger.debug("Computer page updated");
-		pageComputer.updatePage(computerService.getAllComputer());
+		pageComputerDTO.updatePage(computerService.getAllComputer());
 	}
 }
