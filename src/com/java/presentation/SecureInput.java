@@ -1,9 +1,8 @@
 package com.java.presentation;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -95,12 +94,11 @@ public class SecureInput {
 	 * @throws ComputerDBException
 	 *             Application Exception
 	 */
-	public static Date secureInputDate(String label) throws ComputerDBException {
-		Date secureDate = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	public static LocalDate secureInputDate(String label) throws ComputerDBException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+		LocalDate secureDate = null;
 		String regex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$";
 		String strSecureDate;
-		Calendar cal = Calendar.getInstance();
 		do {
 
 			do {
@@ -108,17 +106,16 @@ public class SecureInput {
 			} while (!strSecureDate.matches(regex) && !strSecureDate.isEmpty());
 			if (!strSecureDate.isEmpty()) {
 				try {
-					secureDate = sdf.parse(strSecureDate);
-					cal.setTime(secureDate);
-				} catch (ParseException e) {
+					secureDate = LocalDate.parse(strSecureDate, dtf);
+				} catch (DateTimeParseException e) {
 					logger.error("secureInputDate : " + e.getMessage());
 					throw new ComputerDBException("secureInputDate " + e);
 				}
 			} else {
 				secureDate = null;
 			}
-			System.out.println(cal.get(Calendar.YEAR) < 1970 && secureDate != null);
-		} while (cal.get(Calendar.YEAR) < 1970 && secureDate != null);
+			System.out.println(secureDate.getYear() < 1970 && secureDate != null);
+		} while (secureDate.getYear() < 1970 && secureDate != null);
 		return secureDate;
 	}
 

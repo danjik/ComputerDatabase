@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +56,11 @@ public enum ComputerDAO implements IComputerDAO {
 				throw new ComputerDBException("The name must be composed at least by 3 chars");
 			insertPStatement.setString(1, newComputer.getName());
 			if (newComputer.getIntroduced() != null)
-				insertPStatement.setTimestamp(2, new Timestamp(newComputer.getIntroduced().getTime()));
+				insertPStatement.setTimestamp(2, Timestamp.valueOf(newComputer.getIntroduced().atStartOfDay()));
 			else
 				insertPStatement.setTimestamp(2, null);
 			if (newComputer.getDiscontinued() != null)
-				insertPStatement.setTimestamp(3, new Timestamp(newComputer.getDiscontinued().getTime()));
+				insertPStatement.setTimestamp(3, Timestamp.valueOf(newComputer.getIntroduced().atStartOfDay()));
 			else
 				insertPStatement.setTimestamp(3, null);
 			insertPStatement.setLong(4, newComputer.getCompanyId());
@@ -87,9 +88,12 @@ public enum ComputerDAO implements IComputerDAO {
 			selectPStatement.setLong(1, idToSelect);
 			try (ResultSet rs = selectPStatement.executeQuery()) {
 				while (rs.next()) {
+					LocalDate getIntroduced = rs.getTimestamp(3) != null
+							? rs.getTimestamp(3).toLocalDateTime().toLocalDate() : null;
+					LocalDate getDiscontinued = rs.getTimestamp(3) != null
+							? rs.getTimestamp(4).toLocalDateTime().toLocalDate() : null;
 					selectComputer = new Computer.Builder().id(rs.getInt(1)).name(rs.getString(2))
-							.introduced(rs.getTimestamp(3)).discontinued(rs.getTimestamp(4)).companyId(rs.getInt(5))
-							.build();
+							.introduced(getIntroduced).discontinued(getDiscontinued).companyId(rs.getInt(5)).build();
 				}
 			}
 		} catch (SQLException e) {
@@ -109,9 +113,12 @@ public enum ComputerDAO implements IComputerDAO {
 				Statement selectPStatement = conn.createStatement();) {
 			try (ResultSet rs = selectPStatement.executeQuery(query)) {
 				while (rs.next()) {
+					LocalDate getIntroduced = rs.getTimestamp(3) != null
+							? rs.getTimestamp(3).toLocalDateTime().toLocalDate() : null;
+					LocalDate getDiscontinued = rs.getTimestamp(3) != null
+							? rs.getTimestamp(3).toLocalDateTime().toLocalDate() : null;
 					selectComputer = new Computer.Builder().id(rs.getInt(1)).name(rs.getString(2))
-							.introduced(rs.getTimestamp(3)).discontinued(rs.getTimestamp(4)).companyId(rs.getInt(5))
-							.build();
+							.introduced(getIntroduced).discontinued(getDiscontinued).companyId(rs.getInt(5)).build();
 					listComputer.add(selectComputer);
 				}
 			}
@@ -149,11 +156,11 @@ public enum ComputerDAO implements IComputerDAO {
 			updatePStatement.setString(1, updateComputer.getName());
 
 			if (updateComputer.getIntroduced() != null)
-				updatePStatement.setTimestamp(2, new Timestamp(updateComputer.getIntroduced().getTime()));
+				updatePStatement.setTimestamp(2, Timestamp.valueOf(updateComputer.getIntroduced().atStartOfDay()));
 			else
 				updatePStatement.setTimestamp(2, null);
 			if (updateComputer.getDiscontinued() != null)
-				updatePStatement.setTimestamp(3, new Timestamp(updateComputer.getDiscontinued().getTime()));
+				updatePStatement.setTimestamp(3, Timestamp.valueOf(updateComputer.getDiscontinued().atStartOfDay()));
 			else
 				updatePStatement.setTimestamp(3, null);
 			updatePStatement.setLong(4, updateComputer.getCompanyId());

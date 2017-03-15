@@ -1,19 +1,19 @@
 package com.java.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Computer {
 	private long id;
 	private String name;
-	private Date discontinued;
-	private Date introduced;
+	private LocalDate discontinued;
+	private LocalDate introduced;
 	private long companyId;
 
 	public static class Builder {
 		private long id;
 		private String name;
-		private Date discontinued;
-		private Date introduced;
+		private LocalDate discontinued;
+		private LocalDate introduced;
 		private long companyId;
 
 		public Builder id(long id) {
@@ -26,12 +26,12 @@ public class Computer {
 			return this;
 		}
 
-		public Builder discontinued(Date discontinued) {
+		public Builder discontinued(LocalDate discontinued) {
 			this.discontinued = discontinued;
 			return this;
 		}
 
-		public Builder introduced(Date introduced) {
+		public Builder introduced(LocalDate introduced) {
 			this.introduced = introduced;
 			return this;
 		}
@@ -46,7 +46,7 @@ public class Computer {
 		}
 	}
 
-	private Computer(long id, String name, Date discontinued, Date introduced, long companyId) {
+	private Computer(long id, String name, LocalDate discontinued, LocalDate introduced, long companyId) {
 		super();
 		this.companyId = companyId;
 		this.name = name;
@@ -77,19 +77,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Date getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	public Date getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
@@ -122,23 +122,21 @@ public class Computer {
 		if (getClass() != obj.getClass())
 			return false;
 		Computer other = (Computer) obj;
-		long secDis1 = this.getDiscontinued() == null ? 0 : this.getDiscontinued().getTime() / 1000;
-		long secDis2 = other.getDiscontinued() == null ? 0 : other.getDiscontinued().getTime() / 1000;
-		long secIns1 = this.getIntroduced() == null ? 0 : this.getIntroduced().getTime() / 1000;
-		long secIns2 = other.getIntroduced() == null ? 0 : other.getIntroduced().getTime() / 1000;
+		System.out.println(this);
+		System.out.println(other);
 		if (companyId != other.companyId)
 			return false;
 		if (discontinued == null) {
 			if (other.discontinued != null)
 				return false;
-		} else if (secDis1 != secDis2)
+		} else if (!discontinued.equals(other.discontinued))
 			return false;
 		if (id != other.id)
 			return false;
 		if (introduced == null) {
 			if (other.introduced != null)
 				return false;
-		} else if (secIns1 != secIns2)
+		} else if (!introduced.equals(other.introduced))
 			return false;
 		if (name == null) {
 			if (other.name != null)

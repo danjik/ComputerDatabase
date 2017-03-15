@@ -1,6 +1,6 @@
 package com.java.presentation;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,8 +47,8 @@ public class ComputerPresentation {
 			if (!name.matches(regexName))
 				System.out.println("The name must be composed at least by 3 chars");
 		} while (!name.matches(regexName));
-		Date discontinued = SecureInput.secureInputDate("discontinued");
-		Date introduced = SecureInput.secureInputDate("introduced");
+		LocalDate discontinued = SecureInput.secureInputDate("discontinued");
+		LocalDate introduced = SecureInput.secureInputDate("introduced");
 		int companyId = SecureInput.secureInputInt("company id");
 		Computer newComputer = new Computer.Builder().name(name).introduced(introduced).discontinued(discontinued)
 				.companyId(companyId).build();
@@ -127,11 +127,11 @@ public class ComputerPresentation {
 					computer.setName(newName);
 					break;
 				case 2:
-					Date dateNewDiscontinued = SecureInput.secureInputDate("new discontinued");
+					LocalDate dateNewDiscontinued = SecureInput.secureInputDate("new discontinued");
 					computer.setDiscontinued(dateNewDiscontinued);
 					break;
 				case 3:
-					Date dateNewIntroduced = SecureInput.secureInputDate("new introduced");
+					LocalDate dateNewIntroduced = SecureInput.secureInputDate("new introduced");
 					computer.setIntroduced(dateNewIntroduced);
 					break;
 				case 4:

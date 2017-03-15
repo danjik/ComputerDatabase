@@ -2,6 +2,8 @@ package com.test.persistence;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -101,9 +103,11 @@ public class ComputerDAOTest {
 		Computer updateComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 
 		updateComputer.setName("Update computer " + randAlpha);
-		Date updateDiscontinued = new Date((long) (random.nextDouble() * new Date().getTime()));
+		LocalDate updateDiscontinued = new Timestamp((long) (random.nextDouble() * new Date().getTime()))
+				.toLocalDateTime().toLocalDate();
 		updateComputer.setDiscontinued(updateDiscontinued);
-		Date updateIntroduced = new Date((long) (random.nextDouble() * new Date().getTime()));
+		LocalDate updateIntroduced = new Timestamp((long) (random.nextDouble() * new Date().getTime()))
+				.toLocalDateTime().toLocalDate();
 		updateComputer.setIntroduced(updateIntroduced);
 		updateComputer.setCompanyId(10);
 		computerService.updateComputer(updateComputer);
