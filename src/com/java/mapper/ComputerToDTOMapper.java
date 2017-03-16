@@ -3,7 +3,7 @@ package com.java.mapper;
 import com.java.model.Computer;
 import com.java.model.ComputerDTO;
 
-public enum ComputerMapper {
+public enum ComputerToDTOMapper {
 	INSTANCE;
 
 	public Computer toComputer(ComputerDTO computerDTO) {

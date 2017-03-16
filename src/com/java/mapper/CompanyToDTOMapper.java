@@ -3,7 +3,7 @@ package com.java.mapper;
 import com.java.model.Company;
 import com.java.model.CompanyDTO;
 
-public enum CompanyMapper {
+public enum CompanyToDTOMapper {
 	INSTANCE;
 
 	public Company toCompany(CompanyDTO companyDTO) {
