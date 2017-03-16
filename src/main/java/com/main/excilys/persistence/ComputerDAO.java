@@ -38,7 +38,7 @@ public enum ComputerDAO implements IComputerDAO {
 				}
 			}
 		} catch (SQLException e) {
-			logger.debug("getNbComputer  : " + e.getMessage());
+			logger.error("getNbComputer  : " + e.getMessage());
 			throw new ComputerDBException("getNbComputer " + e);
 		}
 
@@ -60,7 +60,7 @@ public enum ComputerDAO implements IComputerDAO {
 			else
 				insertPStatement.setTimestamp(2, null);
 			if (newComputer.getDiscontinued() != null)
-				insertPStatement.setTimestamp(3, Timestamp.valueOf(newComputer.getIntroduced().atStartOfDay()));
+				insertPStatement.setTimestamp(3, Timestamp.valueOf(newComputer.getDiscontinued().atStartOfDay()));
 			else
 				insertPStatement.setTimestamp(3, null);
 			insertPStatement.setLong(4, newComputer.getCompanyId());
@@ -71,7 +71,7 @@ public enum ComputerDAO implements IComputerDAO {
 				}
 			}
 		} catch (SQLException e) {
-			logger.debug("createComputer  : " + e.getMessage());
+			logger.error("createComputer  : " + e.getMessage());
 			throw new ComputerDBException("createComputer " + e);
 		}
 		return generateId;

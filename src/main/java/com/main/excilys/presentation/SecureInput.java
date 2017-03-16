@@ -95,7 +95,7 @@ public class SecureInput {
 	 *             Application Exception
 	 */
 	public static LocalDate secureInputDate(String label) throws ComputerDBException {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate secureDate = null;
 		String regex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$";
 		String strSecureDate;
@@ -114,8 +114,7 @@ public class SecureInput {
 			} else {
 				secureDate = null;
 			}
-			System.out.println(secureDate.getYear() < 1970 && secureDate != null);
-		} while (secureDate.getYear() < 1970 && secureDate != null);
+		} while (secureDate != null && secureDate.getYear() < 1970);
 		return secureDate;
 	}
 
