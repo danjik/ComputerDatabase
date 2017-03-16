@@ -34,7 +34,6 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (SQLException e) {
 			logger.error("getAllCompany" + e);
 			throw new ComputerDBException("getAllCompany " + e);
-		} finally {
 		}
 		logger.debug("getAllCompany : " + listCompany.size() + " companies has been selected");
 

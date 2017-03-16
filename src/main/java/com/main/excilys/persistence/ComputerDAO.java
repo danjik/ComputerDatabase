@@ -173,14 +173,14 @@ public enum ComputerDAO implements IComputerDAO {
 	}
 
 	@Override
-	public List<Computer> getComputerInRange(long idBegin, long idEnd) {
+	public List<Computer> getComputerInRange(long idBegin, long nbObjectToGet) {
 		String query = "select * from computer limit ?,?";
 		List<Computer> listComputer = new ArrayList<>();
 		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
 				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
 
 			selectPStatement.setLong(1, idBegin);
-			selectPStatement.setLong(2, idEnd);
+			selectPStatement.setLong(2, nbObjectToGet);
 			try (ResultSet rs = selectPStatement.executeQuery()) {
 				while (rs.next()) {
 					LocalDate getIntroduced = rs.getTimestamp(3) != null

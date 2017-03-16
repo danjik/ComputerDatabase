@@ -15,10 +15,6 @@ public class CompanyPresentation {
 	private CompanyService companyService = new CompanyService();
 	private Logger logger = LogManager.getRootLogger();
 
-	public CompanyPresentation() throws ComputerDBException {
-		pageCompany = new Page<>(companyService.getAllCompany());
-	}
-
 	public void listAllCompany() throws ComputerDBException {
 		List<CompanyDTO> lisCompany = companyService.getAllCompany();
 		lisCompany.forEach(company -> {
@@ -28,9 +24,9 @@ public class CompanyPresentation {
 
 	public void listCompanyByPage() throws ComputerDBException {
 		logger.debug("Access to company page n°" + pageCompany.getNumPage());
-		long idBegin = pageCompany.getNumPage() * Page.NB_OBJECT_PER_PAGE;
-		long idEnd = pageCompany.getNumPage() * Page.NB_OBJECT_PER_PAGE + Page.NB_OBJECT_PER_PAGE;
-		companyService.getCompanyInRange(idBegin, idEnd).forEach(company -> System.out.println(company));
+		long idBegin = pageCompany.getNumPage() * Page.getNbObjectPerPage();
+		companyService.getCompanyInRange(idBegin, Page.getNbObjectPerPage())
+				.forEach(company -> System.out.println(company));
 	}
 
 }

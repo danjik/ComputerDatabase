@@ -1,0 +1,47 @@
+body {
+    background: #E1F5FE;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+footer {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#3F51B5;
+    border-top:1px solid #CCC;
+    height:60px;
+}
+
+footer .pagination {
+    margin:10px 0px;
+}
+
+footer .btn-group {
+    margin:10px 10px;
+}
+
+input[type='checkbox'] {
+    margin: 0px;
+    padding:0px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.table-striped>tbody>tr:nth-child(even), .table-bordered>thead>tr>th{
+	    background-color: #1A237E;
+	    color : white;
+}
+
+.table-striped>tbody>tr:nth-child(even) *, .table-bordered>thead>tr>th *{
+	    color : white;
+	
+}
+.navbar.navbar-inverse{
+    background:#3F51B5;
+	
+}
+
+.navbar.navbar-inverse .navbar-brand{
+	color : #F3E5F5;
+}

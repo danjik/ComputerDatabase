@@ -22,7 +22,6 @@ public class ComputerPresentation {
 	 *             Application Exception
 	 */
 	public ComputerPresentation() throws ComputerDBException {
-		pageComputerDTO = new Page<>(computerService.getAllComputer());
 		logger = LogManager.getRootLogger();
 	}
 
@@ -72,10 +71,9 @@ public class ComputerPresentation {
 
 	public void listComputerByPage() throws ComputerDBException {
 		logger.debug("Access to company page n°" + pageComputerDTO.getNumPage());
-		long idBegin = pageComputerDTO.getNumPage() * Page.NB_OBJECT_PER_PAGE;
-		long idEnd = pageComputerDTO.getNumPage() * Page.NB_OBJECT_PER_PAGE + Page.NB_OBJECT_PER_PAGE;
+		long idBegin = pageComputerDTO.getNumPage() * Page.getNbObjectPerPage();
+		long idEnd = pageComputerDTO.getNumPage() * Page.getNbObjectPerPage() + Page.getNbObjectPerPage();
 		computerService.getComputerInRange(idBegin, idEnd).forEach(computer -> System.out.println(computer));
-
 	}
 
 	public void deleteComputer(long idToDelete) throws ComputerDBException {

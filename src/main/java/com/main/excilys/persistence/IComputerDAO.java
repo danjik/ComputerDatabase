@@ -17,5 +17,5 @@ public interface IComputerDAO {
 
 	public void updateComputer(Computer updateComputer);
 
-	public List<Computer> getComputerInRange(long idBegin, long idEnd);
+	public List<Computer> getComputerInRange(long idBegin, long nbObjectToGet);
 }
