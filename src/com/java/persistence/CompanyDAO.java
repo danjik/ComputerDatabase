@@ -78,11 +78,33 @@ public enum CompanyDAO implements ICompanyDAO {
 		} catch (SQLException e) {
 			logger.error("getCompanyById" + e.getMessage());
 			throw new ComputerDBException("getCompanyById " + e);
-		} finally {
-
 		}
 		logger.debug("getCompanyById selectedCompany : " + selectCompany);
 
 		return selectCompany;
+	}
+
+	@Override
+	public List<Company> getCompanyInRange(long idBegin, long idEnd) {
+		logger.debug("getCompanyInRange idBegin : " + idBegin + " idEnd : " + idEnd);
+		String query = "select * from company limit ?,?";
+		List<Company> listCompany = new ArrayList<>();
+
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
+			selectPStatement.setLong(1, idBegin);
+			selectPStatement.setLong(2, idEnd);
+			try (ResultSet rs = selectPStatement.executeQuery()) {
+				while (rs.next()) {
+					listCompany.add(new Company.Builder().id(rs.getInt(1)).name(rs.getString(2)).build());
+				}
+			}
+
+		} catch (SQLException e) {
+			logger.error("getCompanyInRange" + e.getMessage());
+			throw new ComputerDBException("getCompanyInRange " + e);
+		}
+
+		return listCompany;
 	}
 }

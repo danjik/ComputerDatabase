@@ -90,7 +90,7 @@ public enum ComputerDAO implements IComputerDAO {
 				while (rs.next()) {
 					LocalDate getIntroduced = rs.getTimestamp(3) != null
 							? rs.getTimestamp(3).toLocalDateTime().toLocalDate() : null;
-					LocalDate getDiscontinued = rs.getTimestamp(3) != null
+					LocalDate getDiscontinued = rs.getTimestamp(4) != null
 							? rs.getTimestamp(4).toLocalDateTime().toLocalDate() : null;
 					selectComputer = new Computer.Builder().id(rs.getInt(1)).name(rs.getString(2))
 							.introduced(getIntroduced).discontinued(getDiscontinued).companyId(rs.getInt(5)).build();
@@ -170,6 +170,33 @@ public enum ComputerDAO implements IComputerDAO {
 			logger.error("updateComputer  : " + e);
 			throw new ComputerDBException("updateComputer " + e);
 		}
+	}
+
+	@Override
+	public List<Computer> getComputerInRange(long idBegin, long idEnd) {
+		String query = "select * from computer limit ?,?";
+		List<Computer> listComputer = new ArrayList<>();
+		try (Connection conn = ConnectionDB.CONNECTION.getConnection();
+				PreparedStatement selectPStatement = conn.prepareStatement(query);) {
+
+			selectPStatement.setLong(1, idBegin);
+			selectPStatement.setLong(2, idEnd);
+			try (ResultSet rs = selectPStatement.executeQuery()) {
+				while (rs.next()) {
+					LocalDate getIntroduced = rs.getTimestamp(3) != null
+							? rs.getTimestamp(3).toLocalDateTime().toLocalDate() : null;
+					LocalDate getDiscontinued = rs.getTimestamp(4) != null
+							? rs.getTimestamp(4).toLocalDateTime().toLocalDate() : null;
+					listComputer.add(new Computer.Builder().id(rs.getInt(1)).name(rs.getString(2))
+							.introduced(getIntroduced).discontinued(getDiscontinued).companyId(rs.getInt(5)).build());
+				}
+			}
+		} catch (SQLException e) {
+			logger.error("getComputerById  : " + e.getMessage());
+			throw new ComputerDBException("getComputerById " + e);
+		}
+
+		return listComputer;
 	}
 
 }

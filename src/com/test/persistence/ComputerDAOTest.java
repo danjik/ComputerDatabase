@@ -89,7 +89,9 @@ public class ComputerDAOTest {
 		ComputerDTO deleteComputer = listAllComputer.get((int) (Math.random() * listAllComputer.size()));
 		long idToDelete = deleteComputer.getId();
 		computerService.deleteComputer(idToDelete);
+		computerService.getComputerById(idToDelete);
 		assert computerService.getComputerById(idToDelete) == null;
+
 	}
 
 	@Test

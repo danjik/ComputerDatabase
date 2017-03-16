@@ -10,4 +10,6 @@ public interface ICompanyDAO {
 	public int getNbCompany();
 
 	public Company getCompanyById(long idToTest);
+
+	public List<Company> getCompanyInRange(long idBegin, long idEnd);
 }

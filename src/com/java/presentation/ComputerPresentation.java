@@ -54,7 +54,6 @@ public class ComputerPresentation {
 				.discontinued(discontinued).companyId(companyId).build();
 		long id = computerService.createComputer(newComputerDTO);
 		logger.debug("createComputer : Computer " + newComputerDTO + " well created with id : " + id);
-		this.updatePage();
 		System.out.println("Computer n°" + id + " well created");
 	}
 
@@ -72,13 +71,10 @@ public class ComputerPresentation {
 	}
 
 	public void listComputerByPage() throws ComputerDBException {
-		System.out.println("There is currently " + pageComputerDTO.getNbPage() + " page");
-		int page;
-		do {
-			page = SecureInput.secureInputInt("page");
-		} while (page < 0 || page > pageComputerDTO.getNbPage());
-		logger.debug("Access to company page n°" + page);
-		pageComputerDTO.getPageInRange(page).forEach(computer -> System.out.println(computer));
+		logger.debug("Access to company page n°" + pageComputerDTO.getNumPage());
+		long idBegin = pageComputerDTO.getNumPage() * Page.NB_OBJECT_PER_PAGE;
+		long idEnd = pageComputerDTO.getNumPage() * Page.NB_OBJECT_PER_PAGE + Page.NB_OBJECT_PER_PAGE;
+		computerService.getComputerInRange(idBegin, idEnd).forEach(computer -> System.out.println(computer));
 
 	}
 
@@ -91,7 +87,6 @@ public class ComputerPresentation {
 
 		} else {
 			computerService.deleteComputer(idToDelete);
-			this.updatePage();
 			logger.debug("The computer n°" + idToDelete + " has been well deleted");
 			System.out.println("Computer n°" + idToDelete + " has been deleted");
 		}
@@ -145,15 +140,9 @@ public class ComputerPresentation {
 
 					computerService.updateComputer(computer);
 					logger.debug("Computer n°" + idToUpdate + " has been modified to : " + computer);
-					this.updatePage();
 					System.out.println("Computer N°" + idToUpdate + " updated !");
 				}
 			} while (choix != 5);
 		}
-	}
-
-	public void updatePage() throws ComputerDBException {
-		logger.debug("Computer page updated");
-		pageComputerDTO.updatePage(computerService.getAllComputer());
 	}
 }

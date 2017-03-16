@@ -39,4 +39,12 @@ public class ComputerService {
 		iComputerDAO.updateComputer(ComputerMapper.INSTANCE.toComputer(computer));
 	}
 
+	public List<ComputerDTO> getComputerInRange(long idBegin, long idEnd) {
+		List<ComputerDTO> listAllComputerDTO = new ArrayList<>();
+		iComputerDAO.getComputerInRange(idBegin, idEnd).forEach(computer -> {
+			listAllComputerDTO.add(ComputerMapper.INSTANCE.toComputerDTO(computer));
+		});
+		return listAllComputerDTO;
+	}
+
 }

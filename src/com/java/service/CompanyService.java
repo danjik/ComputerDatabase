@@ -1,24 +1,38 @@
 package com.java.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.java.model.Company;
+import com.java.mapper.CompanyMapper;
+import com.java.model.CompanyDTO;
 import com.java.persistence.CompanyDAO;
 import com.java.persistence.ICompanyDAO;
 
 public class CompanyService {
 	private ICompanyDAO iComputerDAO = CompanyDAO.INSTANCE;
 
-	public List<Company> getAllCompany() {
-		return iComputerDAO.getAllCompany();
+	public List<CompanyDTO> getAllCompany() {
+		List<CompanyDTO> listCompanyDTO = new ArrayList<>();
+		iComputerDAO.getAllCompany().forEach(company -> {
+			listCompanyDTO.add(CompanyMapper.INSTANCE.toCompanyDTO(company));
+		});
+		return listCompanyDTO;
 	}
 
-	public Company getCompanyById(long idToTest) {
-		return iComputerDAO.getCompanyById(idToTest);
+	public CompanyDTO getCompanyById(long idToTest) {
+		return CompanyMapper.INSTANCE.toCompanyDTO(iComputerDAO.getCompanyById(idToTest));
 	}
 
 	public int getNbCompany() {
 		return iComputerDAO.getNbCompany();
+	}
+
+	public List<CompanyDTO> getCompanyInRange(long idBegin, long idEnd) {
+		List<CompanyDTO> listCompanyDTO = new ArrayList<>();
+		iComputerDAO.getCompanyInRange(idBegin, idEnd).forEach(company -> {
+			listCompanyDTO.add(CompanyMapper.INSTANCE.toCompanyDTO(company));
+		});
+		return listCompanyDTO;
 	}
 
 }

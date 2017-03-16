@@ -16,4 +16,6 @@ public interface IComputerDAO {
 	public void deleteComputer(long idToDelete);
 
 	public void updateComputer(Computer updateComputer);
+
+	public List<Computer> getComputerInRange(long idBegin, long idEnd);
 }
