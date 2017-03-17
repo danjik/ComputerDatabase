@@ -24,6 +24,14 @@ public class CompanyService {
     return listCompanyDto;
   }
 
+  /**
+   * Method to get a company by his id.
+   *
+   * @param idToTest
+   *          the id of the selected company
+   * @return the selected company
+   */
+
   public CompanyDto getCompanyById(long idToTest) {
     return CompanyToDtoMapper.INSTANCE.toCompanyDto(intComputerDao.getCompanyById(idToTest));
   }

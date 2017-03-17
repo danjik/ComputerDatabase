@@ -17,6 +17,9 @@ public enum ConnectionDb {
 
   private final Logger logger = LogManager.getRootLogger();
 
+  /**
+   * Simple private constructor.
+   */
   ConnectionDb() {
     try {
       Class.forName("com.mysql.jdbc.Driver").newInstance();

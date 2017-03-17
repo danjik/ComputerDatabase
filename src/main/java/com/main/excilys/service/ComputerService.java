@@ -24,21 +24,52 @@ public class ComputerService {
     return listAllComputerDto;
   }
 
+  /**
+   * Return an instance of computer selected by his id.
+   *
+   * @param idToSelect
+   *          the id of the selected computer
+   * @return the computer selected
+   */
   public ComputerDto getComputerById(long idToSelect) {
     return ComputerToDtoMapper.INSTANCE.toComputerDto(intComputerDao.getComputerById(idToSelect));
   }
 
+  /**
+   * Creation of a new computer.
+   *
+   * @param newComputer
+   *          the computer to create
+   * @return the generated id of the computer
+   */
   public long createComputer(ComputerDto newComputer) {
     return intComputerDao.createComputer(ComputerToDtoMapper.INSTANCE.toComputer(newComputer));
   }
 
+  /**
+   * return the number of computer.
+   *
+   * @return the number of computer
+   */
   public int getNbComputer() {
     return intComputerDao.getNbComputer();
   }
+  /**
+   * Delete a computer.
+   *
+   * @param idToDelete
+   *          the id of the computer to delete
+   */
 
   public void deleteComputer(long idToDelete) {
     intComputerDao.deleteComputer(idToDelete);
   }
+  /**
+   * Update the computer.
+   *
+   * @param computer
+   *          the computer to update
+   */
 
   public void updateComputer(ComputerDto computer) {
     intComputerDao.updateComputer(ComputerToDtoMapper.INSTANCE.toComputer(computer));

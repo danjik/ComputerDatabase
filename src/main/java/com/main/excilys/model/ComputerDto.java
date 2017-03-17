@@ -16,35 +16,90 @@ public class ComputerDto {
     private LocalDate introduced;
     private CompanyDto companyDto;
 
+    /**
+     * Add id to the builder.
+     *
+     * @param id
+     *          the id to set
+     * @return the updated builder
+     */
     public Builder id(long id) {
       this.id = id;
       return this;
     }
 
+    /**
+     * Add name to the builder.
+     *
+     * @param name
+     *          the name to set
+     * @return the updated builder
+     */
     public Builder name(String name) {
       this.name = name;
       return this;
     }
 
+    /**
+     * Add discontinued to the builder.
+     *
+     * @param discontinued
+     *          the discontinued to set
+     * @return the updated builder
+     */
     public Builder discontinued(LocalDate discontinued) {
       this.discontinued = discontinued;
       return this;
     }
 
+    /**
+     * Add introduced to the builder.
+     *
+     * @param introduced
+     *          the introduced to set
+     * @return the updated builder
+     */
     public Builder introduced(LocalDate introduced) {
       this.introduced = introduced;
       return this;
     }
 
+    /**
+     * Add companyDto to the builder.
+     *
+     * @param companyDto
+     *          the companyDto to set
+     * @return the updated builder
+     */
     public Builder companyDto(CompanyDto companyDto) {
       this.companyDto = companyDto;
       return this;
     }
 
+    /**
+     * Return the corresponding ComputerDTO of the builder.
+     *
+     * @return the computerDto
+     */
     public ComputerDto build() {
       return new ComputerDto(id, name, discontinued, introduced, companyDto);
     }
   }
+
+  /**
+   * Full constructor used by the builder.
+   *
+   * @param id
+   *          id
+   * @param name
+   *          name
+   * @param discontinued
+   *          discontinued
+   * @param introduced
+   *          introduced
+   * @param companyDto
+   *          companyDto
+   */
 
   private ComputerDto(long id, String name, LocalDate discontinued, LocalDate introduced,
       CompanyDto companyDto) {

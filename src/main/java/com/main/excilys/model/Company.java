@@ -8,21 +8,48 @@ public class Company {
   public static class Builder {
     private long id;
     private String name;
+    /**
+     * Add id to the builder.
+     *
+     * @param id
+     *          the id to set
+     * @return the updated builder
+     */
 
     public Builder id(long id) {
       this.id = id;
       return this;
     }
+    /**
+     * Add name to the builder.
+     *
+     * @param name
+     *          the name to set
+     * @return the updated builder
+     */
 
     public Builder name(String name) {
       this.name = name;
       return this;
     }
+    /**
+     * Return the corresponding CompanyDto of the builder.
+     *
+     * @return the CompanyDto
+     */
 
     public Company build() {
       return new Company(id, name);
     }
   }
+  /**
+   * Full constructor used by the builder.
+   *
+   * @param id
+   *          id
+   * @param name
+   *          name
+   */
 
   private Company(long id, String name) {
     this.id = id;
