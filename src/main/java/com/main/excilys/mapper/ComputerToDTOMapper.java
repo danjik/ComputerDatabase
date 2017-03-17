@@ -7,18 +7,27 @@ public enum ComputerToDTOMapper {
 	INSTANCE;
 
 	public Computer toComputer(ComputerDTO computerDTO) {
-		if (computerDTO == null)
+		if (computerDTO == null) {
 			return null;
-		return new Computer.Builder().id(computerDTO.getId()).name(computerDTO.getName())
-				.introduced(computerDTO.getIntroduced()).discontinued(computerDTO.getDiscontinued())
-				.companyId(computerDTO.getCompanyId()).build();
+		}
+		return new Computer.Builder().id(computerDTO.getId())
+				.name(computerDTO.getName())
+				.introduced(computerDTO.getIntroduced())
+				.discontinued(computerDTO.getDiscontinued())
+				.company(CompanyToDTOMapper.INSTANCE
+						.toCompany(computerDTO.getCompanyDTO()))
+				.build();
 	}
 
 	public ComputerDTO toComputerDTO(Computer computer) {
-		if (computer == null)
+		if (computer == null) {
 			return null;
-		return new ComputerDTO.Builder().id(computer.getId()).name(computer.getName())
-				.introduced(computer.getIntroduced()).discontinued(computer.getDiscontinued())
-				.companyId(computer.getCompanyId()).build();
+		}
+		return new ComputerDTO.Builder().id(computer.getId())
+				.name(computer.getName()).introduced(computer.getIntroduced())
+				.discontinued(computer.getDiscontinued())
+				.companyDTO(CompanyToDTOMapper.INSTANCE
+						.toCompanyDTO(computer.getCompany()))
+				.build();
 	}
 }

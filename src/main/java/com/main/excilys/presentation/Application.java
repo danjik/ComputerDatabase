@@ -14,41 +14,41 @@ public class Application {
 					printMenu();
 					choice = SecureInput.secureInputInt("choice");
 					switch (choice) {
-					case 1:
-						id = SecureInput.secureInputLong("id");
-						computerView.printComputerDetails(id);
-						break;
-					case 2:
-						computerView.createComputer();
-						break;
-					case 3:
-						computerView.countComputer();
-						break;
-					case 4:
-						computerView.listAllComputer();
-						break;
-					case 5:
+						case 1 :
+							id = SecureInput.secureInputLong("id");
+							computerView.printComputerDetails(id);
+							break;
+						case 2 :
+							computerView.createComputer();
+							break;
+						case 3 :
+							computerView.countComputer();
+							break;
+						case 4 :
+							computerView.listAllComputer();
+							break;
+						case 5 :
 
-						id = SecureInput.secureInputLong("id");
-						computerView.deleteComputer(id);
-						break;
-					case 6:
-						id = SecureInput.secureInputLong("id");
-						computerView.updateComputer(id);
-						break;
-					case 7:
-						computerView.listComputerByPage();
-						break;
-					case 8:
-						companyView.listAllCompany();
-						break;
+							id = SecureInput.secureInputLong("id");
+							computerView.deleteComputer(id);
+							break;
+						case 6 :
+							id = SecureInput.secureInputLong("id");
+							computerView.updateComputer(id);
+							break;
+						case 7 :
+							computerView.listComputerByPage();
+							break;
+						case 8 :
+							companyView.listAllCompany();
+							break;
 
-					case 9:
-						companyView.listCompanyByPage();
-						break;
+						case 9 :
+							companyView.listCompanyByPage();
+							break;
 
-					default:
-						break;
+						default :
+							break;
 					}
 				} catch (ComputerDBException e) {
 					System.out.println(e.getMessage());

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Page<E> {
 	List<E> pageObject;
-	private int numPage = 1;
+	private int numPage = 0;
 	private static int NB_OBJECT_PER_PAGE = 10;
 
 	public int getNumPage() {

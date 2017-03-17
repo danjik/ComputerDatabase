@@ -22,10 +22,11 @@ public enum ConnectionDB {
 
 	private final Logger logger = LogManager.getRootLogger();
 
-	private ConnectionDB() {
+	ConnectionDB() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		} catch (InstantiationException | IllegalAccessException
+				| ClassNotFoundException e) {
 			logger.error("ConnectionDB : " + e.getMessage());
 			throw new ComputerDBException(e);
 		}
@@ -46,8 +47,10 @@ public enum ConnectionDB {
 			String username = config.getString("username");
 			String password = config.getString("password");
 
-			logger.debug("Test to connect to the database : " + database + " with username : " + username);
-			String url = new String(typeconn + ":" + typedb + "://" + host + ":" + port + "/" + database + param);
+			logger.debug("Test to connect to the database : " + database
+					+ " with username : " + username);
+			String url = new String(typeconn + ":" + typedb + "://" + host + ":"
+					+ port + "/" + database + param);
 			return DriverManager.getConnection(url, username, password);
 		} catch (ConfigurationException | SQLException e) {
 			logger.error("ConnectionDB : " + e.getMessage());

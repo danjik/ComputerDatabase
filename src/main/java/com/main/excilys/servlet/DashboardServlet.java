@@ -18,17 +18,42 @@ public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 2964121582458094059L;
 	private ComputerService computerService = new ComputerService();
 	private Page<ComputerDTO> pageComputerDTO = new Page<>();
+	private List<ComputerDTO> listComputerDTO;
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		this.doPost(req, resp);
+
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String action = req.getParameter("action") != null
+				? req.getParameter("action")
+				: "";
+
+		switch (action) {
+			case "nextPage" :
+				pageComputerDTO.nextPage();
+				break;
+			case "previousPage" :
+				pageComputerDTO.previousPage();
+				break;
+			default :
+				break;
+		}
 		// reading the user input
 		int numPage = pageComputerDTO.getNumPage();
 		long idBegin = numPage * Page.getNbObjectPerPage();
-		List<ComputerDTO> listComputerDTO = computerService.getComputerInRange(idBegin, Page.getNbObjectPerPage());
+		listComputerDTO = computerService.getComputerInRange(idBegin,
+				Page.getNbObjectPerPage());
 		int nbCOmputerDTO = computerService.getNbComputer();
-		request.setAttribute("nbComputerDTO", nbCOmputerDTO);
-		request.setAttribute("listComputerDTO", listComputerDTO);
-		request.getRequestDispatcher("/views/dashboard.jsp").forward(request, response);
+		req.setAttribute("page", pageComputerDTO.getNumPage());
+		req.setAttribute("nbComputerDTO", nbCOmputerDTO);
+		req.setAttribute("listComputerDTO", listComputerDTO);
+		req.getRequestDispatcher("/views/dashboard.jsp").forward(req, resp);
 	}
+
 }

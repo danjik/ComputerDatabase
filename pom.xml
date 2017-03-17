@@ -18,6 +18,8 @@
 		<log4j-core.version>2.8.1</log4j-core.version>
 		<mysql-connector-java.version>5.1.6</mysql-connector-java.version>
 		<mockito-all.version>1.9.5</mockito-all.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
 		
 	</properties>
 	<dependencies>

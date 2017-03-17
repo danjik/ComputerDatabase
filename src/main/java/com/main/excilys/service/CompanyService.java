@@ -14,13 +14,15 @@ public class CompanyService {
 	public List<CompanyDTO> getAllCompany() {
 		List<CompanyDTO> listCompanyDTO = new ArrayList<>();
 		iComputerDAO.getAllCompany().forEach(company -> {
-			listCompanyDTO.add(CompanyToDTOMapper.INSTANCE.toCompanyDTO(company));
+			listCompanyDTO
+					.add(CompanyToDTOMapper.INSTANCE.toCompanyDTO(company));
 		});
 		return listCompanyDTO;
 	}
 
 	public CompanyDTO getCompanyById(long idToTest) {
-		return CompanyToDTOMapper.INSTANCE.toCompanyDTO(iComputerDAO.getCompanyById(idToTest));
+		return CompanyToDTOMapper.INSTANCE
+				.toCompanyDTO(iComputerDAO.getCompanyById(idToTest));
 	}
 
 	public int getNbCompany() {
@@ -30,7 +32,8 @@ public class CompanyService {
 	public List<CompanyDTO> getCompanyInRange(long idBegin, long idEnd) {
 		List<CompanyDTO> listCompanyDTO = new ArrayList<>();
 		iComputerDAO.getCompanyInRange(idBegin, idEnd).forEach(company -> {
-			listCompanyDTO.add(CompanyToDTOMapper.INSTANCE.toCompanyDTO(company));
+			listCompanyDTO
+					.add(CompanyToDTOMapper.INSTANCE.toCompanyDTO(company));
 		});
 		return listCompanyDTO;
 	}

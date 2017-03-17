@@ -7,14 +7,14 @@ public class Computer {
 	private String name;
 	private LocalDate discontinued;
 	private LocalDate introduced;
-	private long companyId;
+	private Company company;
 
 	public static class Builder {
 		private long id;
 		private String name;
 		private LocalDate discontinued;
 		private LocalDate introduced;
-		private long companyId;
+		private Company company;
 
 		public Builder id(long id) {
 			this.id = id;
@@ -36,19 +36,20 @@ public class Computer {
 			return this;
 		}
 
-		public Builder companyId(long companyId) {
-			this.companyId = companyId;
+		public Builder company(Company company) {
+			this.company = company;
 			return this;
 		}
 
 		public Computer build() {
-			return new Computer(id, name, discontinued, introduced, companyId);
+			return new Computer(id, name, discontinued, introduced, company);
 		}
 	}
 
-	private Computer(long id, String name, LocalDate discontinued, LocalDate introduced, long companyId) {
+	private Computer(long id, String name, LocalDate discontinued,
+			LocalDate introduced, Company company) {
 		super();
-		this.companyId = companyId;
+		this.company = company;
 		this.name = name;
 		this.discontinued = discontinued;
 		this.introduced = introduced;
@@ -57,16 +58,17 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [companyId=" + companyId + ", name=" + name + ", discontinued=" + discontinued
-				+ ", introduced=" + introduced + ", id=" + id + "]";
+		return "Computer [company=" + company + ", name=" + name
+				+ ", discontinued=" + discontinued + ", introduced="
+				+ introduced + ", id=" + id + "]";
 	}
 
-	public long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setCompanyId(long companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	public String getName() {
@@ -105,44 +107,57 @@ public class Computer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (companyId ^ companyId >>> 32);
-		result = prime * result + (discontinued == null ? 0 : discontinued.hashCode());
+		result = prime * result + (company == null ? 0 : company.hashCode());
+		result = prime * result
+				+ (discontinued == null ? 0 : discontinued.hashCode());
 		result = prime * result + (int) (id ^ id >>> 32);
-		result = prime * result + (introduced == null ? 0 : introduced.hashCode());
+		result = prime * result
+				+ (introduced == null ? 0 : introduced.hashCode());
 		result = prime * result + (name == null ? 0 : name.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
+		}
 		Computer other = (Computer) obj;
 		System.out.println(this);
 		System.out.println(other);
-		if (companyId != other.companyId)
+		if (company.equals(other.company)) {
 			return false;
+		}
 		if (discontinued == null) {
-			if (other.discontinued != null)
+			if (other.discontinued != null) {
 				return false;
-		} else if (!discontinued.equals(other.discontinued))
+			}
+		} else if (!discontinued.equals(other.discontinued)) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		if (introduced == null) {
-			if (other.introduced != null)
+			if (other.introduced != null) {
 				return false;
-		} else if (!introduced.equals(other.introduced))
+			}
+		} else if (!introduced.equals(other.introduced)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
 		return true;
 	}
 

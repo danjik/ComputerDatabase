@@ -35,7 +35,8 @@ public class SecureInput {
 				secureInt = Integer.valueOf(strSecureInt);
 			} catch (NumberFormatException e) {
 				logger.error("secureInputInt : " + e.getMessage());
-				throw new ComputerDBException("secureInputDate parsing error " + e);
+				throw new ComputerDBException(
+						"secureInputDate parsing error " + e);
 			}
 
 		}
@@ -51,7 +52,8 @@ public class SecureInput {
 	 * @throws ComputerDBException
 	 *             Application Exception
 	 */
-	public static long secureInputLong(String label) throws ComputerDBException {
+	public static long secureInputLong(String label)
+			throws ComputerDBException {
 		long secureLong = -1;
 		String strSecureLong;
 		String regex = "^[0-9]+$";
@@ -64,7 +66,8 @@ public class SecureInput {
 				secureLong = Long.valueOf(strSecureLong);
 			} catch (NumberFormatException e) {
 				logger.error("secureInputLong : " + e.getMessage());
-				throw new ComputerDBException("secureInputDate parsing error " + e);
+				throw new ComputerDBException(
+						"secureInputDate parsing error " + e);
 			}
 		}
 		return secureLong;
@@ -94,7 +97,8 @@ public class SecureInput {
 	 * @throws ComputerDBException
 	 *             Application Exception
 	 */
-	public static LocalDate secureInputDate(String label) throws ComputerDBException {
+	public static LocalDate secureInputDate(String label)
+			throws ComputerDBException {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate secureDate = null;
 		String regex = "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$";
@@ -102,7 +106,8 @@ public class SecureInput {
 		do {
 
 			do {
-				strSecureDate = secureInputString(label + "(dd/MM/yyyy) and year > 1970");
+				strSecureDate = secureInputString(
+						label + "(dd/MM/yyyy) and year > 1970");
 			} while (!strSecureDate.matches(regex) && !strSecureDate.isEmpty());
 			if (!strSecureDate.isEmpty()) {
 				try {
