@@ -1,57 +1,64 @@
 package com.main.excilys.service;
 
+import com.main.excilys.mapper.ComputerToDtoMapper;
+import com.main.excilys.model.ComputerDto;
+import com.main.excilys.persistence.ComputerDao;
+import com.main.excilys.persistence.IComputerDao;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.main.excilys.mapper.ComputerToDTOMapper;
-import com.main.excilys.model.ComputerDTO;
-import com.main.excilys.persistence.ComputerDAO;
-import com.main.excilys.persistence.IComputerDAO;
-
 public class ComputerService {
-	private IComputerDAO iComputerDAO = ComputerDAO.INSTANCE;
+  private IComputerDao intComputerDao = ComputerDao.INSTANCE;
 
-	public List<ComputerDTO> getAllComputer() {
-		List<ComputerDTO> listAllComputerDTO = new ArrayList<>();
-		iComputerDAO.getAllComputer().forEach(computer -> {
-			listAllComputerDTO
-					.add(ComputerToDTOMapper.INSTANCE.toComputerDTO(computer));
-		});
-		return listAllComputerDTO;
-	}
+  /**
+   * get all the computer.
+   *
+   * @return list of all the computer
+   */
+  public List<ComputerDto> getAllComputer() {
+    List<ComputerDto> listAllComputerDto = new ArrayList<>();
+    intComputerDao.getAllComputer().forEach(computer -> {
+      listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer));
+    });
+    return listAllComputerDto;
+  }
 
-	public ComputerDTO getComputerById(long idToSelect) {
-		return ComputerToDTOMapper.INSTANCE
-				.toComputerDTO(iComputerDAO.getComputerById(idToSelect));
-	}
+  public ComputerDto getComputerById(long idToSelect) {
+    return ComputerToDtoMapper.INSTANCE.toComputerDto(intComputerDao.getComputerById(idToSelect));
+  }
 
-	public long createComputer(ComputerDTO newComputer) {
-		return iComputerDAO.createComputer(
-				ComputerToDTOMapper.INSTANCE.toComputer(newComputer));
-	}
+  public long createComputer(ComputerDto newComputer) {
+    return intComputerDao.createComputer(ComputerToDtoMapper.INSTANCE.toComputer(newComputer));
+  }
 
-	public int getNbComputer() {
-		return iComputerDAO.getNbComputer();
-	}
+  public int getNbComputer() {
+    return intComputerDao.getNbComputer();
+  }
 
-	public void deleteComputer(long idToDelete) {
-		iComputerDAO.deleteComputer(idToDelete);
-	}
+  public void deleteComputer(long idToDelete) {
+    intComputerDao.deleteComputer(idToDelete);
+  }
 
-	public void updateComputer(ComputerDTO computer) {
-		iComputerDAO.updateComputer(
-				ComputerToDTOMapper.INSTANCE.toComputer(computer));
-	}
+  public void updateComputer(ComputerDto computer) {
+    intComputerDao.updateComputer(ComputerToDtoMapper.INSTANCE.toComputer(computer));
+  }
 
-	public List<ComputerDTO> getComputerInRange(long idBegin,
-			long nbObjectToGet) {
-		List<ComputerDTO> listAllComputerDTO = new ArrayList<>();
-		iComputerDAO.getComputerInRange(idBegin, nbObjectToGet)
-				.forEach(computer -> {
-					listAllComputerDTO.add(ComputerToDTOMapper.INSTANCE
-							.toComputerDTO(computer));
-				});
-		return listAllComputerDTO;
-	}
+  /**
+   * Get the computer provided by the page.
+   *
+   * @param idBegin
+   *          first n° item to get
+   * @param nbObjectToGet
+   *          number of item to get
+   * @return list of item provided by the page
+   */
+  public List<ComputerDto> getComputerInRange(long idBegin, long nbObjectToGet) {
+    List<ComputerDto> listAllComputerDto = new ArrayList<>();
+    intComputerDao.getComputerInRange(idBegin, nbObjectToGet).forEach(computer -> {
+      listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer));
+    });
+    return listAllComputerDto;
+  }
 
 }

@@ -15,15 +15,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/addComputer")
-public class AddComputerServlet extends HttpServlet {
+@WebServlet("/editComputer")
+public class EditComputerServlet extends HttpServlet {
 
   /**
-   * Serial id.
+   * serial id.
    */
-  private static final long serialVersionUID = -668189319785763106L;
-  private final CompanyService companyService = new CompanyService();
-  private final ComputerService computerService = new ComputerService();
+  private static final long serialVersionUID = 754616699436173610L;
+  private ComputerService computerService = new ComputerService();
+  private CompanyService companyService = new CompanyService();
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -34,8 +34,13 @@ public class AddComputerServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    List<CompanyDto> listCompanyDto = companyService.getAllCompany();
     String action = req.getParameter("action") != null ? req.getParameter("action") : "";
+    long idComputerToEdit = req.getParameter("id") != null
+        ? Long.valueOf(req.getParameter("id"))
+        : 0L;
+    ComputerDto computerToEdit = computerService.getComputerById(idComputerToEdit);
+
+    List<CompanyDto> listCompanyDto = companyService.getAllCompany();
     switch (action) {
       case "addComputer" :
         String name = req.getParameter("computerName");
@@ -56,8 +61,9 @@ public class AddComputerServlet extends HttpServlet {
         break;
     }
 
+    req.setAttribute("computerToEdit", computerToEdit);
     req.setAttribute("listCompanyDTO", listCompanyDto);
-    req.getRequestDispatcher("/views/addComputer.jsp").forward(req, resp);
+    req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
   }
 
 }

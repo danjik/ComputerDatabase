@@ -1,7 +1,6 @@
 package com.main.excilys.model;
 
-public class Company {
-
+public class CompanyDto {
   private long id;
   private String name;
 
@@ -19,12 +18,12 @@ public class Company {
       return this;
     }
 
-    public Company build() {
-      return new Company(id, name);
+    public CompanyDto build() {
+      return new CompanyDto(id, name);
     }
   }
 
-  private Company(long id, String name) {
+  private CompanyDto(long id, String name) {
     this.id = id;
     this.name = name;
   }
@@ -47,7 +46,7 @@ public class Company {
 
   @Override
   public String toString() {
-    return "Company [id=" + id + ", name=" + name + "]";
+    return "CompanyDTO [id=" + id + ", name=" + name + "]";
   }
 
   @Override
@@ -70,7 +69,7 @@ public class Company {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    Company other = (Company) obj;
+    CompanyDto other = (CompanyDto) obj;
     if (id != other.id) {
       return false;
     }
@@ -83,5 +82,4 @@ public class Company {
     }
     return true;
   }
-
 }

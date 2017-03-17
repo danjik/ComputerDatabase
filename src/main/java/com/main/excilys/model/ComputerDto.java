@@ -2,19 +2,19 @@ package com.main.excilys.model;
 
 import java.time.LocalDate;
 
-public class Computer {
+public class ComputerDto {
   private long id;
   private String name;
   private LocalDate discontinued;
   private LocalDate introduced;
-  private Company company;
+  private CompanyDto companyDto;
 
   public static class Builder {
     private long id;
     private String name;
     private LocalDate discontinued;
     private LocalDate introduced;
-    private Company company;
+    private CompanyDto companyDto;
 
     public Builder id(long id) {
       this.id = id;
@@ -36,38 +36,32 @@ public class Computer {
       return this;
     }
 
-    public Builder company(Company company) {
-      this.company = company;
+    public Builder companyDto(CompanyDto companyDto) {
+      this.companyDto = companyDto;
       return this;
     }
 
-    public Computer build() {
-      return new Computer(id, name, discontinued, introduced, company);
+    public ComputerDto build() {
+      return new ComputerDto(id, name, discontinued, introduced, companyDto);
     }
   }
 
-  private Computer(long id, String name, LocalDate discontinued, LocalDate introduced,
-      Company company) {
+  private ComputerDto(long id, String name, LocalDate discontinued, LocalDate introduced,
+      CompanyDto companyDto) {
     super();
-    this.company = company;
+    this.companyDto = companyDto;
     this.name = name;
     this.discontinued = discontinued;
     this.introduced = introduced;
     this.id = id;
   }
 
-  @Override
-  public String toString() {
-    return "Computer [company=" + company + ", name=" + name + ", discontinued=" + discontinued
-        + ", introduced=" + introduced + ", id=" + id + "]";
+  public long getId() {
+    return id;
   }
 
-  public Company getCompany() {
-    return company;
-  }
-
-  public void setCompany(Company company) {
-    this.company = company;
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -94,19 +88,19 @@ public class Computer {
     this.introduced = introduced;
   }
 
-  public long getId() {
-    return id;
+  public CompanyDto getCompanyDto() {
+    return companyDto;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public void setCompanyDto(CompanyDto companyDto) {
+    this.companyDto = companyDto;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (company == null ? 0 : company.hashCode());
+    result = prime * result + (companyDto == null ? 0 : companyDto.hashCode());
     result = prime * result + (discontinued == null ? 0 : discontinued.hashCode());
     result = prime * result + (int) (id ^ id >>> 32);
     result = prime * result + (introduced == null ? 0 : introduced.hashCode());
@@ -125,10 +119,8 @@ public class Computer {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    Computer other = (Computer) obj;
-    System.out.println(this);
-    System.out.println(other);
-    if (company.equals(other.company)) {
+    ComputerDto other = (ComputerDto) obj;
+    if (companyDto.equals(other.companyDto)) {
       return false;
     }
     if (discontinued == null) {
@@ -156,6 +148,12 @@ public class Computer {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return "ComputerDTO [id=" + id + ", name=" + name + ", discontinued=" + discontinued
+        + ", introduced=" + introduced + ", companyDto=" + companyDto + "]";
   }
 
 }

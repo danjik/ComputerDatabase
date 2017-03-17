@@ -21,7 +21,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${ nbComputerDTO }Computersfound</h1>
+			<h1 id="homeTitle">${ nbComputerDTO } Computers found</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
@@ -73,7 +73,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="editComputer.jsp" onclick="">${computerDTO.name }</a>
+							<td><a href="editComputer?id=${computerDTO.id }" onclick="">${ computerDTO.name }</a>
 							</td>
 							<td>${ computerDTO.introduced }</td>
 							<td>${ computerDTO.discontinued }</td>

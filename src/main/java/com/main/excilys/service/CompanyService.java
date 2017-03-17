@@ -1,41 +1,52 @@
 package com.main.excilys.service;
 
+import com.main.excilys.mapper.CompanyToDtoMapper;
+import com.main.excilys.model.CompanyDto;
+import com.main.excilys.persistence.CompanyDao;
+import com.main.excilys.persistence.ICompanyDao;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.main.excilys.mapper.CompanyToDTOMapper;
-import com.main.excilys.model.CompanyDTO;
-import com.main.excilys.persistence.CompanyDAO;
-import com.main.excilys.persistence.ICompanyDAO;
-
 public class CompanyService {
-	private ICompanyDAO iComputerDAO = CompanyDAO.INSTANCE;
+  private ICompanyDao intComputerDao = CompanyDao.INSTANCE;
 
-	public List<CompanyDTO> getAllCompany() {
-		List<CompanyDTO> listCompanyDTO = new ArrayList<>();
-		iComputerDAO.getAllCompany().forEach(company -> {
-			listCompanyDTO
-					.add(CompanyToDTOMapper.INSTANCE.toCompanyDTO(company));
-		});
-		return listCompanyDTO;
-	}
+  /**
+   * Method to get all the company.
+   *
+   * @return list of the company
+   */
+  public List<CompanyDto> getAllCompany() {
+    List<CompanyDto> listCompanyDto = new ArrayList<>();
+    intComputerDao.getAllCompany().forEach(company -> {
+      listCompanyDto.add(CompanyToDtoMapper.INSTANCE.toCompanyDto(company));
+    });
+    return listCompanyDto;
+  }
 
-	public CompanyDTO getCompanyById(long idToTest) {
-		return CompanyToDTOMapper.INSTANCE
-				.toCompanyDTO(iComputerDAO.getCompanyById(idToTest));
-	}
+  public CompanyDto getCompanyById(long idToTest) {
+    return CompanyToDtoMapper.INSTANCE.toCompanyDto(intComputerDao.getCompanyById(idToTest));
+  }
 
-	public int getNbCompany() {
-		return iComputerDAO.getNbCompany();
-	}
+  public int getNbCompany() {
+    return intComputerDao.getNbCompany();
+  }
 
-	public List<CompanyDTO> getCompanyInRange(long idBegin, long idEnd) {
-		List<CompanyDTO> listCompanyDTO = new ArrayList<>();
-		iComputerDAO.getCompanyInRange(idBegin, idEnd).forEach(company -> {
-			listCompanyDTO
-					.add(CompanyToDTOMapper.INSTANCE.toCompanyDTO(company));
-		});
-		return listCompanyDTO;
-	}
+  /**
+   * Get the item provided by the page.
+   *
+   * @param idBegin
+   *          the begin id of the item
+   * @param idEnd
+   *          the end id of the item
+   * @return the list of company
+   */
+  public List<CompanyDto> getCompanyInRange(long idBegin, long idEnd) {
+    List<CompanyDto> listCompanyDto = new ArrayList<>();
+    intComputerDao.getCompanyInRange(idBegin, idEnd).forEach(company -> {
+      listCompanyDto.add(CompanyToDtoMapper.INSTANCE.toCompanyDto(company));
+    });
+    return listCompanyDto;
+  }
 
 }
