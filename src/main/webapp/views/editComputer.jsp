@@ -9,9 +9,11 @@
 <link href="resources/css/font-awesome.css" rel="stylesheet"
 	media="screen">
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
+<link href="resources/css/toaster.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
+		
 		<div class="container">
 			<%@ include file="core/header.jsp"%>
 		</div>
@@ -23,13 +25,13 @@
 					<div class="label label-default pull-right">id: ${ computerToEdit.id }</div>
 					<h1>Edit Computer</h1>
 
-					<form action="editComputer" method="POST">
+					<form id="editComputerForm" action="editComputer?action=editComputer" method="POST">
 						<input type="hidden" value="${ computerToEdit.id }" name="id" id="id" />
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" class="form-control"  name="computerName" id="computerName"
-									value="${ computerToEdit.name }" placeholder="Computer name">
+									type="text" class="form-control"  name="computerName" id="computerName" pattern="^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$"
+									 value="${ computerToEdit.name }" placeholder="Computer name" required="required">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
@@ -46,16 +48,17 @@
 							<div class="form-group">
 								<label for="companyId">Company</label> <select  name="companyId"
 									class="form-control" id="companyId">
-									<c:forEach items="${listCompanyDTO}" var="companyDTO">
-										<option value="${companyDTO.id }"
-											<c:if test="${ companyDTO.id  == computerToEdit.companyDTO.id}">
+									<c:forEach items="${listCompanyDto}" var="companyDto">
+										<option value="${companyDto.id }"
+											<c:if test="${ companyDto.id  == computerToEdit.companyDto.id}">
 												<c:out value="selected" />
 												</c:if>>
-											${companyDTO.name }</option>
+											${companyDto.name }</option>
 									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
+						
 						<div class="actions pull-right">
 							<input type="submit" value="Edit" class="btn btn-primary">
 							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
@@ -65,5 +68,6 @@
 			</div>
 		</div>
 	</section>
+			<%@ include file="core/footer.jsp"%>
 </body>
 </html>

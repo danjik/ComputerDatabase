@@ -10,7 +10,7 @@ public enum CompanyToDtoMapper {
    * Pass a companyDto to a company.
    *
    * @param companyDto
-   *          the data transfert representation of of a company
+   *          the data transfers representation of of a company
    * @return the corresponding company
    */
   public Company toCompany(CompanyDto companyDto) {
@@ -21,7 +21,7 @@ public enum CompanyToDtoMapper {
    *
    * @param company
    *          the company
-   * @return the corresponding data transfert reprentation company
+   * @return the corresponding data transfers representation company
    */
 
   public CompanyDto toCompanyDto(Company company) {

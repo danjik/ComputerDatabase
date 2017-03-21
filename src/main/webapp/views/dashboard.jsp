@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,16 +10,24 @@
 <link href="resources/css/font-awesome.css" rel="stylesheet"
 	media="screen">
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
+<link href="resources/css/toaster.css" rel="stylesheet" media="screen">
 
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<%@ include file="core/header.jsp"%>
+		 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %> 
+		<%@ taglib prefix="page" uri="/WEB-INF/pagination.tld"%>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${ nbComputerDTO } Computers found</h1>
+			<h1 id="homeTitle">${ nbComputerDto }
+				Computers found
+			</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
@@ -41,7 +47,8 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="dashboard?action=deleteComputer"
+			method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -49,8 +56,6 @@
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
-						<!-- Variable declarations for passing labels as parameters -->
-						<!-- Table header for Computer Name -->
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
 							style="vertical-align: top;"> - <a href="#"
@@ -69,49 +74,64 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${listComputerDTO}" var="computerDTO">
+					<c:forEach items="${listComputerDto}" var="computerDto">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
-							<td><a href="editComputer?id=${computerDTO.id }" onclick="">${ computerDTO.name }</a>
+								class="cb" value="${computerDto.id }"></td>
+							<td><a href="editComputer?id=${computerDto.id }" onclick="">${ computerDto.name }</a>
 							</td>
-							<td>${ computerDTO.introduced }</td>
-							<td>${ computerDTO.discontinued }</td>
-							<td>${ computerDTO.companyDTO.name }</td>
+							<td>${ computerDto.introduced }</td>
+							<td>${ computerDto.discontinued }</td>
+							<td>${ computerDto.companyDto.name }</td>
 						</tr>
-
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</section>
+	<span id="top-link-block" class="hidden fab-goto-top"> <span
+		class="fab-content"
+		onclick="$('html,body').animate({scrollTop:0},'slow');return false;">
+			<i class="glyphicon glyphicon-chevron-up"></i>
+	</span>
+	</span>
 
 	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
+		<%@ include file="core/footer.jsp"%>
+		<div class="container text-center">				
 			<ul class="pagination">
-				<li><a href="dashboard?action=previousPage"
-					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="dashboard?action=nextPage" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-				</a></li>
-			</ul>
+				<page:link numPage="0" label="&laquo;"/>
+				<page:link numPage="${ page-1 }" label="&lt;"/>
+				<page:pagination numPage="${ page }" maxPage="${ maxPage }"/>
+				<page:link numPage="${ page+1 }" label="&gt;"/>
+				<page:link numPage="${ maxPage }" label="&raquo;"/>
+			</ul> 
 
-			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+			<div class="pull-right" role="group">
+				<ul class="pagination">
+					<c:forEach items="${nbObjectAvailablePerPage}" var="nbObject">
+						<li
+							<c:if test="${ nbObject  == nbObjectPerPage}">
+												<c:out value='class=active' />
+												</c:if>><a
+							href="dashboard?action=changeNbComputer&nbObject=${ nbObject }">${ nbObject }</a></li>
+					</c:forEach>
+				</ul>
 			</div>
 		</div>
 	</footer>
 	<script src="resources/js/jquery.min.js"></script>
 	<script src="resources/js/bootstrap.min.js"></script>
 	<script src="resources/js/dashboard.js"></script>
+	<script>
+		if (($(window).height() + 100) < $(document).height()) {
+			$('#top-link-block').removeClass('hidden').affix({
+				offset : {
+					top : 100
+				}
+			});
+		}
+	</script>
 
 </body>
 </html>

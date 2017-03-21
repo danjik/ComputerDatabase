@@ -1,6 +1,9 @@
 package com.main.excilys.model;
 
+import com.main.excilys.util.ComputerDbException;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class ComputerDto {
   private long id;
@@ -38,6 +41,27 @@ public class ComputerDto {
     public Builder name(String name) {
       this.name = name;
       return this;
+
+    }
+
+    /**
+     * Setters for the LocalDate discontinued using a string.
+     *
+     * @param discontinued
+     *          the string to parse in local date, must match dd-MM-yyyy
+     * @return the builder
+     */
+
+    public Builder discontinued(String discontinued) {
+      try {
+        this.discontinued = discontinued != null && !discontinued.isEmpty()
+            ? LocalDate.parse(discontinued)
+            : null;
+        return this;
+      } catch (DateTimeParseException e) {
+        throw new ComputerDbException("The date : " + discontinued + " is invalid");
+
+      }
     }
 
     /**
@@ -50,6 +74,25 @@ public class ComputerDto {
     public Builder discontinued(LocalDate discontinued) {
       this.discontinued = discontinued;
       return this;
+    }
+
+    /**
+     * Setters for the LocalDate introduced using a string.
+     *
+     * @param introduced
+     *          the string to parse in local date, must match dd-MM-yyyy
+     * @return the builder
+     */
+
+    public Builder introduced(String introduced) {
+      try {
+        this.introduced = introduced != null && !introduced.isEmpty()
+            ? LocalDate.parse(introduced)
+            : null;
+        return this;
+      } catch (DateTimeParseException e) {
+        throw new ComputerDbException("The date : " + introduced + " is invalid");
+      }
     }
 
     /**
@@ -135,12 +178,46 @@ public class ComputerDto {
     this.discontinued = discontinued;
   }
 
-  public LocalDate getIntroduced() {
-    return introduced;
+  /**
+   * Add discontinued to the builder.
+   *
+   * @param discontinued
+   *          the discontinued to set
+   */
+  public void setDiscontinued(String discontinued) {
+    try {
+      this.discontinued = discontinued != null && !discontinued.isEmpty()
+          ? LocalDate.parse(discontinued)
+          : null;
+    } catch (DateTimeParseException e) {
+      throw new ComputerDbException("The date : " + discontinued + " is invalid");
+
+    }
+  }
+
+  /**
+   * Setters for the LocalDate introduced using a string.
+   *
+   * @param introduced
+   *          the string to parse in local date, must match dd-MM-yyyy
+   */
+
+  public void setIntroduced(String introduced) {
+    try {
+      this.introduced = introduced != null && !introduced.isEmpty()
+          ? LocalDate.parse(introduced)
+          : null;
+    } catch (DateTimeParseException e) {
+      throw new ComputerDbException("The date : " + introduced + " is invalid");
+    }
   }
 
   public void setIntroduced(LocalDate introduced) {
     this.introduced = introduced;
+  }
+
+  public LocalDate getIntroduced() {
+    return introduced;
   }
 
   public CompanyDto getCompanyDto() {
@@ -174,10 +251,12 @@ public class ComputerDto {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
+
     ComputerDto other = (ComputerDto) obj;
-    if (companyDto.equals(other.companyDto)) {
+    if (!companyDto.equals(other.companyDto)) {
       return false;
     }
+
     if (discontinued == null) {
       if (other.discontinued != null) {
         return false;
@@ -195,6 +274,7 @@ public class ComputerDto {
     } else if (!introduced.equals(other.introduced)) {
       return false;
     }
+
     if (name == null) {
       if (other.name != null) {
         return false;

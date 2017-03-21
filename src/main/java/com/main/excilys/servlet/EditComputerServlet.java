@@ -2,11 +2,12 @@ package com.main.excilys.servlet;
 
 import com.main.excilys.model.CompanyDto;
 import com.main.excilys.model.ComputerDto;
+import com.main.excilys.presentation.Toaster;
 import com.main.excilys.service.CompanyService;
 import com.main.excilys.service.ComputerService;
+import com.main.excilys.util.ComputerDbException;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -42,19 +43,27 @@ public class EditComputerServlet extends HttpServlet {
 
     List<CompanyDto> listCompanyDto = companyService.getAllCompany();
     switch (action) {
-      case "addComputer" :
+      case "editComputer" :
+        Toaster toast;
         String name = req.getParameter("computerName");
-        LocalDate introduced = !req.getParameter("introduced").isEmpty()
-            ? LocalDate.parse(req.getParameter("introduced"))
-            : null;
-        LocalDate discontinued = !req.getParameter("discontinued").isEmpty()
-            ? LocalDate.parse(req.getParameter("discontinued"))
-            : null;
+        String discontinued = req.getParameter("discontinued");
+        String introduced = req.getParameter("introduced");
         CompanyDto companyDto = companyService
             .getCompanyById(Long.valueOf(req.getParameter("companyId")));
-        ComputerDto newComputerDto = new ComputerDto.Builder().name(name).introduced(introduced)
-            .discontinued(discontinued).companyDto(companyDto).build();
-        computerService.createComputer(newComputerDto);
+        computerToEdit.setName(name);
+        computerToEdit.setIntroduced(introduced);
+        computerToEdit.setDiscontinued(discontinued);
+        computerToEdit.setCompanyDto(companyDto);
+        try {
+          computerService.updateComputer(computerToEdit);
+        } catch (ComputerDbException e) {
+          toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
+          req.setAttribute("toast", toast);
+        }
+
+        toast = Toaster.INSTANCE.getToast("Computer n°" + idComputerToEdit + " updated !",
+            Toaster.SUCCESS, 3000);
+        req.setAttribute("toast", toast);
         break;
 
       default :
@@ -62,7 +71,7 @@ public class EditComputerServlet extends HttpServlet {
     }
 
     req.setAttribute("computerToEdit", computerToEdit);
-    req.setAttribute("listCompanyDTO", listCompanyDto);
+    req.setAttribute("listCompanyDto", listCompanyDto);
     req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
   }
 

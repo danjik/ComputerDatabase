@@ -35,8 +35,6 @@ public class CompanyDaoTest {
     listCompany = companyService.getAllCompany();
 
     int nbCompany = companyService.getNbCompany();
-    System.out.println(nbCompany);
-    System.out.println(listCompany.size());
 
     assert listCompany.size() == nbCompany;
   }

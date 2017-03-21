@@ -9,7 +9,7 @@ public enum ComputerToDtoMapper {
    * Pass a computerDto to a computer.
    *
    * @param computerDto
-   *          the data transfert representation of a computer
+   *          the data transfers representation of a computer
    * @return the entity computer
    */
   public Computer toComputer(ComputerDto computerDto) {
@@ -26,7 +26,7 @@ public enum ComputerToDtoMapper {
    *
    * @param computer
    *          the computer
-   * @return the data transfert representation of a computer
+   * @return the data transfers representation of a computer
    */
   public ComputerDto toComputerDto(Computer computer) {
     if (computer == null) {

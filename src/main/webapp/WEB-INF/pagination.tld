@@ -1,0 +1,39 @@
+<taglib>
+	<tlib-version>1.2</tlib-version>
+	<jsp-version>2.3</jsp-version>
+	<short-name>Pagination TLD</short-name>
+	<tag>
+		<name>link</name>
+		<tag-class>com.main.excilys.taglib.LinkTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>numPage</name>
+			<required>true</required>
+			<type>number</type>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>true</required>
+			<type>string</type>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>pagination</name>
+		<tag-class>com.main.excilys.taglib.PaginationTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>numPage</name>
+			<required>true</required>
+			<type>number</type>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>maxPage</name>
+			<required>true</required>
+			<type>number</type>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>
