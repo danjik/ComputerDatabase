@@ -4,6 +4,7 @@ import com.main.excilys.mapper.ComputerToDtoMapper;
 import com.main.excilys.model.ComputerDto;
 import com.main.excilys.persistence.ComputerDao;
 import com.main.excilys.persistence.IComputerDao;
+import com.main.excilys.util.OptionValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class ComputerService {
    * @return the number of computer
    */
   public int getNbComputer(Map<String, String> options) {
+    OptionValidator.validate(options);
     return intComputerDao.getNbComputer(options);
   }
 
@@ -92,6 +94,7 @@ public class ComputerService {
    */
   public List<ComputerDto> getComputerInRange(long idBegin, long nbObjectToGet,
       Map<String, String> options) {
+    OptionValidator.validate(options);
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
     intComputerDao.getComputerInRange(idBegin, nbObjectToGet, options).forEach(
         computer -> listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer)));

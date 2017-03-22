@@ -44,6 +44,7 @@ public class DashboardServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    Toaster toast;
     String action = req.getParameter("action") != null ? req.getParameter("action") : "";
     switch (action) {
       case "switchPage" :
@@ -55,7 +56,7 @@ public class DashboardServlet extends HttpServlet {
         }
         break;
       case "deleteComputer" :
-        Toaster toast;
+
         String selection = req.getParameter("selection") != null
             ? req.getParameter("selection")
             : "";
@@ -85,40 +86,41 @@ public class DashboardServlet extends HttpServlet {
       case "option" :
         String param = req.getParameter("param") != null ? req.getParameter("param") : "";
         String value = req.getParameter("value") != null ? req.getParameter("value") : "";
-        switch (param) {
-          case "search" :
-            options.put(param, value + '%');
-            break;
-          case "companySort" :
-            options.put("sort", value);
-            break;
-          case "computerSort" :
-            break;
-          case "introducedSort" :
-            break;
-          case "discontinuedSort" :
-            break;
-          default :
-            break;
+        if (param.equals("sort")) {
+          value += " asc";
+          if (options.get(param) != null && options.get(param).equals(value)) {
+            value = req.getParameter("value") + " desc";
+          }
         }
+
+        options.put(param, value);
+        break;
+      case "resetOptions" :
+        options.clear();
         break;
       default :
         break;
     }
-    // reading the user input
-    int nbComputerDto = computerService.getNbComputer(options);
-    Page.setNbObject(nbComputerDto);
-    int numPage = pageComputerDto.getNumPage();
-    int[] nbObjectAvailablePerPage = { 10, 50, 100 };
-    long idBegin = numPage * Page.getNbObjectPerPage();
-    listComputerDto = computerService.getComputerInRange(idBegin, Page.getNbObjectPerPage(),
-        options);
+    try {
+      int nbComputerDto = computerService.getNbComputer(options);
+      Page.setNbObject(nbComputerDto);
+      int numPage = pageComputerDto.getNumPage();
+      long idBegin = numPage * Page.getNbObjectPerPage();
+      listComputerDto = computerService.getComputerInRange(idBegin, Page.getNbObjectPerPage(),
+          options);
+    } catch (ComputerDbException e) {
+      toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
+      req.setAttribute("toast", toast);
+    }
+
+    final int[] nbObjectAvailablePerPage = { 10, 50, 100 };
     req.setAttribute("nbObjectAvailablePerPage", nbObjectAvailablePerPage);
     req.setAttribute("nbObjectPerPage", Page.getNbObjectPerPage());
     req.setAttribute("page", pageComputerDto.getNumPage());
     req.setAttribute("maxPage", pageComputerDto.getMaxPage());
     req.setAttribute("nbComputerDto", nbComputerDto);
     req.setAttribute("listComputerDto", listComputerDto);
+    req.setAttribute("options", options);
     req.getRequestDispatcher("/views/dashboard.jsp").forward(req, resp);
   }
 

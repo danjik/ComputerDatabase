@@ -38,9 +38,7 @@ public enum ComputerDao implements IComputerDao {
     try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query)) {
 
-      String optionSearch = options.get("search") != null && !options.get("search").isEmpty()
-          ? options.get("search")
-          : "%";
+      String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
       selectPStatement.setString(1, optionSearch);
       selectPStatement.setString(2, optionSearch);
       try (ResultSet rs = selectPStatement.executeQuery()) {
@@ -215,14 +213,15 @@ public enum ComputerDao implements IComputerDao {
   @Override
   public List<Computer> getComputerInRange(long idBegin, long nbObjectToGet,
       Map<String, String> options) {
-    String query = "select * from computer co " + "left join company c on co.company_id = c.id  "
-        + "where co.name like ? or c.name like ? limit ?,?";
+    String query = "select * from computer "
+        + "left join company on computer.company_id = company.id  "
+        + "where computer.name like ? or company.name like ? %s limit ?,?";
+    String optionSort = options.get("sort") != null ? "order by " + options.get("sort") : "";
+    query = String.format(query, optionSort);
     List<Computer> listComputer = new ArrayList<>();
     try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query)) {
-      String optionSearch = options.get("search") != null && !options.get("search").isEmpty()
-          ? options.get("search")
-          : "%";
+      String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
 
       selectPStatement.setString(1, optionSearch);
       selectPStatement.setString(2, optionSearch);

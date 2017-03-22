@@ -7,6 +7,25 @@
 # Compiled class file
 *.class
 
+#eclipseFile
+.classpath
+.editorconfig
+.checkstyle
+.project
+
+#intelliJFile
+.idea/
+
+target/
+
+.settings/
+
+WebContent/
+
+ComputerDatabase.iml
+
+lib/
+
 # Log file
 *.log
 /log/

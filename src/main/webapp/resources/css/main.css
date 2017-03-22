@@ -1,13 +1,3 @@
-@font-face {
-  font-family: "CaviarDreams";
-  src: url("../fonts/CaviarDreams.ttf") format(" truetype ");
-}
-
-* {
-  font-family: "CaviarDreams", sans-serif !important;
-  -webkit-font-smoothing: subpixel-antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
 body {
   background: #EAF0FD;
@@ -70,4 +60,31 @@ input[type= 'checkbox' ] {
 th:hover, th:hover * {
   background-color: #D0D0FF;
   cursor: pointer;
+}
+
+th {
+	width : 25%;
+}
+
+th {
+	width : 25%;
+}
+#actions {
+	min-height: 72px;
+}
+
+#actions div {
+	display : flex;
+}
+#actions a {
+	height: 34px;
+	margin-left : 7px;
+	margin-right : 7px;
+}
+.options {
+	display : flex;
+	flex-direction : column;
+}
+.options span:first-child{
+	font-weight: bold;
 }
