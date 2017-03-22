@@ -11,7 +11,7 @@
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
 <link href="resources/css/toaster.css" rel="stylesheet" media="screen">
 </head>
-<body> 
+<body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<%@ include file="core/header.jsp"%>
 	</header>
@@ -28,6 +28,7 @@
 								<label for="computerName">Computer name</label> <input
 									type="text" name="computerName" class="form-control"
 									pattern="^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$" id="computerName"
+                  oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
 									placeholder="Computer name">
 							</div>
 							<div class="form-group">

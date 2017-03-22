@@ -7,6 +7,7 @@ import com.main.excilys.persistence.IComputerDao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ComputerService {
   private IComputerDao intComputerDao = ComputerDao.INSTANCE;
@@ -18,9 +19,8 @@ public class ComputerService {
    */
   public List<ComputerDto> getAllComputer() {
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getAllComputer().forEach(computer -> {
-      listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer));
-    });
+    intComputerDao.getAllComputer().forEach(
+        computer -> listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer)));
     return listAllComputerDto;
   }
 
@@ -49,11 +49,14 @@ public class ComputerService {
   /**
    * return the number of computer.
    *
+   * @param options
+   *          the options of the selected list
    * @return the number of computer
    */
-  public int getNbComputer() {
-    return intComputerDao.getNbComputer();
+  public int getNbComputer(Map<String, String> options) {
+    return intComputerDao.getNbComputer(options);
   }
+
   /**
    * Delete a computer.
    *
@@ -64,6 +67,7 @@ public class ComputerService {
   public void deleteComputer(long idToDelete) {
     intComputerDao.deleteComputer(idToDelete);
   }
+
   /**
    * Update the computer.
    *
@@ -82,13 +86,15 @@ public class ComputerService {
    *          first n° item to get
    * @param nbObjectToGet
    *          number of item to get
+   * @param options
+   *          the options of the selected list
    * @return list of item provided by the page
    */
-  public List<ComputerDto> getComputerInRange(long idBegin, long nbObjectToGet) {
+  public List<ComputerDto> getComputerInRange(long idBegin, long nbObjectToGet,
+      Map<String, String> options) {
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getComputerInRange(idBegin, nbObjectToGet).forEach(computer -> {
-      listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer));
-    });
+    intComputerDao.getComputerInRange(idBegin, nbObjectToGet, options).forEach(
+        computer -> listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer)));
     return listAllComputerDto;
   }
 

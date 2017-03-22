@@ -51,8 +51,7 @@ public enum ConnectionDb {
 
       logger
           .debug("Test to connect to the database : " + database + " with username : " + username);
-      String url = new String(
-          typeconn + ":" + typedb + "://" + host + ":" + port + "/" + database + param);
+      String url = typeconn + ":" + typedb + "://" + host + ":" + port + "/" + database + param;
       return DriverManager.getConnection(url, username, password);
     } catch (ConfigurationException | SQLException e) {
       logger.error("ConnectionDB : " + e.getMessage());

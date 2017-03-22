@@ -23,7 +23,6 @@ public class PaginationTag extends SimpleTagSupport {
       } else {
         listToPrint[j + 2] = numPage + j + 1;
       }
-
     }
     Arrays.sort(listToPrint);
 
@@ -47,5 +46,4 @@ public class PaginationTag extends SimpleTagSupport {
   public void setMaxPage(int maxPage) {
     this.maxPage = maxPage;
   }
-
 }

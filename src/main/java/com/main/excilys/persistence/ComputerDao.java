@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,12 +31,19 @@ public enum ComputerDao implements IComputerDao {
   private static final int COMPANY_NAME_COLUMN = 7;
 
   @Override
-  public int getNbComputer() throws ComputerDbException {
-    String query = "select count(*) from computer";
+  public int getNbComputer(Map<String, String> options) throws ComputerDbException {
+    String query = "select count(*) from computer co "
+        + "left join company c on co.company_id = c.id where co.name like ? or c.name like ?";
     int nbComputer = -1;
     try (Connection conn = ConnectionDb.CONNECTION.getConnection();
-        Statement selectPStatement = conn.createStatement();) {
-      try (ResultSet rs = selectPStatement.executeQuery(query)) {
+        PreparedStatement selectPStatement = conn.prepareStatement(query)) {
+
+      String optionSearch = options.get("search") != null && !options.get("search").isEmpty()
+          ? options.get("search")
+          : "%";
+      selectPStatement.setString(1, optionSearch);
+      selectPStatement.setString(2, optionSearch);
+      try (ResultSet rs = selectPStatement.executeQuery()) {
         while (rs.next()) {
           nbComputer = rs.getInt(1);
         }
@@ -205,15 +213,22 @@ public enum ComputerDao implements IComputerDao {
   }
 
   @Override
-  public List<Computer> getComputerInRange(long idBegin, long nbObjectToGet) {
-    String query = "select * from computer co "
-        + "left join company c on co.company_id = c.id limit ?,?";
+  public List<Computer> getComputerInRange(long idBegin, long nbObjectToGet,
+      Map<String, String> options) {
+    String query = "select * from computer co " + "left join company c on co.company_id = c.id  "
+        + "where co.name like ? or c.name like ? limit ?,?";
     List<Computer> listComputer = new ArrayList<>();
     try (Connection conn = ConnectionDb.CONNECTION.getConnection();
-        PreparedStatement selectPStatement = conn.prepareStatement(query);) {
+        PreparedStatement selectPStatement = conn.prepareStatement(query)) {
+      String optionSearch = options.get("search") != null && !options.get("search").isEmpty()
+          ? options.get("search")
+          : "%";
 
-      selectPStatement.setLong(1, idBegin);
-      selectPStatement.setLong(2, nbObjectToGet);
+      selectPStatement.setString(1, optionSearch);
+      selectPStatement.setString(2, optionSearch);
+      selectPStatement.setLong(3, idBegin);
+      selectPStatement.setLong(4, nbObjectToGet);
+
       try (ResultSet rs = selectPStatement.executeQuery()) {
         while (rs.next()) {
           LocalDate getIntroduced = rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN) != null

@@ -7,6 +7,7 @@ import com.main.excilys.service.ComputerService;
 import com.main.excilys.util.ComputerDbException;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,6 +48,7 @@ public class ComputerPresentation {
     }
 
   }
+
   /**
    * Creation presentation of a computer.
    *
@@ -73,6 +75,7 @@ public class ComputerPresentation {
     logger.debug("createComputer : Computer " + newComputerDto + " well created with id : " + id);
     System.out.println("Computer n°" + id + " well created");
   }
+
   /**
    * Print the number of computer.
    *
@@ -81,10 +84,11 @@ public class ComputerPresentation {
    */
 
   public void countComputer() throws ComputerDbException {
-    int nbComputer = computerService.getNbComputer();
+    int nbComputer = computerService.getNbComputer(new HashMap<>());
     logger.debug("countComputer : " + nbComputer + " has been counted");
     System.out.println("There is " + nbComputer + " computer inside the database");
   }
+
   /**
    * Print all the computer.
    *
@@ -110,7 +114,7 @@ public class ComputerPresentation {
     long idBegin = pageComputerDto.getNumPage() * Page.getNbObjectPerPage();
     long idEnd = pageComputerDto.getNumPage() * Page.getNbObjectPerPage()
         + Page.getNbObjectPerPage();
-    computerService.getComputerInRange(idBegin, idEnd)
+    computerService.getComputerInRange(idBegin, idEnd, new HashMap<>())
         .forEach(computer -> System.out.println(computer));
   }
 

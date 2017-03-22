@@ -1,10 +1,9 @@
 package com.main.excilys.model;
 
-import java.util.List;
-
 public class Page<E> {
-  List<E> pageObject;
   private int numPage = 0;
+
+
   private static int nbObject;
   private static int nbObjectPerPage = 10;
   private static int maxPage;
@@ -12,8 +11,7 @@ public class Page<E> {
   /**
    * Simple constructor with the number of project.
    *
-   * @param nbObject
-   *          the number of project
+   * @param nbObject the number of project
    */
   public Page(int nbObject) {
     Page.nbObject = nbObject;
@@ -27,6 +25,7 @@ public class Page<E> {
   public void setNumPage(int numPage) {
     this.numPage = numPage;
   }
+
   /**
    * Switch to newPage.
    */
@@ -58,6 +57,7 @@ public class Page<E> {
     }
     return false;
   }
+
   /**
    * Switch to previousPage.
    */
@@ -73,8 +73,7 @@ public class Page<E> {
   /**
    * Set the number of object per page.
    *
-   * @param nbObjectPerPage
-   *          the number of object
+   * @param nbObjectPerPage the number of object
    */
   public static void setNbObjectPerPage(int nbObjectPerPage) {
     Page.nbObjectPerPage = nbObjectPerPage;
@@ -87,5 +86,10 @@ public class Page<E> {
 
   public void setMaxPage(int maxPage) {
     Page.maxPage = maxPage;
+  }
+
+  public static void setNbObject(int nbObject) {
+    Page.nbObject = nbObject;
+    Page.maxPage = Page.nbObject / Page.nbObjectPerPage;
   }
 }

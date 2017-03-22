@@ -11,6 +11,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -36,14 +37,14 @@ public class ComputerDaoTest {
   @Test
   public void testGetNbComputer() throws ComputerDbException {
     int nbComputer;
-    nbComputer = computerService.getNbComputer();
+    nbComputer = computerService.getNbComputer(new HashMap<>());
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
     ComputerDto newComputerDto = new ComputerDto.Builder().name("Nouveau computer")
         .introduced(emptyStr).discontinued(emptyStr).companyDto(randomCompany).build();
     computerService.createComputer(newComputerDto);
-    assert computerService.getNbComputer() == nbComputer + 1;
+    assert computerService.getNbComputer(new HashMap<>()) == nbComputer + 1;
   }
 
   @Test
@@ -92,7 +93,7 @@ public class ComputerDaoTest {
   @Test
   public void testListAllComputer() throws ComputerDbException {
     int nbComputer;
-    nbComputer = computerService.getNbComputer();
+    nbComputer = computerService.getNbComputer(new HashMap<>());
 
     List<ComputerDto> listComputer = computerService.getAllComputer();
 
