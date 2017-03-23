@@ -4,7 +4,7 @@
 
 	<groupId>com.excilys</groupId>
 	<artifactId>ComputerDatabase</artifactId>
-	<version>0.1.0-RELEASE</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -56,15 +56,16 @@
 			<version>${commons-configuration.version}</version>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>${log4j-api.version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>${log4j-core.version}</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -101,7 +102,42 @@
 			<artifactId>HikariCP</artifactId>
 			<version>2.6.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-pool/commons-pool -->
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.3.0</version>
+			<classifier>platform</classifier>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+
+
+
 	</dependencies>
+
+
 
 	<reporting>
 		<plugins>

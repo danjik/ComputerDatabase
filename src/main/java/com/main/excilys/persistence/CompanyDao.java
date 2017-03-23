@@ -2,6 +2,7 @@ package com.main.excilys.persistence;
 
 import com.main.excilys.model.Company;
 import com.main.excilys.util.ComputerDbException;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,19 +12,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public enum CompanyDao implements ICompanyDao {
   INSTANCE;
-  private Logger logger = LogManager.getRootLogger();
+  private Logger logger = LoggerFactory.getLogger(CompanyDao.class);
 
   @Override
   public List<Company> getAllCompany() throws ComputerDbException {
     List<Company> listCompany = new ArrayList<>();
     String query = "select * from company";
     Company selectCompany = null;
-    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
+    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
+        Connection conn = hs.getConnection();
         Statement selectPStatement = conn.createStatement();) {
       try (ResultSet rs = selectPStatement.executeQuery(query)) {
         while (rs.next()) {
@@ -44,7 +46,8 @@ public enum CompanyDao implements ICompanyDao {
   public int getNbCompany() throws ComputerDbException {
     String query = "select count(*) from company";
     int nbCompany = -1;
-    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
+    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
+        Connection conn = hs.getConnection();
         Statement selectPStatement = conn.createStatement();) {
       try (ResultSet rs = selectPStatement.executeQuery(query)) {
         while (rs.next()) {
@@ -65,7 +68,8 @@ public enum CompanyDao implements ICompanyDao {
     String query = "select * from company where id=?";
     Company selectCompany = null;
 
-    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
+    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
+        Connection conn = hs.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query);) {
       selectPStatement.setLong(1, idToTest);
       try (ResultSet rs = selectPStatement.executeQuery()) {
@@ -89,7 +93,8 @@ public enum CompanyDao implements ICompanyDao {
     String query = "select * from company limit ?,?";
     List<Company> listCompany = new ArrayList<>();
 
-    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
+    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
+        Connection conn = hs.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query);) {
       selectPStatement.setLong(1, idBegin);
       selectPStatement.setLong(2, idEnd);

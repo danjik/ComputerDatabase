@@ -7,12 +7,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecureInput {
   private static Scanner scan = new Scanner(System.in);
-  private static Logger logger = LogManager.getRootLogger();
+  private static Logger logger = LoggerFactory.getLogger(SecureInput.class);
 
   /**
    * Get a secure valid positive int.

@@ -7,13 +7,12 @@ import com.main.excilys.util.ComputerDbException;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CompanyPresentation {
   private Page<CompanyDto> pageCompany;
-  private CompanyService companyService = new CompanyService();
-  private Logger logger = LogManager.getRootLogger();
+  private Logger logger = LoggerFactory.getLogger(CompanyPresentation.class);
 
   /**
    * Presentation of all the company.
@@ -23,7 +22,7 @@ public class CompanyPresentation {
    */
 
   public void listAllCompany() throws ComputerDbException {
-    List<CompanyDto> lisCompany = companyService.getAllCompany();
+    List<CompanyDto> lisCompany = CompanyService.INSTANCE.getAllCompany();
     lisCompany.forEach(company -> {
       System.out.println(company);
     });
@@ -39,7 +38,7 @@ public class CompanyPresentation {
   public void listCompanyByPage() throws ComputerDbException {
     logger.debug("Access to company page n°" + pageCompany.getNumPage());
     long idBegin = pageCompany.getNumPage() * Page.getNbObjectPerPage();
-    companyService.getCompanyInRange(idBegin, Page.getNbObjectPerPage())
+    CompanyService.INSTANCE.getCompanyInRange(idBegin, Page.getNbObjectPerPage())
         .forEach(company -> System.out.println(company));
   }
 

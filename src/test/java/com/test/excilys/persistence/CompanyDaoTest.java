@@ -15,26 +15,25 @@ import org.junit.Test;
  *
  */
 public class CompanyDaoTest {
-  private CompanyService companyService = new CompanyService();
 
   @Test
   public void testGetCompanyById() throws ComputerDbException {
     List<CompanyDto> listAllCompany;
-    listAllCompany = companyService.getAllCompany();
+    listAllCompany = CompanyService.INSTANCE.getAllCompany();
 
     CompanyDto randomCompany = listAllCompany.get((int) (Math.random() * listAllCompany.size()));
     long idToTest = randomCompany.getId();
 
-    CompanyDto selectCompany = companyService.getCompanyById(idToTest);
+    CompanyDto selectCompany = CompanyService.INSTANCE.getCompanyById(idToTest);
     assert idToTest == selectCompany.getId();
   }
 
   @Test
   public void testGetAllCompany() throws ComputerDbException {
     List<CompanyDto> listCompany;
-    listCompany = companyService.getAllCompany();
+    listCompany = CompanyService.INSTANCE.getAllCompany();
 
-    int nbCompany = companyService.getNbCompany();
+    int nbCompany = CompanyService.INSTANCE.getNbCompany();
 
     assert listCompany.size() == nbCompany;
   }

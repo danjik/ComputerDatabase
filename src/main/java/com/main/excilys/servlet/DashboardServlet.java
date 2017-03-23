@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
   private static final long serialVersionUID = 2964121582458094059L;
-  private ComputerService computerService = new ComputerService();
   private Page<ComputerDto> pageComputerDto;
   private List<ComputerDto> listComputerDto;
   private int nbComputerDto;
@@ -30,7 +29,7 @@ public class DashboardServlet extends HttpServlet {
    * Constructor of the servlet.
    */
   public DashboardServlet() {
-    nbComputerDto = computerService.getNbComputer(options);
+    nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
     pageComputerDto = new Page<>(nbComputerDto);
   }
 
@@ -64,7 +63,7 @@ public class DashboardServlet extends HttpServlet {
         for (String element : idsToDelete) {
           if (element.matches("^[0-9]*$")) {
             try {
-              computerService.deleteComputer(Long.valueOf(element));
+              ComputerService.INSTANCE.deleteComputer(Long.valueOf(element));
               toast = Toaster.INSTANCE.getToast("Computer n°" + selection + " deleted !",
                   Toaster.SUCCESS, 3000);
               req.setAttribute("toast", toast);
@@ -102,12 +101,12 @@ public class DashboardServlet extends HttpServlet {
         break;
     }
     try {
-      int nbComputerDto = computerService.getNbComputer(options);
+      int nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
       Page.setNbObject(nbComputerDto);
       int numPage = pageComputerDto.getNumPage();
       long idBegin = numPage * Page.getNbObjectPerPage();
-      listComputerDto = computerService.getComputerInRange(idBegin, Page.getNbObjectPerPage(),
-          options);
+      listComputerDto = ComputerService.INSTANCE.getComputerInRange(idBegin,
+          Page.getNbObjectPerPage(), options);
     } catch (ComputerDbException e) {
       toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
       req.setAttribute("toast", toast);

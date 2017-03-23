@@ -8,7 +8,10 @@ import com.main.excilys.persistence.ICompanyDao;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyService {
+public enum CompanyService {
+
+  INSTANCE;
+
   private ICompanyDao intComputerDao = CompanyDao.INSTANCE;
 
   /**

@@ -23,8 +23,6 @@ public class AddComputerServlet extends HttpServlet {
    * Serial id.
    */
   private static final long serialVersionUID = -668189319785763106L;
-  private final CompanyService companyService = new CompanyService();
-  private final ComputerService computerService = new ComputerService();
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -35,19 +33,19 @@ public class AddComputerServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    List<CompanyDto> listCompanyDto = companyService.getAllCompany();
+    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.getAllCompany();
     String action = req.getParameter("action") != null ? req.getParameter("action") : "";
     switch (action) {
       case "addComputer" :
         String name = req.getParameter("computerName");
         String discontinued = req.getParameter("discontinued");
         String introduced = req.getParameter("introduced");
-        CompanyDto companyDto = companyService
+        CompanyDto companyDto = CompanyService.INSTANCE
             .getCompanyById(Long.valueOf(req.getParameter("companyId")));
         try {
           ComputerDto newComputerDto = new ComputerDto.Builder().name(name).introduced(introduced)
               .discontinued(discontinued).companyDto(companyDto).build();
-          long idCreate = computerService.createComputer(newComputerDto);
+          long idCreate = ComputerService.INSTANCE.createComputer(newComputerDto);
           Toaster toast = Toaster.INSTANCE.getToast("Computer n°" + idCreate + " created !",
               Toaster.SUCCESS, 3000);
           req.setAttribute("toast", toast);

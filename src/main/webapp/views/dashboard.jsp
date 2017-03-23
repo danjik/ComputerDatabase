@@ -140,15 +140,6 @@
 	<script src="resources/js/bootstrap.min.js"></script>
 	<script src="resources/js/dashboard.js"></script>
 	<script src="resources/js/main.js"></script>
-	<script>
-		if (($(window).height() + 100) < $(document).height()) {
-			$('#top-link-block').removeClass('hidden').affix({
-				offset : {
-					top : 100
-				}
-			});
-		}
-	</script>
 
 </body>
 </html>

@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ComputerService {
+public enum ComputerService {
+  INSTANCE;
+
   private IComputerDao intComputerDao = ComputerDao.INSTANCE;
 
   /**
