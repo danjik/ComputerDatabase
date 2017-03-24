@@ -55,13 +55,17 @@ public class Application {
               companyView.listCompanyByPage();
               break;
 
+            case 10 :
+              id = SecureInput.secureInputLong("id");
+              companyView.deleteComputer(id);
+              break;
             default :
               break;
           }
         } catch (ComputerDbException e) {
           System.out.println(e.getMessage());
         }
-      } while (choice != 10);
+      } while (choice != 11);
     } catch (ComputerDbException e1) {
       System.out.println(e1.getMessage());
     }

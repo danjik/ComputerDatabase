@@ -93,6 +93,7 @@ public class DashboardServlet extends HttpServlet {
         }
 
         options.put(param, value);
+        pageComputerDto.setNumPage(0);
         break;
       case "resetOptions" :
         options.clear();

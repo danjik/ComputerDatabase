@@ -10,12 +10,13 @@ public class LinkTag extends SimpleTagSupport {
 
   private int numPage;
   private String label;
+  private String type;
 
   @Override
   public void doTag() throws JspException, IOException {
     JspWriter out = this.getJspContext().getOut();
-    out.println("<li><a href='dashboard?action=switchPage&page=" + (numPage + 1)
-        + "'aria-label='Previous'><span aria-hidden='true'>" + label + "</span></a></li>");
+    out.println("<li><a href='dashboard?action=switchPage&page=" + (numPage + 1) + "'aria-label='"
+        + type + "' id='" + type + "'><span aria-hidden='true'>" + label + "</span></a></li>");
   }
 
   public void setNumPage(int numPage) {
@@ -24,6 +25,10 @@ public class LinkTag extends SimpleTagSupport {
 
   public void setLabel(String label) {
     this.label = label;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
 }

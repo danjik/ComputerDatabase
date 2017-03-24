@@ -2,7 +2,6 @@ package com.main.excilys.persistence;
 
 import com.main.excilys.model.Company;
 import com.main.excilys.util.ComputerDbException;
-import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,8 +23,7 @@ public enum CompanyDao implements ICompanyDao {
     List<Company> listCompany = new ArrayList<>();
     String query = "select * from company";
     Company selectCompany = null;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         Statement selectPStatement = conn.createStatement();) {
       try (ResultSet rs = selectPStatement.executeQuery(query)) {
         while (rs.next()) {
@@ -46,8 +44,7 @@ public enum CompanyDao implements ICompanyDao {
   public int getNbCompany() throws ComputerDbException {
     String query = "select count(*) from company";
     int nbCompany = -1;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         Statement selectPStatement = conn.createStatement();) {
       try (ResultSet rs = selectPStatement.executeQuery(query)) {
         while (rs.next()) {
@@ -68,8 +65,7 @@ public enum CompanyDao implements ICompanyDao {
     String query = "select * from company where id=?";
     Company selectCompany = null;
 
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query);) {
       selectPStatement.setLong(1, idToTest);
       try (ResultSet rs = selectPStatement.executeQuery()) {
@@ -93,8 +89,7 @@ public enum CompanyDao implements ICompanyDao {
     String query = "select * from company limit ?,?";
     List<Company> listCompany = new ArrayList<>();
 
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query);) {
       selectPStatement.setLong(1, idBegin);
       selectPStatement.setLong(2, idEnd);
@@ -110,5 +105,37 @@ public enum CompanyDao implements ICompanyDao {
     }
 
     return listCompany;
+  }
+
+  @Override
+  public void deleteCompany(long idToDelete) {
+    final String queryDeleteComputer = "delete from computer where company_id = ?";
+    final String queryDeleteCompany = "delete from company where id = ?";
+
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection()) {
+      try (PreparedStatement selectPStatement = conn.prepareStatement(queryDeleteComputer);) {
+        conn.setAutoCommit(false);
+        selectPStatement.setLong(1, idToDelete);
+        selectPStatement.executeQuery();
+        selectPStatement.close();
+        try (
+            PreparedStatement selectPStatementCompany = conn.prepareStatement(queryDeleteCompany)) {
+          selectPStatementCompany.setLong(1, idToDelete);
+          selectPStatementCompany.executeQuery();
+          conn.commit();
+          conn.setAutoCommit(true);
+        }
+
+      } catch (SQLException e) {
+        conn.rollback();
+        conn.setAutoCommit(true);
+        logger.error("deleteCompany" + e.getMessage());
+        throw new ComputerDbException("deleteCompany " + e);
+      }
+    } catch (SQLException e1) {
+      logger.error("deleteCompany" + e1.getMessage());
+      throw new ComputerDbException("deleteCompany " + e1);
+    }
+
   }
 }

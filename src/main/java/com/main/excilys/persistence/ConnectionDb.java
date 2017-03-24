@@ -6,6 +6,8 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -15,7 +17,8 @@ public enum ConnectionDb {
   CONNECTION;
 
   private Logger logger = LoggerFactory.getLogger(ConnectionDb.class);
-  HikariConfig config;
+  private HikariConfig config;
+  private HikariDataSource hs;
 
   /**
    * Simple private constructor.
@@ -32,9 +35,9 @@ public enum ConnectionDb {
         config.setMaximumPoolSize(20);
         config.setMinimumIdle(5);
         config.setIdleTimeout(60 * 1000);
-        config.setPassword("qwerty1234");
         config.setConnectionTimeout(1000);
         config.setMaxLifetime(287400);
+        hs = new HikariDataSource(config);
 
       }
     } catch (IOException e) {
@@ -48,7 +51,11 @@ public enum ConnectionDb {
    * @return An SQL connection instance.
    */
 
-  public HikariDataSource getConnection() {
-    return new HikariDataSource(config);
+  public Connection getConnection() {
+    try {
+      return hs.getConnection();
+    } catch (SQLException e) {
+      throw new ComputerDbException(e.getMessage());
+    }
   }
 }

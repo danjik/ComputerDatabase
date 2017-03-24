@@ -23,7 +23,7 @@
       <h1>Welcome to the Computer Database project ! </h1>
     </div>
     <div class="goto">
-      <span><a href="dashboard">Go to the dashboard</a></span>
+      <span><a id="goToDashboard" href="dashboard">Go to the dashboard</a></span>
     </div>
   </div>
 </div>

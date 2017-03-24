@@ -11,7 +11,7 @@
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
 <link href="resources/css/toaster.css" rel="stylesheet" media="screen">
 </head>
-<body>
+<body id="addComputer">
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<%@ include file="core/header.jsp"%>
 	</header>
@@ -27,19 +27,19 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" name="computerName" class="form-control"
-									pattern="^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$" id="computerName"
+									pattern="^[a-zA-Z0-9][a-zA-Z0-9 .-][a-zA-Z0-9 .-]+$" id="computerName"
                   oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
-									placeholder="Computer name">
+									placeholder="Computer name"/>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" name="introduced" class="form-control"
-									id="introduced" placeholder="Introduced date">
+									id="introduced" placeholder="Introduced date"/>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" name="discontinued" class="form-control"
-									id="discontinued" placeholder="Discontinued date">
+									id="discontinued" placeholder="Discontinued date"/>
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -52,7 +52,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary" /> or <a
+							<input type="submit" id="submitForm" value="Add" class="btn btn-primary" /> or <a
 								href="dashboard.jsp" class="btn btn-default">Cancel</a>
 						</div>
 					</form>

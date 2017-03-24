@@ -11,7 +11,7 @@
   <link href="resources/css/main.css" rel="stylesheet" media="screen">
   <link href="resources/css/toaster.css" rel="stylesheet" media="screen">
 </head>
-<body>
+<body id="editComputer">
 <header class="navbar navbar-inverse navbar-fixed-top">
 
   <div class="container">
@@ -31,7 +31,7 @@
             <div class="form-group">
               <label for="computerName">Computer name</label> <input
               type="text" class="form-control" name="computerName" id="computerName"
-              pattern="^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$"
+              pattern="^[a-zA-Z0-9][a-zA-Z0-9 .-][a-zA-Z0-9 .-]+$"
               oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
               value="${ computerToEdit.name }" placeholder="Computer name" required="required">
             </div>
@@ -62,7 +62,7 @@
           </fieldset>
 
           <div class="actions pull-right">
-            <input type="submit" value="Edit" class="btn btn-primary">
+            <input type="submit" id="submitForm" value="Edit" class="btn btn-primary">
             or <a href="dashboard.html" class="btn btn-default">Cancel</a>
           </div>
         </form>

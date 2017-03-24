@@ -83,7 +83,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = CompanyService.INSTANCE.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name("3az").introduced(emptyStr)
+    ComputerDto newComputerDto = new ComputerDto.Builder().name("3&az").introduced(emptyStr)
         .discontinued(emptyStr).companyDto(randomCompany).build();
     ComputerService.INSTANCE.createComputer(newComputerDto);
   }
@@ -184,7 +184,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = CompanyService.INSTANCE.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputer = new ComputerDto.Builder().name("3az").introduced(emptyStr)
+    ComputerDto newComputer = new ComputerDto.Builder().name("3&<az").introduced(emptyStr)
         .discontinued(emptyStr).companyDto(randomCompany).build();
     ComputerService.INSTANCE.updateComputer(newComputer);
   }

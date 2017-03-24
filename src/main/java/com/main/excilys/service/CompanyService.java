@@ -12,7 +12,7 @@ public enum CompanyService {
 
   INSTANCE;
 
-  private ICompanyDao intComputerDao = CompanyDao.INSTANCE;
+  private ICompanyDao intCompanyDao = CompanyDao.INSTANCE;
 
   /**
    * Method to get all the company.
@@ -21,7 +21,7 @@ public enum CompanyService {
    */
   public List<CompanyDto> getAllCompany() {
     List<CompanyDto> listCompanyDto = new ArrayList<>();
-    intComputerDao.getAllCompany().forEach(company -> {
+    intCompanyDao.getAllCompany().forEach(company -> {
       listCompanyDto.add(CompanyToDtoMapper.INSTANCE.toCompanyDto(company));
     });
     return listCompanyDto;
@@ -36,11 +36,11 @@ public enum CompanyService {
    */
 
   public CompanyDto getCompanyById(long idToTest) {
-    return CompanyToDtoMapper.INSTANCE.toCompanyDto(intComputerDao.getCompanyById(idToTest));
+    return CompanyToDtoMapper.INSTANCE.toCompanyDto(intCompanyDao.getCompanyById(idToTest));
   }
 
   public int getNbCompany() {
-    return intComputerDao.getNbCompany();
+    return intCompanyDao.getNbCompany();
   }
 
   /**
@@ -54,10 +54,14 @@ public enum CompanyService {
    */
   public List<CompanyDto> getCompanyInRange(long idBegin, long idEnd) {
     List<CompanyDto> listCompanyDto = new ArrayList<>();
-    intComputerDao.getCompanyInRange(idBegin, idEnd).forEach(company -> {
+    intCompanyDao.getCompanyInRange(idBegin, idEnd).forEach(company -> {
       listCompanyDto.add(CompanyToDtoMapper.INSTANCE.toCompanyDto(company));
     });
     return listCompanyDto;
+  }
+
+  public void deleteCompanyById(long idToDelete) {
+    intCompanyDao.deleteCompany(idToDelete);
   }
 
 }

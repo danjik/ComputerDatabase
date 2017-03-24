@@ -10,17 +10,17 @@
 <link href="resources/css/font-awesome.css" rel="stylesheet"
 	media="screen">
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
-<link href="resources/css/toaster.css" rel="stylesheet" media="screen">
+<link href="resources/css/toaster.css" rel="stylesheet" media="screen"> 
 
 </head>
-<body>
+<body id="dashboard">
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<%@ include file="core/header.jsp"%>
 		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 		<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 		<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 		<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
-		<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+		<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 		<%@ taglib prefix="page" uri="/WEB-INF/pagination.tld"%>
 	</header>
 
@@ -35,7 +35,7 @@
 						<input type="hidden" name="action" value="option"> <input
 							type="hidden" name="param" value="search"> <input
 							type="search" id="searchbox" name="value"
-							pattern="^[a-zA-Z .-]+$" class="form-control"
+							pattern="^[a-zA-Z0-9 .-]+$" class="form-control"
 							placeholder="Search name" /> <input type="submit"
 							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
@@ -64,7 +64,7 @@
 		</form>
 
 		<div class="container" style="margin-top: 10px;">
-			<table class="table table-striped table-bordered">
+			<table class="table table-striped table-bordered" id="tableDashboard">
 				<thead>
 					<tr>
 
@@ -94,10 +94,10 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computerDto.id }"></td>
-							<td><a href="editComputer?id=${computerDto.id }" onclick="">${ computerDto.name }</a>
+							<td><a href="editComputer?id=${computerDto.id }" class="labelComputerName" onclick="">${ computerDto.name }</a>
 							</td>
-							<td>${ computerDto.introduced }</td>
-							<td>${ computerDto.discontinued }</td>
+							<td class="labelIntroduced">${ computerDto.introduced }</td>
+							<td class="labelDiscontinued">${ computerDto.discontinued }</td>
 							<td>${ computerDto.companyDto.name }</td>
 						</tr>
 					</c:forEach>
@@ -116,11 +116,11 @@
 		<%@ include file="core/footer.jsp"%>
 		<div class="container text-center">
 			<ul class="pagination">
-				<page:link numPage="0" label="&laquo;" />
-				<page:link numPage="${ page-1 }" label="&lt;" />
+				<page:link numPage="0" type="first" label="&laquo;" />
+				<page:link numPage="${ page-1 }" type="previous" label="&lt;" />
 				<page:pagination numPage="${ page }" maxPage="${ maxPage }" />
-				<page:link numPage="${ page+1 }" label="&gt;" />
-				<page:link numPage="${ maxPage }" label="&raquo;" />
+				<page:link numPage="${ page+1 }" type="next" label="&gt;" />
+				<page:link numPage="${ maxPage }" type="last" label="&raquo;" />
 			</ul>
 
 			<div class="pull-right" role="group">

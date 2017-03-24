@@ -17,7 +17,7 @@
 			
 
 			<c:if test="${not empty toast and not empty toast.sentence}">
-				<c:out value="${toast.sentence }" />
+				<span id="toastSentence"><c:out value="${toast.sentence }" /></span>
 			</c:if>
 		</div>
 		<script type="text/javascript">

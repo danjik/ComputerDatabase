@@ -42,4 +42,16 @@ public class CompanyPresentation {
         .forEach(company -> System.out.println(company));
   }
 
+  /**
+   * Atomic deletion of a company and all the computers linked.
+   *
+   * @param idToDelete
+   *          the ID of the deleted company
+   */
+  public void deleteComputer(long idToDelete) {
+    logger.debug("Action to delete company n°" + idToDelete);
+    CompanyService.INSTANCE.deleteCompanyById(idToDelete);
+
+  }
+
 }

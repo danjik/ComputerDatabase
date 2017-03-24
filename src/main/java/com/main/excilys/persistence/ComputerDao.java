@@ -3,7 +3,6 @@ package com.main.excilys.persistence;
 import com.main.excilys.model.Company;
 import com.main.excilys.model.Computer;
 import com.main.excilys.util.ComputerDbException;
-import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,11 +35,10 @@ public enum ComputerDao implements IComputerDao {
     String query = "select count(*) from computer co "
         + "left join company c on co.company_id = c.id where co.name like ? or c.name like ?";
     int nbComputer = -1;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query)) {
 
-      String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
+      String optionSearch = options.get("search") != null ? "%" + options.get("search") + "%" : "%";
       selectPStatement.setString(1, optionSearch);
       selectPStatement.setString(2, optionSearch);
       try (ResultSet rs = selectPStatement.executeQuery()) {
@@ -61,13 +59,12 @@ public enum ComputerDao implements IComputerDao {
     String query = "insert into computer(id,name,introduced,"
         + "discontinued,company_id) values (?,?,?,?,?)";
     long generateId = -1;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement insertPStatement = conn.prepareStatement(query,
             Statement.RETURN_GENERATED_KEYS);) {
       insertPStatement.setLong(COMPUTER_ID_COLUMN, 0);
       if (newComputer.getName() == null
-          || !newComputer.getName().matches("^[a-zA-Z][a-zA-Z .-][a-zA-Z .-]+$")) {
+          || !newComputer.getName().matches("^[a-zA-Z0-9][a-zA-Z0-9 .-][a-zA-Z0-9 .-]+$")) {
         throw new ComputerDbException("The name must be composed at least by 3 chars");
       }
       insertPStatement.setString(COMPUTER_NAME_COLUMN, newComputer.getName());
@@ -104,8 +101,7 @@ public enum ComputerDao implements IComputerDao {
     String query = "select * from computer co "
         + "left join company c on co.company_id = c.id where co.id=?";
     Computer selectComputer = null;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query);) {
 
       selectPStatement.setLong(1, idToSelect);
@@ -137,8 +133,7 @@ public enum ComputerDao implements IComputerDao {
     List<Computer> listComputer = new ArrayList<>();
     String query = "select * from computer co left join company c on co.company_id = c.id";
     Computer selectComputer = null;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         Statement selectPStatement = conn.createStatement()) {
       try (ResultSet rs = selectPStatement.executeQuery(query)) {
         while (rs.next()) {
@@ -169,8 +164,7 @@ public enum ComputerDao implements IComputerDao {
   @Override
   public void deleteComputer(long idToDelete) throws ComputerDbException {
     String query = "delete from computer where id=?";
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement deletePStatement = conn.prepareStatement(query)) {
       deletePStatement.setLong(1, idToDelete);
       deletePStatement.executeUpdate();
@@ -186,11 +180,10 @@ public enum ComputerDao implements IComputerDao {
     String query = "update computer set id=?, name=?,  "
         + "introduced=?,discontinued=?,company_id=? where id=?";
     final int idWhereColumn = 6;
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement updatePStatement = conn.prepareStatement(query)) {
       if (updateComputer.getName() == null
-          || !updateComputer.getName().matches("^[a-zA-Z][a-zA-Z -.0-9][a-zA-Z -.0-9]+$")) {
+          || !updateComputer.getName().matches("^[a-zA-Z0-9][a-zA-Z -.0-9][a-zA-Z -.0-9]+$")) {
         throw new ComputerDbException("The name must be composed at least by 3 chars");
       }
       updatePStatement.setLong(COMPUTER_ID_COLUMN, updateComputer.getId());
@@ -226,8 +219,7 @@ public enum ComputerDao implements IComputerDao {
     String optionSort = options.get("sort") != null ? "order by " + options.get("sort") : "";
     query = String.format(query, optionSort);
     List<Computer> listComputer = new ArrayList<>();
-    try (HikariDataSource hs = ConnectionDb.CONNECTION.getConnection();
-        Connection conn = hs.getConnection();
+    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
         PreparedStatement selectPStatement = conn.prepareStatement(query)) {
       String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
 

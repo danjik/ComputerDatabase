@@ -38,4 +38,6 @@ public interface ICompanyDao {
    * @return the list from item n°idBegin to n°idEnd
    */
   List<Company> getCompanyInRange(long idBegin, long idEnd);
+
+  void deleteCompany(long idToDelete);
 }

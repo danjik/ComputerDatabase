@@ -19,7 +19,8 @@ public enum OptionValidator {
     options.forEach((key, value) -> {
       switch (key) {
         case "search" :
-          if (value != null && !value.isEmpty() && !value.matches("^[a-zA-Z -.]+$")) {
+          if (value != null && !value.isEmpty() && !value.matches("^[a-zA-Z0-9 -.]+$")) {
+            System.out.println("The search value : " + value + " is incorrect");
             options.remove(key);
             throw new ComputerDbException("The search value : " + value + " is incorrect");
           }
@@ -29,6 +30,7 @@ public enum OptionValidator {
               "computer.discontinued", "company.name" };
           if (!Stream.of(correctOptions).anyMatch(str -> (str + " asc").equals(value))
               && !Stream.of(correctOptions).anyMatch(str -> (str + " desc").equals(value))) {
+            System.out.println("The sort value : " + value + " is incorrect");
             options.remove(key);
             throw new ComputerDbException("The sort value : " + value + " is incorrect");
           }
