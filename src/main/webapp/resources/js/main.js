@@ -9,4 +9,5 @@ if (($(window).height() + 100) < $(document).height()) {
 			top : 100
 		}
 	});
+	$('#bottom-link-block').removeClass('hidden')
 }

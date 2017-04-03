@@ -3,7 +3,6 @@ package com.main.excilys.model;
 public class Page<E> {
   private int numPage = 0;
 
-
   private static int nbObject;
   private static int nbObjectPerPage = 10;
   private static int maxPage;
@@ -11,14 +10,23 @@ public class Page<E> {
   /**
    * Simple constructor with the number of project.
    *
-   * @param nbObject the number of project
+   * @param nbObject
+   *          the number of project
    */
   public Page(int nbObject) {
     Page.nbObject = nbObject;
-    maxPage = Page.nbObject / Page.nbObjectPerPage;
+    Page.setMaxPage(Page.nbObject / Page.nbObjectPerPage);
   }
 
+  /**
+   * Get the n° of the actual page.
+   *
+   * @return the n° of the actual page
+   */
   public int getNumPage() {
+    if (nbObject != 0 && nbObject % nbObjectPerPage == 0) {
+      numPage = maxPage - 1;
+    }
     return numPage;
   }
 
@@ -73,23 +81,35 @@ public class Page<E> {
   /**
    * Set the number of object per page.
    *
-   * @param nbObjectPerPage the number of object
+   * @param nbObjectPerPage
+   *          the number of object
    */
   public static void setNbObjectPerPage(int nbObjectPerPage) {
     Page.nbObjectPerPage = nbObjectPerPage;
-    Page.maxPage = Page.nbObject / Page.nbObjectPerPage;
+    Page.setMaxPage(Page.nbObject / Page.nbObjectPerPage);
   }
 
   public int getMaxPage() {
     return Page.maxPage;
   }
 
-  public void setMaxPage(int maxPage) {
-    Page.maxPage = maxPage;
+  /**
+   * Setter for the maxPage.
+   *
+   * @param maxPage
+   *          the maxPage to set
+   */
+  public static void setMaxPage(int maxPage) {
+    if (nbObject != 0 && nbObject % nbObjectPerPage > 0) {
+      Page.maxPage = maxPage;
+    } else {
+      Page.maxPage = maxPage - 1;
+    }
+
   }
 
   public static void setNbObject(int nbObject) {
     Page.nbObject = nbObject;
-    Page.maxPage = Page.nbObject / Page.nbObjectPerPage;
+    Page.setMaxPage(Page.nbObject / Page.nbObjectPerPage);
   }
 }

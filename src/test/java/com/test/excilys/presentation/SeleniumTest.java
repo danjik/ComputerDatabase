@@ -14,6 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,6 +24,7 @@ public class SeleniumTest {
   private static WebDriver driver;
   private final String homeDir = "localhost:8080/ComputerDatabase";
   private WebElement element;
+  private static JavascriptExecutor js;
 
   /**
    * Setup the class test.
@@ -32,6 +35,7 @@ public class SeleniumTest {
 
     driver = new ChromeDriver();
     driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+    js = (JavascriptExecutor) driver;
   }
 
   @AfterClass
@@ -42,7 +46,7 @@ public class SeleniumTest {
   @Test
   public void testOpenIndex() {
     driver.get(homeDir);
-    element = driver.findElement(By.tagName("body"));
+    element = driver.findElement(By.id("cdb-panel"));
     Assert.assertNotNull(element);
   }
 
@@ -58,7 +62,7 @@ public class SeleniumTest {
   public void testOpenDashboard() {
     driver.navigate().to(homeDir + "/dashboard");
 
-    element = driver.findElement(By.tagName("body"));
+    element = driver.findElement(By.id("dashboard"));
     Assert.assertNotNull(element);
   }
 
@@ -78,7 +82,9 @@ public class SeleniumTest {
     driver.findElement(By.id("editComputer")).click();
     Assert.assertEquals(element.findElement(By.className("labelComputerName")).getText(),
         computerName);
+    js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     element.findElement(By.className("cb")).click();
+    js.executeScript("window.scrollTo(0, 0)");
     driver.findElement(By.id("deleteSelected")).click();
     Alert alert = driver.switchTo().alert();
     alert.accept();
@@ -114,7 +120,9 @@ public class SeleniumTest {
         addIntroduced.toString());
     Assert.assertEquals(element.findElement(By.className("labelDiscontinued")).getText(),
         addDiscontinued.toString());
+    js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     element.findElement(By.className("cb")).click();
+    js.executeScript("window.scrollTo(0,0)");
     driver.findElement(By.id("deleteSelected")).click();
     Alert alert = driver.switchTo().alert();
     alert.accept();
@@ -137,6 +145,8 @@ public class SeleniumTest {
     final String oldName = element.findElement(By.className("labelComputerName")).getText();
     final String oldIntroduced = element.findElement(By.className("labelIntroduced")).getText();
     final String oldDiscontinued = element.findElement(By.className("labelDiscontinued")).getText();
+
+    js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     element.findElement(By.className("labelComputerName")).click();
 
     SecureRandom random = new SecureRandom();
@@ -159,10 +169,13 @@ public class SeleniumTest {
     Assert.assertEquals(element.findElement(By.className("labelDiscontinued")).getText(),
         addDiscontinued.toString());
 
+    js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
     element.findElement(By.className("labelComputerName")).click();
-
-    this.fillFormWithValues(oldName, LocalDate.parse(oldIntroduced),
-        LocalDate.parse(oldDiscontinued));
+    LocalDate ldOldIntroduced = oldIntroduced.length() > 0 ? LocalDate.parse(oldIntroduced) : null;
+    LocalDate ldOldIDiscontinued = oldDiscontinued.length() > 0
+        ? LocalDate.parse(oldDiscontinued)
+        : null;
+    this.fillFormWithValues(oldName, ldOldIntroduced, ldOldIDiscontinued);
 
     driver.navigate().to(homeDir + "/dashboard");
     driver.findElement(By.id("last")).click();
@@ -174,6 +187,24 @@ public class SeleniumTest {
         oldIntroduced);
     Assert.assertEquals(element.findElement(By.className("labelDiscontinued")).getText(),
         oldDiscontinued);
+
+  }
+
+  @Test
+  public void testNumberObjectPerPage() {
+
+    driver.navigate().to(homeDir + "/dashboard");
+    int nbTest = driver.findElements(By.className("nbObject")).size();
+    int i = 0;
+    List<WebElement> list;
+    do {
+      list = driver.findElements(By.className("nbObject"));
+      final int nbToPrint = Integer.valueOf(list.get(i).getText());
+      list.get(i).click();
+      element = driver.findElement(By.id("results"));
+      List<WebElement> list2 = element.findElements(By.tagName("tr"));
+      Assert.assertTrue(list2.size() <= nbToPrint);
+    } while (++i < nbTest);
 
   }
 
@@ -190,15 +221,30 @@ public class SeleniumTest {
   public void fillFormWithValues(String computerName, LocalDate addIntroduced,
       LocalDate addDiscontinued) {
 
-    String strAddIntroduced = addIntroduced.toString();
-    String strAddDiscontinued = addDiscontinued.toString();
-    String[] splitDate = strAddIntroduced.split("-");
-    strAddIntroduced = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
-    splitDate = strAddDiscontinued.split("-");
-    strAddDiscontinued = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+    String strAddIntroduced = addIntroduced != null ? addIntroduced.toString() : "";
+    String strAddDiscontinued = addDiscontinued != null ? addDiscontinued.toString() : "";
+    String[] splitDate;
+    if (!strAddIntroduced.isEmpty()) {
+      splitDate = strAddIntroduced.split("-");
+      strAddIntroduced = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+    } else {
+      driver.findElement(By.id("introduced")).sendKeys(Keys.DELETE, Keys.TAB, Keys.DELETE, Keys.TAB,
+          Keys.DELETE);
+    }
+    if (!strAddDiscontinued.isEmpty()) {
+      splitDate = strAddDiscontinued.split("-");
+      strAddDiscontinued = splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0];
+    } else {
+      driver.findElement(By.id("discontinued")).sendKeys(Keys.DELETE, Keys.TAB, Keys.DELETE,
+          Keys.TAB, Keys.DELETE);
+    }
+
     driver.findElement(By.id("computerName")).clear();
+
     driver.findElement(By.id("computerName")).sendKeys(computerName);
+
     driver.findElement(By.id("introduced")).sendKeys(strAddIntroduced);
+
     driver.findElement(By.id("discontinued")).sendKeys(strAddDiscontinued);
     driver.findElement(By.id("submitForm")).click();
   }

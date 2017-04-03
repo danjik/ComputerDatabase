@@ -63,9 +63,14 @@
 			<version>1.7.22</version>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.6.1</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>1.1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -91,11 +96,6 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium-java.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-firefox-driver</artifactId>
-			<version>3.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -132,12 +132,12 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-
-
-
+		<dependency>
+			<groupId>io.gatling.highcharts</groupId>
+			<artifactId>gatling-charts-highcharts</artifactId>
+			<version>2.2.4</version>
+		</dependency>
 	</dependencies>
-
-
 
 	<reporting>
 		<plugins>

@@ -30,14 +30,20 @@ input[type='checkbox'] {
 
 #top-link-block.affix {
 	position: fixed; /* keeps it on the bottom once in view */
+	bottom: 140px;
+	right: 40px;
+}
+
+#bottom-link-block {
+	position: fixed; /* keeps it on the bottom once in view */
 	bottom: 80px;
 	right: 40px;
 }
 
-.fab-goto-top {
+.fab-goto-top, .fab-goto-bottom {
 	display: block;
-	width: 56px;
-	height: 56px;
+	width: 40px;
+	height: 40px;
 	background-color: #81D4FA;
 	border-radius: 50%;
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0

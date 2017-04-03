@@ -24,6 +24,7 @@ public class DashboardServlet extends HttpServlet {
   private List<ComputerDto> listComputerDto;
   private int nbComputerDto;
   private Map<String, String> options = new HashMap<>();
+  private Toaster toast;
 
   /**
    * Constructor of the servlet.
@@ -37,63 +38,27 @@ public class DashboardServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     this.doPost(req, resp);
-
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    Toaster toast;
+
     String action = req.getParameter("action") != null ? req.getParameter("action") : "";
     switch (action) {
       case "switchPage" :
-        int switchPage = req.getParameter("page").matches("^[0-9]*$")
-            ? Integer.valueOf(req.getParameter("page"))
-            : pageComputerDto.getNumPage() + 1;
-        if (switchPage - 1 >= 0 && switchPage - 1 <= pageComputerDto.getMaxPage()) {
-          pageComputerDto.setNumPage(--switchPage);
-        }
+        this.doSwitchPage(req);
         break;
       case "deleteComputer" :
 
-        String selection = req.getParameter("selection") != null
-            ? req.getParameter("selection")
-            : "";
-        String[] idsToDelete = selection.split(",");
-        for (String element : idsToDelete) {
-          if (element.matches("^[0-9]*$")) {
-            try {
-              ComputerService.INSTANCE.deleteComputer(Long.valueOf(element));
-              toast = Toaster.INSTANCE.getToast("Computer n°" + selection + " deleted !",
-                  Toaster.SUCCESS, 3000);
-              req.setAttribute("toast", toast);
-            } catch (ComputerDbException e) {
-              toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
-              req.setAttribute("toast", toast);
-            }
-          }
-        }
+        this.doDelete(req);
         break;
       case "changeNbComputer" :
-        int nbObjectPerPage = req.getParameter("nbObject").matches("^[0-9]*$")
-            ? Integer.valueOf(req.getParameter("nbObject"))
-            : 10;
-        Page.setNbObjectPerPage(nbObjectPerPage);
-        pageComputerDto.setNumPage(0);
+        this.doChangeNbComputer(req);
         break;
 
       case "option" :
-        String param = req.getParameter("param") != null ? req.getParameter("param") : "";
-        String value = req.getParameter("value") != null ? req.getParameter("value") : "";
-        if (param.equals("sort")) {
-          value += " asc";
-          if (options.get(param) != null && options.get(param).equals(value)) {
-            value = req.getParameter("value") + " desc";
-          }
-        }
-
-        options.put(param, value);
-        pageComputerDto.setNumPage(0);
+        this.doOptions(req);
         break;
       case "resetOptions" :
         options.clear();
@@ -114,6 +79,8 @@ public class DashboardServlet extends HttpServlet {
     }
 
     final int[] nbObjectAvailablePerPage = { 10, 50, 100 };
+    nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
+    Page.setNbObject(nbComputerDto);
     req.setAttribute("nbObjectAvailablePerPage", nbObjectAvailablePerPage);
     req.setAttribute("nbObjectPerPage", Page.getNbObjectPerPage());
     req.setAttribute("page", pageComputerDto.getNumPage());
@@ -122,6 +89,56 @@ public class DashboardServlet extends HttpServlet {
     req.setAttribute("listComputerDto", listComputerDto);
     req.setAttribute("options", options);
     req.getRequestDispatcher("/views/dashboard.jsp").forward(req, resp);
+  }
+
+  private void doOptions(HttpServletRequest req) {
+    String param = req.getParameter("param") != null ? req.getParameter("param") : "";
+    String value = req.getParameter("value") != null ? req.getParameter("value") : "";
+    if (param.equals("sort")) {
+      value += " asc";
+      if (options.get(param) != null && options.get(param).equals(value)) {
+        value = req.getParameter("value") + " desc";
+      }
+    }
+
+    options.put(param, value);
+    pageComputerDto.setNumPage(0);
+
+  }
+
+  private void doChangeNbComputer(HttpServletRequest req) {
+    int nbObjectPerPage = req.getParameter("nbObject").matches("^[0-9]*$")
+        ? Integer.valueOf(req.getParameter("nbObject"))
+        : 10;
+    Page.setNbObjectPerPage(nbObjectPerPage);
+    pageComputerDto.setNumPage(0);
+  }
+
+  private void doDelete(HttpServletRequest req) {
+    String selection = req.getParameter("selection") != null ? req.getParameter("selection") : "";
+    String[] idsToDelete = selection.split(",");
+    for (String element : idsToDelete) {
+      if (element.matches("^[0-9]*$")) {
+        try {
+          ComputerService.INSTANCE.deleteComputer(Long.valueOf(element));
+          toast = Toaster.INSTANCE.getToast("Computer n°" + selection + " deleted !",
+              Toaster.SUCCESS, 3000);
+          req.setAttribute("toast", toast);
+        } catch (ComputerDbException e) {
+          toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
+          req.setAttribute("toast", toast);
+        }
+      }
+    }
+  }
+
+  private void doSwitchPage(HttpServletRequest req) {
+    int switchPage = req.getParameter("page").matches("^[0-9]*$")
+        ? Integer.valueOf(req.getParameter("page"))
+        : pageComputerDto.getNumPage() + 1;
+    if (switchPage - 1 >= 0 && switchPage - 1 <= pageComputerDto.getMaxPage()) {
+      pageComputerDto.setNumPage(--switchPage);
+    }
   }
 
 }

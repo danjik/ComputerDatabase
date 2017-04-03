@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public enum CompanyDao implements ICompanyDao {
   INSTANCE;
-  private Logger logger = LoggerFactory.getLogger(CompanyDao.class);
+  private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
   @Override
   public List<Company> getAllCompany() throws ComputerDbException {

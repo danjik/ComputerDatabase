@@ -18,7 +18,7 @@ public enum ConnectionDb {
 
   private Logger logger = LoggerFactory.getLogger(ConnectionDb.class);
   private HikariConfig config;
-  private HikariDataSource hs;
+  private HikariDataSource hikariDataSource;
 
   /**
    * Simple private constructor.
@@ -31,13 +31,7 @@ public enum ConnectionDb {
       try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
         props.load(resourceStream);
         config = new HikariConfig(props);
-
-        config.setMaximumPoolSize(20);
-        config.setMinimumIdle(5);
-        config.setIdleTimeout(60 * 1000);
-        config.setConnectionTimeout(1000);
-        config.setMaxLifetime(287400);
-        hs = new HikariDataSource(config);
+        hikariDataSource = new HikariDataSource(config);
 
       }
     } catch (IOException e) {
@@ -52,10 +46,29 @@ public enum ConnectionDb {
    */
 
   public Connection getConnection() {
-    try {
-      return hs.getConnection();
-    } catch (SQLException e) {
-      throw new ComputerDbException(e.getMessage());
-    }
+    ThreadLocal<Connection> threadLocalConnection = new ThreadLocal<Connection>() {
+
+      @Override
+      protected Connection initialValue() {
+        // TODO Auto-generated method stub
+        try {
+          return hikariDataSource.getConnection();
+        } catch (SQLException e) {
+          throw new ComputerDbException(e.getMessage());
+        }
+      }
+
+      @Override
+      public void remove() {
+        super.remove();
+        try {
+          this.get().close();
+        } catch (Exception e) {
+          throw new ComputerDbException(e.getMessage());
+        }
+      }
+
+    };
+    return threadLocalConnection.get();
   }
 }

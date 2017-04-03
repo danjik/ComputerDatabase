@@ -10,7 +10,7 @@
 <link href="resources/css/font-awesome.css" rel="stylesheet"
 	media="screen">
 <link href="resources/css/main.css" rel="stylesheet" media="screen">
-<link href="resources/css/toaster.css" rel="stylesheet" media="screen"> 
+<link href="resources/css/toaster.css" rel="stylesheet" media="screen">
 
 </head>
 <body id="dashboard">
@@ -26,7 +26,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${ nbComputerDto } Computers found</h1>
+			<h1 id="homeTitle">${ nbComputerDto }Computers found</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left form-inline">
@@ -94,8 +94,8 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computerDto.id }"></td>
-							<td><a href="editComputer?id=${computerDto.id }" class="labelComputerName" onclick="">${ computerDto.name }</a>
-							</td>
+							<td><a href="editComputer?id=${computerDto.id }"
+								class="labelComputerName" onclick="">${ computerDto.name }</a></td>
 							<td class="labelIntroduced">${ computerDto.introduced }</td>
 							<td class="labelDiscontinued">${ computerDto.discontinued }</td>
 							<td>${ computerDto.companyDto.name }</td>
@@ -109,6 +109,12 @@
 		class="fab-content"
 		onclick="$('html,body').animate({scrollTop:0},'slow');return false;">
 			<i class="glyphicon glyphicon-chevron-up"></i>
+	</span>
+	</span>
+	<span id="bottom-link-block" class="hidden fab-goto-bottom"> <span
+		class="fab-content"
+		onclick="$('html,body').animate({scrollTop: $(document).height()},'slow');return false;">
+			<i class="glyphicon glyphicon-chevron-down"></i>
 	</span>
 	</span>
 
@@ -130,6 +136,7 @@
 							<c:if test="${ nbObject  == nbObjectPerPage}">
               <c:out value='class=active'/>
             </c:if>><a
+							id="nbObject${ nbObject }" class="nbObject"
 							href="dashboard?action=changeNbComputer&nbObject=${ nbObject }">${ nbObject }</a></li>
 					</c:forEach>
 				</ul>

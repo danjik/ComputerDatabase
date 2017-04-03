@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="resources/css/reset.css">
   <link rel="stylesheet" href="resources/css/index.css">
 </head>
-<body>
+<body id="cdb-panel">
 <div class="overlay">
 </div>
 
