@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class CompanyPresentation {
   private Page<CompanyDto> pageCompany;
-  private Logger logger = LoggerFactory.getLogger(CompanyPresentation.class);
+  private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
   /**
    * Presentation of all the company.

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-<property name="DEV_HOME" value="log" />
+<property name="DEV_HOME" value="/home/excilys/workspace/ComputerDatabase/log" />
 
   <appender name="FILE-AUDIT"
     class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${DEV_HOME}/debug.log</file>
+    <file>${DEV_HOME}/debug.test.log</file>
       <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
         <Pattern>
            %d{yyyy-MM-dd HH:mm:ss} - %msg%n
@@ -14,7 +14,7 @@
 
      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
      <!-- rollover daily -->
-     <fileNamePattern>${DEV_HOME}/archived/debug.%d{yyyy-MM-dd}.%i.log
+     <fileNamePattern>${DEV_HOME}/archived/debug.test.%d{yyyy-MM-dd}.%i.log
      </fileNamePattern>
      <timeBasedFileNamingAndTriggeringPolicy
         class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

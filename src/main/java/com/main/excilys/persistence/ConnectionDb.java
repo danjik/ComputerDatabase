@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public enum ConnectionDb {
   CONNECTION;
 
-  private Logger logger = LoggerFactory.getLogger(ConnectionDb.class);
+  private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
   private HikariConfig config;
   private HikariDataSource hikariDataSource;
 

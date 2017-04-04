@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class ComputerPresentation {
   private Page<ComputerDto> pageComputerDto;
-  private Logger logger = LoggerFactory.getLogger(ComputerPresentation.class);
+  private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
   /**
    * Print a single computer details.

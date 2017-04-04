@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class SecureInput {
   private static Scanner scan = new Scanner(System.in);
-  private static Logger logger = LoggerFactory.getLogger(SecureInput.class);
+  private static Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
   /**
    * Get a secure valid positive int.

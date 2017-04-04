@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public enum ComputerDao implements IComputerDao {
   INSTANCE;
 
-  private Logger logger = LoggerFactory.getLogger(ComputerDao.class);
+  private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
   private static final int COMPUTER_ID_COLUMN = 1;
   private static final int COMPUTER_NAME_COLUMN = 2;
   private static final int COMPUTER_INTRODUCED_COLUMN = 3;
