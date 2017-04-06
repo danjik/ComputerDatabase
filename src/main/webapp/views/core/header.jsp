@@ -4,5 +4,5 @@
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <div class="container nav">
-  <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+  <a class="navbar-brand" href="dashboard?sort=${ options.sort }&search=${options.search }"> Application - Computer Database </a>
 </div>

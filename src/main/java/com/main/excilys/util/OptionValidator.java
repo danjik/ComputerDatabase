@@ -19,21 +19,28 @@ public enum OptionValidator {
     options.forEach((key, value) -> {
       switch (key) {
         case "search" :
-          if (value != null && !value.isEmpty() && !value.matches("^[a-zA-Z0-9 -.]+$")) {
-            System.out.println("The search value : " + value + " is incorrect");
+          if (!value.isEmpty() && value != null && !value.matches("^[a-zA-Z0-9 -.]+$")) {
             options.remove(key);
             throw new ComputerDbException("The search value : " + value + " is incorrect");
           }
           break;
-        case "sort" :
-          String[] correctOptions = { "computer.name", "computer.introduced",
-              "computer.discontinued", "company.name" };
-          if (!Stream.of(correctOptions).anyMatch(str -> (str + " asc").equals(value))
-              && !Stream.of(correctOptions).anyMatch(str -> (str + " desc").equals(value))) {
-            System.out.println("The sort value : " + value + " is incorrect");
-            options.remove(key);
-            throw new ComputerDbException("The sort value : " + value + " is incorrect");
+        case "column" :
+          if (!value.isEmpty()) {
+            String[] correctOptions = { "computer.name", "computer.introduced",
+                "computer.discontinued", "company.name" };
+            /*
+             * if (!Stream.of(correctOptions).anyMatch(str -> (str + " asc").equals(value.trim()))
+             * && !Stream.of(correctOptions) .anyMatch(str -> (str + " desc").equals(value.trim())))
+             * { System.out.println("The sort value : " + value + " is incorrect");
+             * options.remove(key); throw new ComputerDbException("The sort value : " + value +
+             * " is incorrect"); }
+             */
+            if (!Stream.of(correctOptions).anyMatch(str -> str.equals(value.trim()))) {
+              options.remove(key);
+              throw new ComputerDbException("The sort value : " + value + " is incorrect");
+            }
           }
+
           break;
 
         default :

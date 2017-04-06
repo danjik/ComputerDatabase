@@ -10,6 +10,8 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 public class PaginationTag extends SimpleTagSupport {
   private int numPage;
   private int maxPage;
+  private String column;
+  private String search;
 
   @Override
   public void doTag() throws JspException, IOException {
@@ -33,10 +35,14 @@ public class PaginationTag extends SimpleTagSupport {
         out.println("class=active");
 
       }
-      out.println(
-          "><a href='dashboard?action=switchPage&page=" + element + "'>" + element + "</a></li>");
+      out.println("><a href='dashboard?action=switchPage&page=" + element + "&column=+" + column
+          + "&search=" + search + "'>" + element + "</a></li>");
     }
 
+  }
+
+  public void setColumn(String column) {
+    this.column = column;
   }
 
   public void setNumPage(int numPage) {
@@ -45,5 +51,9 @@ public class PaginationTag extends SimpleTagSupport {
 
   public void setMaxPage(int maxPage) {
     this.maxPage = maxPage;
+  }
+
+  public void setSearch(String search) {
+    this.search = search;
   }
 }

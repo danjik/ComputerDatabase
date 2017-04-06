@@ -26,21 +26,22 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${ nbComputerDto }Computers found</h1>
+			<h1 id="homeTitle">${ nbComputerDto } Computers found</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left form-inline">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
-						<input type="hidden" name="action" value="option"> <input
-							type="hidden" name="param" value="search"> <input
-							type="search" id="searchbox" name="value"
+						<input type="hidden" name="page" value="${ 0 }" /><input
+							type="hidden" name="column" value="${ option.column }" /> <input
+							type="search" id="searchbox" name="search"
 							pattern="^[a-zA-Z0-9 .-]+$" class="form-control"
 							placeholder="Search name" /> <input type="submit"
 							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 					<a class="btn btn-danger btn-md"
-						href="dashboard?action=resetOptions"> Reset Options</a>
+						href="dashboard?action=resetOptions&page=${ 0 }&column=&search=">
+						Reset Options</a>
 					<c:if test="${fn:length(options) > 0 }">
 						<p class="options">
 							<span>Actual options</span>
@@ -76,16 +77,16 @@
 							</a>
 						</span></th>
 						<th class="sortCol"><a
-							href="dashboard?action=option&param=sort&value=computer.name">Computer
+							href="dashboard?column=computer.name&search=${options.search}">Computer
 								name</a></th>
 						<th class="sortCol"><a
-							href="dashboard?action=option&param=sort&value=computer.introduced">Introduced
+							href="dashboard?column=computer.introduced&search=${options.search}">Introduced
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?action=option&param=sort&value=computer.discontinued">Discontinued
+							href="dashboard?column=computer.discontinued&search=${options.search}">Discontinued
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?action=option&param=sort&value=company.name">Company</a></th>
+							href="dashboard?column=company.name&search=${options.search}">Company</a></th>
 
 					</tr>
 				</thead>
@@ -122,11 +123,16 @@
 		<%@ include file="core/footer.jsp"%>
 		<div class="container text-center">
 			<ul class="pagination">
-				<page:link numPage="0" type="first" label="&laquo;" />
-				<page:link numPage="${ page-1 }" type="previous" label="&lt;" />
-				<page:pagination numPage="${ page }" maxPage="${ maxPage }" />
-				<page:link numPage="${ page+1 }" type="next" label="&gt;" />
-				<page:link numPage="${ maxPage }" type="last" label="&raquo;" />
+				<page:link numPage="0" type="first" label="&laquo;"
+					column="${options.column }" search="${ options.search }" />
+				<page:link numPage="${ page-1 }" type="previous" label="&lt;"
+					column="${options.column }" search="${ options.search }" />
+				<page:pagination numPage="${ page }" maxPage="${ maxPage }"
+					column="${options.column }" search="${ options.search }" />
+				<page:link numPage="${ page+1 }" type="next" label="&gt;"
+					column="${options.column }" search="${ options.search }" />
+				<page:link numPage="${ maxPage }" type="last" label="&raquo;"
+					column="${options.column }" search="${ options.search }" />
 			</ul>
 
 			<div class="pull-right" role="group">
@@ -137,7 +143,7 @@
               <c:out value='class=active'/>
             </c:if>><a
 							id="nbObject${ nbObject }" class="nbObject"
-							href="dashboard?action=changeNbComputer&nbObject=${ nbObject }">${ nbObject }</a></li>
+							href="dashboard?action=changeNbComputer&nbObject=${ nbObject }&column=${ options.column }&search=${options.search}">${ nbObject }</a></li>
 					</c:forEach>
 				</ul>
 			</div>

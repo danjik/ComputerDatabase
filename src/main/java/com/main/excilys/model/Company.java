@@ -8,11 +8,11 @@ public class Company {
   public static class Builder {
     private long id;
     private String name;
+
     /**
      * Add id to the builder.
      *
-     * @param id
-     *          the id to set
+     * @param id the id to set
      * @return the updated builder
      */
 
@@ -20,11 +20,11 @@ public class Company {
       this.id = id;
       return this;
     }
+
     /**
      * Add name to the builder.
      *
-     * @param name
-     *          the name to set
+     * @param name the name to set
      * @return the updated builder
      */
 
@@ -32,6 +32,7 @@ public class Company {
       this.name = name;
       return this;
     }
+
     /**
      * Return the corresponding CompanyDto of the builder.
      *
@@ -42,13 +43,12 @@ public class Company {
       return new Company(id, name);
     }
   }
+
   /**
    * Full constructor used by the builder.
    *
-   * @param id
-   *          id
-   * @param name
-   *          name
+   * @param id   id
+   * @param name name
    */
 
   private Company(long id, String name) {

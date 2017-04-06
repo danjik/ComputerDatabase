@@ -7,6 +7,7 @@ import com.main.excilys.service.ComputerService;
 import com.main.excilys.util.ComputerDbException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,19 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
   private static final long serialVersionUID = 2964121582458094059L;
-  private Page<ComputerDto> pageComputerDto;
-  private List<ComputerDto> listComputerDto;
-  private int nbComputerDto;
-  private Map<String, String> options = new HashMap<>();
   private Toaster toast;
-
-  /**
-   * Constructor of the servlet.
-   */
-  public DashboardServlet() {
-    nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
-    pageComputerDto = new Page<>(nbComputerDto);
-  }
+  private static final int[] nbObjectAvailablePerPage = { 10, 50, 100 };
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -43,23 +33,28 @@ public class DashboardServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    Map<String, String> options = new HashMap<>();
+    String search = req.getParameter("search") != null ? req.getParameter("search") : "";
+    options.put("search", search);
+    String column = req.getParameter("column") != null ? req.getParameter("column") : "";
+    options.put("column", column);
+    int nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
+    Page<ComputerDto> pageComputerDto = new Page<>(nbComputerDto);
+    List<ComputerDto> listComputerDto = new ArrayList<>();
 
     String action = req.getParameter("action") != null ? req.getParameter("action") : "";
     switch (action) {
       case "switchPage" :
-        this.doSwitchPage(req);
+        this.doSwitchPage(req, pageComputerDto);
         break;
       case "deleteComputer" :
 
         this.doDelete(req);
         break;
       case "changeNbComputer" :
-        this.doChangeNbComputer(req);
+        this.doChangeNbComputer(req, pageComputerDto);
         break;
 
-      case "option" :
-        this.doOptions(req);
-        break;
       case "resetOptions" :
         options.clear();
         break;
@@ -67,7 +62,7 @@ public class DashboardServlet extends HttpServlet {
         break;
     }
     try {
-      int nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
+      nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
       Page.setNbObject(nbComputerDto);
       int numPage = pageComputerDto.getNumPage();
       long idBegin = numPage * Page.getNbObjectPerPage();
@@ -77,8 +72,6 @@ public class DashboardServlet extends HttpServlet {
       toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
       req.setAttribute("toast", toast);
     }
-
-    final int[] nbObjectAvailablePerPage = { 10, 50, 100 };
     nbComputerDto = ComputerService.INSTANCE.getNbComputer(options);
     Page.setNbObject(nbComputerDto);
     req.setAttribute("nbObjectAvailablePerPage", nbObjectAvailablePerPage);
@@ -91,22 +84,7 @@ public class DashboardServlet extends HttpServlet {
     req.getRequestDispatcher("/views/dashboard.jsp").forward(req, resp);
   }
 
-  private void doOptions(HttpServletRequest req) {
-    String param = req.getParameter("param") != null ? req.getParameter("param") : "";
-    String value = req.getParameter("value") != null ? req.getParameter("value") : "";
-    if (param.equals("sort")) {
-      value += " asc";
-      if (options.get(param) != null && options.get(param).equals(value)) {
-        value = req.getParameter("value") + " desc";
-      }
-    }
-
-    options.put(param, value);
-    pageComputerDto.setNumPage(0);
-
-  }
-
-  private void doChangeNbComputer(HttpServletRequest req) {
+  private void doChangeNbComputer(HttpServletRequest req, Page<ComputerDto> pageComputerDto) {
     int nbObjectPerPage = req.getParameter("nbObject").matches("^[0-9]*$")
         ? Integer.valueOf(req.getParameter("nbObject"))
         : 10;
@@ -132,7 +110,7 @@ public class DashboardServlet extends HttpServlet {
     }
   }
 
-  private void doSwitchPage(HttpServletRequest req) {
+  private void doSwitchPage(HttpServletRequest req, Page<ComputerDto> pageComputerDto) {
     int switchPage = req.getParameter("page").matches("^[0-9]*$")
         ? Integer.valueOf(req.getParameter("page"))
         : pageComputerDto.getNumPage() + 1;

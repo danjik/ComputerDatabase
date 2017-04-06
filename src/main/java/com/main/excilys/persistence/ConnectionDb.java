@@ -19,6 +19,7 @@ public enum ConnectionDb {
   private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
   private HikariConfig config;
   private HikariDataSource hikariDataSource;
+  private final ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 
   /**
    * Simple private constructor.
@@ -32,12 +33,17 @@ public enum ConnectionDb {
         props.load(resourceStream);
         config = new HikariConfig(props);
         hikariDataSource = new HikariDataSource(config);
-
       }
     } catch (IOException e) {
       logger.error("ConnectionDB : " + e.getMessage());
       throw new ComputerDbException(e);
     }
+    Runtime.getRuntime().addShutdownHook(new Thread() {
+      @Override
+      public void run() {
+        hikariDataSource.close();
+      }
+    });
   }
   /**
    * Method to get an instance of SQL connection.
@@ -46,29 +52,14 @@ public enum ConnectionDb {
    */
 
   public Connection getConnection() {
-    ThreadLocal<Connection> threadLocalConnection = new ThreadLocal<Connection>() {
+    try {
+      if (threadLocal.get() == null || threadLocal.get().isClosed()) {
+        threadLocal.set(hikariDataSource.getConnection());
 
-      @Override
-      protected Connection initialValue() {
-        // TODO Auto-generated method stub
-        try {
-          return hikariDataSource.getConnection();
-        } catch (SQLException e) {
-          throw new ComputerDbException(e.getMessage());
-        }
       }
-
-      @Override
-      public void remove() {
-        super.remove();
-        try {
-          this.get().close();
-        } catch (Exception e) {
-          throw new ComputerDbException(e.getMessage());
-        }
-      }
-
-    };
-    return threadLocalConnection.get();
+    } catch (SQLException e) {
+      throw new ComputerDbException(e.getMessage());
+    }
+    return threadLocal.get();
   }
 }

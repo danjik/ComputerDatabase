@@ -1,6 +1,5 @@
 package com.main.excilys.mapper;
 
-import com.main.excilys.model.Company;
 import com.main.excilys.model.CompanyDto;
 
 public enum CompanyToDtoMapper {
@@ -9,18 +8,17 @@ public enum CompanyToDtoMapper {
   /**
    * Pass a companyDto to a company.
    *
-   * @param companyDto
-   *          the data transfers representation of of a company
+   * @param companyDto the data transfers representation of of a company
    * @return the corresponding company
    */
   public Company toCompany(CompanyDto companyDto) {
     return new Company.Builder().id(companyDto.getId()).name(companyDto.getName()).build();
   }
+
   /**
    * Pass a company to a companyDto.
    *
-   * @param company
-   *          the company
+   * @param company the company
    * @return the corresponding data transfers representation company
    */
 
