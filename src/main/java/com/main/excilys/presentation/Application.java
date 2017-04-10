@@ -45,14 +45,14 @@ public class Application {
               computerView.updateComputer(id);
               break;
             case 7 :
-              computerView.listComputerByPage();
+              // computerView.listComputerByPage();
               break;
             case 8 :
               companyView.listAllCompany();
               break;
 
             case 9 :
-              companyView.listCompanyByPage();
+              // companyView.listCompanyByPage();
               break;
 
             case 10 :

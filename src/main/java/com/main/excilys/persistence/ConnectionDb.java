@@ -32,6 +32,7 @@ public enum ConnectionDb {
       try (InputStream resourceStream = loader.getResourceAsStream(resourceName)) {
         props.load(resourceStream);
         config = new HikariConfig(props);
+
         hikariDataSource = new HikariDataSource(config);
       }
     } catch (IOException e) {
@@ -55,7 +56,6 @@ public enum ConnectionDb {
     try {
       if (threadLocal.get() == null || threadLocal.get().isClosed()) {
         threadLocal.set(hikariDataSource.getConnection());
-
       }
     } catch (SQLException e) {
       throw new ComputerDbException(e.getMessage());

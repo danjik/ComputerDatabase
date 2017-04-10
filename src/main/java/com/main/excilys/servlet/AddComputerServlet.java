@@ -2,13 +2,13 @@ package com.main.excilys.servlet;
 
 import com.main.excilys.model.CompanyDto;
 import com.main.excilys.model.ComputerDto;
+import com.main.excilys.model.Page;
 import com.main.excilys.presentation.Toaster;
 import com.main.excilys.service.CompanyService;
 import com.main.excilys.service.ComputerService;
 import com.main.excilys.util.ComputerDbException;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,34 +33,28 @@ public class AddComputerServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.getAllCompany();
-    String action = req.getParameter("action") != null ? req.getParameter("action") : "";
-    switch (action) {
-      case "addComputer" :
-        String name = req.getParameter("computerName");
-        String discontinued = req.getParameter("discontinued");
-        String introduced = req.getParameter("introduced");
-        CompanyDto companyDto = CompanyService.INSTANCE
-            .getCompanyById(Long.valueOf(req.getParameter("companyId")));
-        try {
-          ComputerDto newComputerDto = new ComputerDto.Builder().name(name).introduced(introduced)
-              .discontinued(discontinued).companyDto(companyDto).build();
-          long idCreate = ComputerService.INSTANCE.createComputer(newComputerDto);
-          Toaster toast = Toaster.INSTANCE.getToast("Computer n°" + idCreate + " created !",
-              Toaster.SUCCESS, 3000);
-          req.setAttribute("toast", toast);
-        } catch (ComputerDbException e) {
-          Toaster toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
-          req.setAttribute("toast", toast);
-        }
 
-        break;
+    String name = req.getParameter("computerName");
+    String discontinued = req.getParameter("discontinued");
+    String introduced = req.getParameter("introduced");
+    Long idCompanyDto = req.getParameter("companyId") != null
+        ? Long.valueOf(req.getParameter("companyId"))
+        : 0;
+    CompanyDto companyDto = new CompanyDto.Builder().id(idCompanyDto).build();
+    try {
 
-      default :
-        break;
+      ComputerDto newComputerDto = new ComputerDto.Builder().name(name).introduced(introduced)
+          .discontinued(discontinued).companyDto(companyDto).build();
+      long idCreate = ComputerService.INSTANCE.createComputer(newComputerDto);
+      Toaster toast = Toaster.INSTANCE.getToast("Computer n°" + idCreate + " created !",
+          Toaster.SUCCESS, 3000);
+      req.setAttribute("toast", toast);
+      Page.incrementNbObject();
+    } catch (ComputerDbException e) {
+      Toaster toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
+      req.setAttribute("toast", toast);
     }
-
-    req.setAttribute("listCompanyDto", listCompanyDto);
+    req.setAttribute("listCompanyDto", CompanyService.INSTANCE.listCompanyDto);
     req.getRequestDispatcher("/views/addComputer.jsp").forward(req, resp);
   }
 

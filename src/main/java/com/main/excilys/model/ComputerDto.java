@@ -3,6 +3,7 @@ package com.main.excilys.model;
 import com.main.excilys.util.ComputerDbException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class ComputerDto {
@@ -53,14 +54,14 @@ public class ComputerDto {
      */
 
     public Builder discontinued(String discontinued) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
       try {
         this.discontinued = discontinued != null && !discontinued.isEmpty()
-            ? LocalDate.parse(discontinued)
+            ? LocalDate.parse(discontinued, formatter)
             : null;
         return this;
       } catch (DateTimeParseException e) {
         throw new ComputerDbException("The date : " + discontinued + " is invalid");
-
       }
     }
 
@@ -85,9 +86,10 @@ public class ComputerDto {
      */
 
     public Builder introduced(String introduced) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
       try {
         this.introduced = introduced != null && !introduced.isEmpty()
-            ? LocalDate.parse(introduced)
+            ? LocalDate.parse(introduced, formatter)
             : null;
         return this;
       } catch (DateTimeParseException e) {
@@ -186,8 +188,9 @@ public class ComputerDto {
    */
   public void setDiscontinued(String discontinued) {
     try {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
       this.discontinued = discontinued != null && !discontinued.isEmpty()
-          ? LocalDate.parse(discontinued)
+          ? LocalDate.parse(discontinued, formatter)
           : null;
     } catch (DateTimeParseException e) {
       throw new ComputerDbException("The date : " + discontinued + " is invalid");
@@ -204,8 +207,9 @@ public class ComputerDto {
 
   public void setIntroduced(String introduced) {
     try {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
       this.introduced = introduced != null && !introduced.isEmpty()
-          ? LocalDate.parse(introduced)
+          ? LocalDate.parse(introduced, formatter)
           : null;
     } catch (DateTimeParseException e) {
       throw new ComputerDbException("The date : " + introduced + " is invalid");

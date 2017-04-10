@@ -36,6 +36,12 @@
 			<type>string</type>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>nbObject</name>
+			<required>true</required>
+			<type>number</type>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 		<name>pagination</name>
@@ -63,6 +69,12 @@
 			<name>search</name>
 			<required>true</required>
 			<type>string</type>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>nbObject</name>
+			<required>true</required>
+			<type>number</type>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>

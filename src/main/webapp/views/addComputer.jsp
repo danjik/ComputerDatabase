@@ -26,8 +26,7 @@
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" name="computerName" class="form-control"
-									pattern="^[a-zA-Z0-9][a-zA-Z0-9 .-][a-zA-Z0-9 .-]+$" id="computerName"
+									type="text" name="computerName" class="form-control" id="computerName"
                   oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
 									placeholder="Computer name" required/>
 							</div>
@@ -61,5 +60,6 @@
 		</div>
 	</section>
 	<%@ include file="core/footer.jsp"%>
+	<script src="resources/js/addComputer.js"></script>
 </body>
 </html>

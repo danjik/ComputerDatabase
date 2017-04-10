@@ -1,21 +1,24 @@
 package com.main.excilys.model;
 
-public class Page<E> {
+import com.main.excilys.service.ComputerService;
+
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
+public class Page {
   private int numPage = 0;
 
-  private static int nbObject;
-  private static int nbObjectPerPage = 10;
-  private static int maxPage;
+  public static int nbObject;
+  private int nbObjectPerPage = 10;
+  private int maxPage;
 
   /**
    * Simple constructor with the number of project.
-   *
-   * @param nbObject
-   *          the number of project
    */
-  public Page(int nbObject) {
-    Page.nbObject = nbObject;
-    Page.setMaxPage(Page.nbObject / Page.nbObjectPerPage);
+  public Page() {
+    CompletableFuture
+        .supplyAsync(() -> Page.nbObject = ComputerService.INSTANCE.getNbComputer(new HashMap<>()))
+        .thenRun(() -> this.setMaxPage(Page.nbObject / nbObjectPerPage));
   }
 
   /**
@@ -24,9 +27,6 @@ public class Page<E> {
    * @return the n° of the actual page
    */
   public int getNumPage() {
-    if (nbObject != 0 && nbObject % nbObjectPerPage == 0) {
-      numPage = maxPage - 1;
-    }
     return numPage;
   }
 
@@ -74,7 +74,7 @@ public class Page<E> {
     this.numPage--;
   }
 
-  public static int getNbObjectPerPage() {
+  public int getNbObjectPerPage() {
     return nbObjectPerPage;
   }
 
@@ -84,13 +84,13 @@ public class Page<E> {
    * @param nbObjectPerPage
    *          the number of object
    */
-  public static void setNbObjectPerPage(int nbObjectPerPage) {
-    Page.nbObjectPerPage = nbObjectPerPage;
-    Page.setMaxPage(Page.nbObject / Page.nbObjectPerPage);
+  public void setNbObjectPerPage(int nbObjectPerPage) {
+    this.nbObjectPerPage = nbObjectPerPage;
+    this.setMaxPage(Page.nbObject / nbObjectPerPage);
   }
 
   public int getMaxPage() {
-    return Page.maxPage;
+    return maxPage;
   }
 
   /**
@@ -99,17 +99,22 @@ public class Page<E> {
    * @param maxPage
    *          the maxPage to set
    */
-  public static void setMaxPage(int maxPage) {
+  public void setMaxPage(int maxPage) {
     if (nbObject != 0 && nbObject % nbObjectPerPage > 0) {
-      Page.maxPage = maxPage;
+      this.maxPage = maxPage;
     } else {
-      Page.maxPage = maxPage - 1;
+      this.maxPage = maxPage - 1;
     }
 
   }
 
-  public static void setNbObject(int nbObject) {
-    Page.nbObject = nbObject;
-    Page.setMaxPage(Page.nbObject / Page.nbObjectPerPage);
+  public static void decrementNbObject() {
+    nbObject--;
+
+  }
+
+  public static void incrementNbObject() {
+    nbObject++;
+
   }
 }

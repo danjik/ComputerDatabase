@@ -2,7 +2,6 @@ package com.main.excilys.presentation;
 
 import com.main.excilys.model.CompanyDto;
 import com.main.excilys.model.ComputerDto;
-import com.main.excilys.model.Page;
 import com.main.excilys.service.ComputerService;
 import com.main.excilys.util.ComputerDbException;
 
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ComputerPresentation {
-  private Page<ComputerDto> pageComputerDto;
   private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
   /**
@@ -98,11 +96,9 @@ public class ComputerPresentation {
    * @throws ComputerDbException
    *           exception
    */
-  public void listComputerByPage() throws ComputerDbException {
-    logger.debug("Access to company page n°" + pageComputerDto.getNumPage());
-    long idBegin = pageComputerDto.getNumPage() * Page.getNbObjectPerPage();
-    long idEnd = pageComputerDto.getNumPage() * Page.getNbObjectPerPage()
-        + Page.getNbObjectPerPage();
+  public void listComputerByPage(int numPage, int nbObjectPerPage) throws ComputerDbException {
+    long idBegin = numPage * nbObjectPerPage;
+    long idEnd = numPage * nbObjectPerPage + nbObjectPerPage;
     ComputerService.INSTANCE.getComputerInRange(idBegin, idEnd, new HashMap<>())
         .forEach(computer -> System.out.println(computer));
   }

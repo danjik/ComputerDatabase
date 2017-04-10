@@ -19,7 +19,7 @@ public enum OptionValidator {
     options.forEach((key, value) -> {
       switch (key) {
         case "search" :
-          if (!value.isEmpty() && value != null && !value.matches("^[a-zA-Z0-9 -.]+$")) {
+          if (!value.isEmpty() && value != null && !value.matches("^[a-zA-Z0-9 ._-]+$")) {
             options.remove(key);
             throw new ComputerDbException("The search value : " + value + " is incorrect");
           }

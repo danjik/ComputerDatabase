@@ -70,10 +70,10 @@ public class ComputerDaoTest {
 
   @Test(expected = ComputerDbException.class)
   public void testCreateComputerMinCharName() {
-    List<CompanyDto> listCompany = CompanyService.INSTANCE.getAllCompany();
+    List<CompanyDto> listCompany = CompanyService.INSTANCE.listCompanyDto;
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name("aa").introduced(emptyStr)
+    ComputerDto newComputerDto = new ComputerDto.Builder().name("").introduced(emptyStr)
         .discontinued(emptyStr).companyDto(randomCompany).build();
     ComputerService.INSTANCE.createComputer(newComputerDto);
   }
@@ -174,7 +174,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = CompanyService.INSTANCE.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputer = new ComputerDto.Builder().name("aa").introduced(emptyStr)
+    ComputerDto newComputer = new ComputerDto.Builder().name("").introduced(emptyStr)
         .discontinued(emptyStr).companyDto(randomCompany).build();
     ComputerService.INSTANCE.updateComputer(newComputer);
   }

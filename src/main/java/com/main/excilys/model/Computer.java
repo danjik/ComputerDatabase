@@ -181,8 +181,6 @@ public class Computer {
       return false;
     }
     Computer other = (Computer) obj;
-    System.out.println(this);
-    System.out.println(other);
     if (company.equals(other.company)) {
       return false;
     }

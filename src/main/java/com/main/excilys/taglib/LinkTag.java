@@ -13,12 +13,13 @@ public class LinkTag extends SimpleTagSupport {
   private String type;
   private String search;
   private String column;
+  private int nbObject;
 
   @Override
   public void doTag() throws JspException, IOException {
     JspWriter out = this.getJspContext().getOut();
-    out.println("<li><a href='dashboard?action=switchPage&page=" + (numPage + 1) + "&sort=" + column
-        + "&search=" + search + "'aria-label='" + type + "' id='" + type
+    out.println("<li><a href='dashboard?page=" + numPage + "&column=" + column + "&search=" + search
+        + "&nbObject=" + nbObject + "'aria-label='" + type + "' id='" + type
         + "'><span aria-hidden='true'>" + label + "</span></a></li>");
   }
 
@@ -40,6 +41,10 @@ public class LinkTag extends SimpleTagSupport {
 
   public void setSearch(String search) {
     this.search = search;
+  }
+
+  public void setNbObject(int nbObject) {
+    this.nbObject = nbObject;
   }
 
 }

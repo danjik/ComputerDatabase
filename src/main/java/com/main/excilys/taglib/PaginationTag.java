@@ -12,6 +12,7 @@ public class PaginationTag extends SimpleTagSupport {
   private int maxPage;
   private String column;
   private String search;
+  private int nbObject;
 
   @Override
   public void doTag() throws JspException, IOException {
@@ -35,8 +36,8 @@ public class PaginationTag extends SimpleTagSupport {
         out.println("class=active");
 
       }
-      out.println("><a href='dashboard?action=switchPage&page=" + element + "&column=+" + column
-          + "&search=" + search + "'>" + element + "</a></li>");
+      out.println("><a href='dashboard?page=" + (element - 1) + "&column=" + column + "&search="
+          + search + "&nbObject=" + nbObject + "'>" + element + "</a></li>");
     }
 
   }
@@ -55,5 +56,9 @@ public class PaginationTag extends SimpleTagSupport {
 
   public void setSearch(String search) {
     this.search = search;
+  }
+
+  public void setNbObject(int nbObject) {
+    this.nbObject = nbObject;
   }
 }

@@ -31,7 +31,6 @@
             <div class="form-group">
               <label for="computerName">Computer name</label> <input
               type="text" class="form-control" name="computerName" id="computerName"
-              pattern="^[a-zA-Z0-9][a-zA-Z0-9 .-][a-zA-Z0-9 .-]+$"
               oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
               value="${ computerToEdit.name }" placeholder="Computer name" required>
             </div>

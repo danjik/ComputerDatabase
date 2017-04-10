@@ -33,14 +33,14 @@
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
 						<input type="hidden" name="page" value="${ 0 }" /><input
-							type="hidden" name="column" value="${ option.column }" /> <input
-							type="search" id="searchbox" name="search"
-							pattern="^[a-zA-Z0-9 .-]+$" class="form-control"
+							type="hidden" name="nbObject" value="${ nbObjectPerPage }" /> <input
+							type="hidden" name="column" value="${ option.column }" /><input
+							type="search" id="searchbox" name="search" class="form-control"
 							placeholder="Search name" /> <input type="submit"
 							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 					<a class="btn btn-danger btn-md"
-						href="dashboard?action=resetOptions&page=${ 0 }&column=&search=">
+						href="dashboard?action=resetOptions&page=${ 0 }&column=&search=&nbObject=10">
 						Reset Options</a>
 					<c:if test="${fn:length(options) > 0 }">
 						<p class="options">
@@ -61,6 +61,10 @@
 
 		<form id="deleteForm" action="dashboard?action=deleteComputer"
 			method="POST">
+			<input type="hidden" name="nbObject" value="${ nbObjectPerPage }" />
+			<input type="hidden" name="page" value="${ page+1 }" />
+			<input type="hidden" name="column" value="${ options.column }" />
+			<input type="hidden" name="search" value="${ options.search }" />
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -77,16 +81,16 @@
 							</a>
 						</span></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.name&search=${options.search}">Computer
+							href="dashboard?column=computer.name&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Computer
 								name</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.introduced&search=${options.search}">Introduced
+							href="dashboard?column=computer.introduced&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Introduced
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.discontinued&search=${options.search}">Discontinued
+							href="dashboard?column=computer.discontinued&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Discontinued
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=company.name&search=${options.search}">Company</a></th>
+							href="dashboard?column=company.name&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Company</a></th>
 
 					</tr>
 				</thead>
@@ -124,15 +128,15 @@
 		<div class="container text-center">
 			<ul class="pagination">
 				<page:link numPage="0" type="first" label="&laquo;"
-					column="${options.column }" search="${ options.search }" />
+					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
 				<page:link numPage="${ page-1 }" type="previous" label="&lt;"
-					column="${options.column }" search="${ options.search }" />
+					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
 				<page:pagination numPage="${ page }" maxPage="${ maxPage }"
-					column="${options.column }" search="${ options.search }" />
+					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
 				<page:link numPage="${ page+1 }" type="next" label="&gt;"
-					column="${options.column }" search="${ options.search }" />
+					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
 				<page:link numPage="${ maxPage }" type="last" label="&raquo;"
-					column="${options.column }" search="${ options.search }" />
+					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
 			</ul>
 
 			<div class="pull-right" role="group">
@@ -143,7 +147,7 @@
               <c:out value='class=active'/>
             </c:if>><a
 							id="nbObject${ nbObject }" class="nbObject"
-							href="dashboard?action=changeNbComputer&nbObject=${ nbObject }&column=${ options.column }&search=${options.search}">${ nbObject }</a></li>
+							href="dashboard?page=${0 }&nbObject=${ nbObject }&column=${ options.column }&search=${options.search}">${ nbObject }</a></li>
 					</c:forEach>
 				</ul>
 			</div>

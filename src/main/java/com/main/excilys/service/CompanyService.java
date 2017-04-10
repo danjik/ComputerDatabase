@@ -11,8 +11,16 @@ import java.util.List;
 public enum CompanyService {
 
   INSTANCE;
+  public List<CompanyDto> listCompanyDto = new ArrayList<>();
 
   private ICompanyDao intCompanyDao = CompanyDao.INSTANCE;
+
+  private CompanyService() {
+    CompanyDao.listCompany.forEach(company -> {
+      CompanyDto companyDto = CompanyToDtoMapper.INSTANCE.toCompanyDto(company);
+      listCompanyDto.add(companyDto);
+    });
+  }
 
   /**
    * Method to get all the company.
@@ -20,10 +28,6 @@ public enum CompanyService {
    * @return list of the company
    */
   public List<CompanyDto> getAllCompany() {
-    List<CompanyDto> listCompanyDto = new ArrayList<>();
-    intCompanyDao.getAllCompany().forEach(company -> {
-      listCompanyDto.add(CompanyToDtoMapper.INSTANCE.toCompanyDto(company));
-    });
     return listCompanyDto;
   }
 
@@ -40,7 +44,7 @@ public enum CompanyService {
   }
 
   public int getNbCompany() {
-    return intCompanyDao.getNbCompany();
+    return listCompanyDto.size();
   }
 
   /**
