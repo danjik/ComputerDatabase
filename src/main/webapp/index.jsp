@@ -9,7 +9,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>Computer Database</title>
+  <title>Computer Databazeazezaezaezeaease</title>
   <link rel="stylesheet" href="resources/css/reset.css">
   <link rel="stylesheet" href="resources/css/index.css">
 </head>
