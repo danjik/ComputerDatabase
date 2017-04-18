@@ -22,8 +22,8 @@ public enum ComputerService {
    */
   public List<ComputerDto> getAllComputer() {
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getAllComputer().forEach(
-        computer -> listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer)));
+    intComputerDao.getAllComputer()
+        .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
     return listAllComputerDto;
   }
 
@@ -35,7 +35,7 @@ public enum ComputerService {
    * @return the computer selected
    */
   public ComputerDto getComputerById(long idToSelect) {
-    return ComputerToDtoMapper.INSTANCE.toComputerDto(intComputerDao.getComputerById(idToSelect));
+    return ComputerToDtoMapper.toComputerDto(intComputerDao.getComputerById(idToSelect));
   }
 
   /**
@@ -46,7 +46,7 @@ public enum ComputerService {
    * @return the generated id of the computer
    */
   public long createComputer(ComputerDto newComputer) {
-    return intComputerDao.createComputer(ComputerToDtoMapper.INSTANCE.toComputer(newComputer));
+    return intComputerDao.createComputer(ComputerToDtoMapper.toComputer(newComputer));
   }
 
   /**
@@ -80,7 +80,7 @@ public enum ComputerService {
    */
 
   public void updateComputer(ComputerDto computer) {
-    intComputerDao.updateComputer(ComputerToDtoMapper.INSTANCE.toComputer(computer));
+    intComputerDao.updateComputer(ComputerToDtoMapper.toComputer(computer));
   }
 
   /**
@@ -98,8 +98,8 @@ public enum ComputerService {
       Map<String, String> options) {
     OptionValidator.validate(options);
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getComputerInRange(idBegin, nbObjectToGet, options).forEach(
-        computer -> listAllComputerDto.add(ComputerToDtoMapper.INSTANCE.toComputerDto(computer)));
+    intComputerDao.getComputerInRange(idBegin, nbObjectToGet, options)
+        .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
     return listAllComputerDto;
   }
 

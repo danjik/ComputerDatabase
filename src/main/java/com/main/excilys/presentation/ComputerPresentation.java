@@ -55,9 +55,9 @@ public class ComputerPresentation {
     LocalDate discontinued = SecureInput.secureInputDate("discontinued");
     LocalDate introduced = SecureInput.secureInputDate("introduced");
     // TODO replace with a company selection
-    ComputerDto newComputerDto = new ComputerDto.Builder().name(name).introduced(introduced)
-        .discontinued(discontinued).companyDto(new CompanyDto.Builder().id(10).name("").build())
-        .build();
+    ComputerDto newComputerDto = new ComputerDto.Builder().name(name)
+        .introduced(introduced.toString()).discontinued(discontinued.toString())
+        .companyDto(new CompanyDto.Builder().id(10).name("").build()).build();
     long id = ComputerService.INSTANCE.createComputer(newComputerDto);
     logger.debug("createComputer : Computer " + newComputerDto + " well created with id : " + id);
     System.out.println("Computer n°" + id + " well created");
@@ -165,11 +165,11 @@ public class ComputerPresentation {
             break;
           case 2 :
             LocalDate dateNewDiscontinued = SecureInput.secureInputDate("new discontinued");
-            computer.setDiscontinued(dateNewDiscontinued);
+            computer.setDiscontinued(dateNewDiscontinued.toString());
             break;
           case 3 :
             LocalDate dateNewIntroduced = SecureInput.secureInputDate("new introduced");
-            computer.setIntroduced(dateNewIntroduced);
+            computer.setIntroduced(dateNewIntroduced.toString());
             break;
           case 4 :
             int newCompanyId = SecureInput.secureInputInt("new company id");

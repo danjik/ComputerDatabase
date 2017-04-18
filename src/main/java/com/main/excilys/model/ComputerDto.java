@@ -1,23 +1,17 @@
 package com.main.excilys.model;
 
-import com.main.excilys.util.ComputerDbException;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
 public class ComputerDto {
   private long id;
   private String name;
-  private LocalDate discontinued;
-  private LocalDate introduced;
+  private String discontinued;
+  private String introduced;
   private CompanyDto companyDto;
 
   public static class Builder {
     private long id;
     private String name;
-    private LocalDate discontinued;
-    private LocalDate introduced;
+    private String discontinued;
+    private String introduced;
     private CompanyDto companyDto;
 
     /**
@@ -46,65 +40,18 @@ public class ComputerDto {
     }
 
     /**
-     * Setters for the LocalDate discontinued using a string.
-     *
-     * @param discontinued
-     *          the string to parse in local date, must match dd-MM-yyyy
-     * @return the builder
-     */
-
-    public Builder discontinued(String discontinued) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
-      try {
-        this.discontinued = discontinued != null && !discontinued.isEmpty()
-            ? LocalDate.parse(discontinued, formatter)
-            : null;
-        return this;
-      } catch (DateTimeParseException e) {
-        throw new ComputerDbException("The date : " + discontinued + " is invalid");
-      }
-    }
-
-    /**
      * Add discontinued to the builder.
      *
      * @param discontinued
      *          the discontinued to set
      * @return the updated builder
      */
-    public Builder discontinued(LocalDate discontinued) {
+    public Builder discontinued(String discontinued) {
       this.discontinued = discontinued;
       return this;
     }
 
-    /**
-     * Setters for the LocalDate introduced using a string.
-     *
-     * @param introduced
-     *          the string to parse in local date, must match dd-MM-yyyy
-     * @return the builder
-     */
-
     public Builder introduced(String introduced) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
-      try {
-        this.introduced = introduced != null && !introduced.isEmpty()
-            ? LocalDate.parse(introduced, formatter)
-            : null;
-        return this;
-      } catch (DateTimeParseException e) {
-        throw new ComputerDbException("The date : " + introduced + " is invalid");
-      }
-    }
-
-    /**
-     * Add introduced to the builder.
-     *
-     * @param introduced
-     *          the introduced to set
-     * @return the updated builder
-     */
-    public Builder introduced(LocalDate introduced) {
       this.introduced = introduced;
       return this;
     }
@@ -146,7 +93,7 @@ public class ComputerDto {
    *          companyDto
    */
 
-  private ComputerDto(long id, String name, LocalDate discontinued, LocalDate introduced,
+  private ComputerDto(long id, String name, String discontinued, String introduced,
       CompanyDto companyDto) {
     super();
     this.companyDto = companyDto;
@@ -172,55 +119,19 @@ public class ComputerDto {
     this.name = name;
   }
 
-  public LocalDate getDiscontinued() {
+  public String getDiscontinued() {
     return discontinued;
   }
 
-  public void setDiscontinued(LocalDate discontinued) {
+  public void setDiscontinued(String discontinued) {
     this.discontinued = discontinued;
   }
 
-  /**
-   * Add discontinued to the builder.
-   *
-   * @param discontinued
-   *          the discontinued to set
-   */
-  public void setDiscontinued(String discontinued) {
-    try {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
-      this.discontinued = discontinued != null && !discontinued.isEmpty()
-          ? LocalDate.parse(discontinued, formatter)
-          : null;
-    } catch (DateTimeParseException e) {
-      throw new ComputerDbException("The date : " + discontinued + " is invalid");
-
-    }
-  }
-
-  /**
-   * Setters for the LocalDate introduced using a string.
-   *
-   * @param introduced
-   *          the string to parse in local date, must match dd-MM-yyyy
-   */
-
   public void setIntroduced(String introduced) {
-    try {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd-MM-yyyy]" + "[yyyy-MM-dd]");
-      this.introduced = introduced != null && !introduced.isEmpty()
-          ? LocalDate.parse(introduced, formatter)
-          : null;
-    } catch (DateTimeParseException e) {
-      throw new ComputerDbException("The date : " + introduced + " is invalid");
-    }
-  }
-
-  public void setIntroduced(LocalDate introduced) {
     this.introduced = introduced;
   }
 
-  public LocalDate getIntroduced() {
+  public String getIntroduced() {
     return introduced;
   }
 

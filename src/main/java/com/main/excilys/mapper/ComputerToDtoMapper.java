@@ -3,8 +3,9 @@ package com.main.excilys.mapper;
 import com.main.excilys.model.Computer;
 import com.main.excilys.model.ComputerDto;
 
-public enum ComputerToDtoMapper {
-  INSTANCE;
+import java.time.LocalDate;
+
+public class ComputerToDtoMapper {
   /**
    * Pass a computerDto to a computer.
    *
@@ -12,13 +13,19 @@ public enum ComputerToDtoMapper {
    *          the data transfers representation of a computer
    * @return the entity computer
    */
-  public Computer toComputer(ComputerDto computerDto) {
+  public static Computer toComputer(ComputerDto computerDto) {
     if (computerDto == null) {
       return null;
     }
+    LocalDate discontinued = StringToLocalDateMapper
+        .strToLocalDateMapper(computerDto.getDiscontinued());
+
+    LocalDate introduced = StringToLocalDateMapper
+        .strToLocalDateMapper(computerDto.getIntroduced());
+
     return new Computer.Builder().id(computerDto.getId()).name(computerDto.getName())
-        .introduced(computerDto.getIntroduced()).discontinued(computerDto.getDiscontinued())
-        .company(CompanyToDtoMapper.INSTANCE.toCompany(computerDto.getCompanyDto())).build();
+        .introduced(introduced).discontinued(discontinued)
+        .company(CompanyToDtoMapper.toCompany(computerDto.getCompanyDto())).build();
   }
 
   /**
@@ -28,12 +35,13 @@ public enum ComputerToDtoMapper {
    *          the computer
    * @return the data transfers representation of a computer
    */
-  public ComputerDto toComputerDto(Computer computer) {
+  public static ComputerDto toComputerDto(Computer computer) {
     if (computer == null) {
       return null;
     }
     return new ComputerDto.Builder().id(computer.getId()).name(computer.getName())
-        .introduced(computer.getIntroduced()).discontinued(computer.getDiscontinued())
-        .companyDto(CompanyToDtoMapper.INSTANCE.toCompanyDto(computer.getCompany())).build();
+        .introduced(StringToLocalDateMapper.localDateToStringMapper(computer.getIntroduced()))
+        .discontinued(StringToLocalDateMapper.localDateToStringMapper(computer.getDiscontinued()))
+        .companyDto(CompanyToDtoMapper.toCompanyDto(computer.getCompany())).build();
   }
 }

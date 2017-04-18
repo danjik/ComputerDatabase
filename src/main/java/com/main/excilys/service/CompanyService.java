@@ -17,7 +17,7 @@ public enum CompanyService {
 
   private CompanyService() {
     CompanyDao.listCompany.forEach(company -> {
-      CompanyDto companyDto = CompanyToDtoMapper.INSTANCE.toCompanyDto(company);
+      CompanyDto companyDto = CompanyToDtoMapper.toCompanyDto(company);
       listCompanyDto.add(companyDto);
     });
   }
@@ -40,7 +40,7 @@ public enum CompanyService {
    */
 
   public CompanyDto getCompanyById(long idToTest) {
-    return CompanyToDtoMapper.INSTANCE.toCompanyDto(intCompanyDao.getCompanyById(idToTest));
+    return CompanyToDtoMapper.toCompanyDto(intCompanyDao.getCompanyById(idToTest));
   }
 
   public int getNbCompany() {
@@ -59,7 +59,7 @@ public enum CompanyService {
   public List<CompanyDto> getCompanyInRange(long idBegin, long idEnd) {
     List<CompanyDto> listCompanyDto = new ArrayList<>();
     intCompanyDao.getCompanyInRange(idBegin, idEnd).forEach(company -> {
-      listCompanyDto.add(CompanyToDtoMapper.INSTANCE.toCompanyDto(company));
+      listCompanyDto.add(CompanyToDtoMapper.toCompanyDto(company));
     });
     return listCompanyDto;
   }

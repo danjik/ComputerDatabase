@@ -58,7 +58,6 @@ public class EditComputerServlet extends HttpServlet {
     computerToEdit.companyDto(new CompanyDto.Builder().id(idCompanyDto).build());
     ComputerDto computerDto = computerToEdit.build();
     try {
-
       ComputerService.INSTANCE.updateComputer(computerDto);
     } catch (ComputerDbException e) {
       toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);

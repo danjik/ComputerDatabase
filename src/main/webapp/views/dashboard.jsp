@@ -26,26 +26,27 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${ nbComputerDto } Computersazezaeazezaeaze found</h1>
+			<h1 id="homeTitle">${ nbComputerDto }Computers found</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left form-inline">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
 						<input type="hidden" name="page" value="${ 0 }" /><input
-							type="hidden" name="nbObject" value="${ nbObjectPerPage }" /> <input
-							type="hidden" name="column" value="${ option.column }" /><input
+							type="hidden" name="nbObject"
+							value="${ model.pageComputerDto.nbObjectPerPage }" /> <input
+							type="hidden" name="column" value="${ model.options.column }" /><input
 							type="search" id="searchbox" name="search" class="form-control"
 							placeholder="Search name" /> <input type="submit"
 							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 					<a class="btn btn-danger btn-md"
-						href="dashboard?action=resetOptions&page=${ 0 }&column=&search=&nbObject=10">
+						href="dashboard?page=${ 0 }&column=&search=&nbObject=10">
 						Reset Options</a>
-					<c:if test="${fn:length(options) > 0 }">
+					<c:if test="${fn:length(model.options) > 0 }">
 						<p class="options">
 							<span>Actual options</span>
-							<c:forEach items="${options }" var="option">
+							<c:forEach items="${ model.options }" var="option">
 								<span> ${option.key } value : ${option.value }</span>
 							</c:forEach>
 						</p>
@@ -59,12 +60,13 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="dashboard?action=deleteComputer"
+		<form id="deleteForm" action="deleteComputer"
 			method="POST">
-			<input type="hidden" name="nbObject" value="${ nbObjectPerPage }" />
-			<input type="hidden" name="page" value="${ page+1 }" />
-			<input type="hidden" name="column" value="${ options.column }" />
-			<input type="hidden" name="search" value="${ options.search }" />
+			<input type="hidden" name="nbObject"
+				value="${ model.pageComputerDto.nbObjectPerPage }" /> <input
+				type="hidden" name="page" value="${ model.pageComputerDto.numPage }" />
+			<input type="hidden" name="column" value="${ model.options.column }" />
+			<input type="hidden" name="search" value="${ model.options.search }" />
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -81,21 +83,21 @@
 							</a>
 						</span></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.name&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Computer
+							href="dashboard?column=computer.name&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Computer
 								name</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.introduced&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Introduced
+							href="dashboard?column=computer.introduced&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Introduced
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.discontinued&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Discontinued
+							href="dashboard?column=computer.discontinued&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Discontinued
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=company.name&page=${ page }&nbObject=${nbObjectPerPage}&search=${options.search}">Company</a></th>
+							href="dashboard?column=company.name&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Company</a></th>
 
 					</tr>
 				</thead>
 				<tbody id="results">
-					<c:forEach items="${listComputerDto}" var="computerDto">
+					<c:forEach items="${model.listComputerDto}" var="computerDto">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computerDto.id }"></td>
@@ -128,26 +130,36 @@
 		<div class="container text-center">
 			<ul class="pagination">
 				<page:link numPage="0" type="first" label="&laquo;"
-					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
-				<page:link numPage="${ page-1 }" type="previous" label="&lt;"
-					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
-				<page:pagination numPage="${ page }" maxPage="${ maxPage }"
-					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
-				<page:link numPage="${ page+1 }" type="next" label="&gt;"
-					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
-				<page:link numPage="${ maxPage }" type="last" label="&raquo;"
-					column="${options.column }" search="${ options.search }" nbObject="${ nbObjectPerPage }"/>
+					column="${model.options.column }"
+					search="${ model.options.search }"
+					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
+				<page:link numPage="${ model.pageComputerDto.numPage-1 }" type="previous"
+					label="&lt;" column="${model.options.column }"
+					search="${ model.options.search }"
+					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
+				<page:pagination numPage="${ model.pageComputerDto.numPage }"
+					maxPage="${ model.pageComputerDto.maxPage }" column="${model.options.column }"
+					search="${ model.options.search }"
+					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
+				<page:link numPage="${ model.pageComputerDto.numPage+1 }" type="next"
+					label="&gt;" column="${model.options.column }"
+					search="${ model.options.search }"
+					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
+				<page:link numPage="${ model.pageComputerDto.maxPage }" type="last"
+					label="&raquo;" column="${model.options.column }"
+					search="${ model.options.search }"
+					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
 			</ul>
 
 			<div class="pull-right" role="group">
 				<ul class="pagination">
-					<c:forEach items="${nbObjectAvailablePerPage}" var="nbObject">
+					<c:forEach items="${model.nbObjectAvailablePerPage}" var="nbObject">
 						<li
-							<c:if test="${ nbObject  == nbObjectPerPage}">
+							<c:if test="${ nbObject  == model.pageComputerDto.nbObjectPerPage}">
               <c:out value='class=active'/>
             </c:if>><a
 							id="nbObject${ nbObject }" class="nbObject"
-							href="dashboard?page=${0 }&nbObject=${ nbObject }&column=${ options.column }&search=${options.search}">${ nbObject }</a></li>
+							href="dashboard?page=${0 }&nbObject=${ nbObject }&column=${ model.options.column }&search=${model.options.search}">${ nbObject }</a></li>
 					</c:forEach>
 				</ul>
 			</div>

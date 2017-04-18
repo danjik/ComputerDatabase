@@ -27,7 +27,7 @@ public class AddComputerServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    this.doPost(req, resp);
+    req.getRequestDispatcher("/views/addComputer.jsp").forward(req, resp);
   }
 
   @Override
@@ -38,8 +38,9 @@ public class AddComputerServlet extends HttpServlet {
     String discontinued = req.getParameter("discontinued");
     String introduced = req.getParameter("introduced");
     Long idCompanyDto = req.getParameter("companyId") != null
-        ? Long.valueOf(req.getParameter("companyId"))
-        : 0;
+        && req.getParameter("companyId").matches("^[0-9]*$")
+            ? Long.valueOf(req.getParameter("companyId"))
+            : 0;
     CompanyDto companyDto = new CompanyDto.Builder().id(idCompanyDto).build();
     try {
 
