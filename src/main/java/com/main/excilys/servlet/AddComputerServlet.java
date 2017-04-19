@@ -27,6 +27,7 @@ public class AddComputerServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    req.setAttribute("listCompanyDto", CompanyService.INSTANCE.listCompanyDto);
     req.getRequestDispatcher("/views/addComputer.jsp").forward(req, resp);
   }
 
@@ -34,6 +35,14 @@ public class AddComputerServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
+    ComputerDto newComputerDto = this.getComputerDtoFromAttribute(req);
+    this.doAddComputer(req, newComputerDto);
+
+    req.setAttribute("listCompanyDto", CompanyService.INSTANCE.listCompanyDto);
+    req.getRequestDispatcher("/views/addComputer.jsp").forward(req, resp);
+  }
+
+  private ComputerDto getComputerDtoFromAttribute(HttpServletRequest req) {
     String name = req.getParameter("computerName");
     String discontinued = req.getParameter("discontinued");
     String introduced = req.getParameter("introduced");
@@ -41,11 +50,14 @@ public class AddComputerServlet extends HttpServlet {
         && req.getParameter("companyId").matches("^[0-9]*$")
             ? Long.valueOf(req.getParameter("companyId"))
             : 0;
-    CompanyDto companyDto = new CompanyDto.Builder().id(idCompanyDto).build();
-    try {
 
-      ComputerDto newComputerDto = new ComputerDto.Builder().name(name).introduced(introduced)
-          .discontinued(discontinued).companyDto(companyDto).build();
+    CompanyDto companyDto = new CompanyDto.Builder().id(idCompanyDto).build();
+    return new ComputerDto.Builder().name(name).introduced(introduced).discontinued(discontinued)
+        .companyDto(companyDto).build();
+  }
+
+  private void doAddComputer(HttpServletRequest req, ComputerDto newComputerDto) {
+    try {
       long idCreate = ComputerService.INSTANCE.createComputer(newComputerDto);
       Toaster toast = Toaster.INSTANCE.getToast("Computer n°" + idCreate + " created !",
           Toaster.SUCCESS, 3000);
@@ -55,8 +67,7 @@ public class AddComputerServlet extends HttpServlet {
       Toaster toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
       req.setAttribute("toast", toast);
     }
-    req.setAttribute("listCompanyDto", CompanyService.INSTANCE.listCompanyDto);
-    req.getRequestDispatcher("/views/addComputer.jsp").forward(req, resp);
+
   }
 
 }

@@ -19,7 +19,7 @@ public class StringToLocalDateMapper {
    */
   public static LocalDate strToLocalDateMapper(String strDate) {
     try {
-      return strDate != null ? LocalDate.parse(strDate, formatter) : null;
+      return strDate != null && !strDate.isEmpty() ? LocalDate.parse(strDate, formatter) : null;
     } catch (DateTimeParseException e) {
       throw new ComputerDbException("The date : " + strDate + " is invalid");
     }

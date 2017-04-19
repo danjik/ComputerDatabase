@@ -37,7 +37,6 @@ public class SecureInput {
         logger.error("secureInputInt : " + e.getMessage());
         throw new ComputerDbException("secureInputDate parsing error " + e);
       }
-
     }
     return secureInt;
   }

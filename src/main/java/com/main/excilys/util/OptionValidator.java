@@ -28,13 +28,6 @@ public enum OptionValidator {
           if (!value.isEmpty()) {
             String[] correctOptions = { "computer.name", "computer.introduced",
                 "computer.discontinued", "company.name" };
-            /*
-             * if (!Stream.of(correctOptions).anyMatch(str -> (str + " asc").equals(value.trim()))
-             * && !Stream.of(correctOptions) .anyMatch(str -> (str + " desc").equals(value.trim())))
-             * { System.out.println("The sort value : " + value + " is incorrect");
-             * options.remove(key); throw new ComputerDbException("The sort value : " + value +
-             * " is incorrect"); }
-             */
             if (!Stream.of(correctOptions).anyMatch(str -> str.equals(value.trim()))) {
               options.remove(key);
               throw new ComputerDbException("The sort value : " + value + " is incorrect");

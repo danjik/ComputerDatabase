@@ -20,8 +20,8 @@ public class CompanyPresentation {
    */
 
   public void listAllCompany() throws ComputerDbException {
-    List<CompanyDto> lisCompany = CompanyService.INSTANCE.getAllCompany();
-    lisCompany.forEach(company -> {
+    List<CompanyDto> listCompany = CompanyService.INSTANCE.getAllCompany();
+    listCompany.forEach(company -> {
       System.out.println(company);
     });
   }
@@ -31,8 +31,8 @@ public class CompanyPresentation {
    *
    * @throws ComputerDbException
    *           exception
-   * 
-   * 
+   *
+   *
    *           public void listCompanyByPage(int numPage, int nbObject, int nbObjectPerPage) throws
    *           ComputerDbException { long idBegin = pageCompany.getNumPage() *
    *           Page.getNbObjectPerPage(); CompanyService.INSTANCE.getCompanyInRange(idBegin,

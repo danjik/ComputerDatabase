@@ -1,6 +1,8 @@
-package com.main.excilys.persistence;
+package com.main.excilys.persistence.implementation;
 
 import com.main.excilys.model.Company;
+import com.main.excilys.persistence.ConnectionDb;
+import com.main.excilys.persistence.ICompanyDao;
 import com.main.excilys.util.ComputerDbException;
 
 import java.sql.Connection;

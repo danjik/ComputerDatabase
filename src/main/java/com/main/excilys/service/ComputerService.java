@@ -2,8 +2,8 @@ package com.main.excilys.service;
 
 import com.main.excilys.mapper.ComputerToDtoMapper;
 import com.main.excilys.model.ComputerDto;
-import com.main.excilys.persistence.ComputerDao;
 import com.main.excilys.persistence.IComputerDao;
+import com.main.excilys.persistence.implementation.ComputerDao;
 import com.main.excilys.util.OptionValidator;
 
 import java.util.ArrayList;

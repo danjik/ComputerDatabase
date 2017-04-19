@@ -2,8 +2,8 @@ package com.main.excilys.service;
 
 import com.main.excilys.mapper.CompanyToDtoMapper;
 import com.main.excilys.model.CompanyDto;
-import com.main.excilys.persistence.CompanyDao;
 import com.main.excilys.persistence.ICompanyDao;
+import com.main.excilys.persistence.implementation.CompanyDao;
 
 import java.util.ArrayList;
 import java.util.List;

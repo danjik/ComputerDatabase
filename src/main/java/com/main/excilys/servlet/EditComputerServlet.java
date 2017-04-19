@@ -27,11 +27,11 @@ public class EditComputerServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    long idComputerToEdit = req.getParameter("id") != null
-        ? Long.valueOf(req.getParameter("id"))
-        : 0L;
+
+    long idComputerToEdit = this.getIdComputer(req);
+
     ComputerDto computerToEdit = ComputerService.INSTANCE.getComputerById(idComputerToEdit);
-    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.getAllCompany();
+    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.listCompanyDto;
     req.setAttribute("computerToEdit", computerToEdit);
     req.setAttribute("listCompanyDto", listCompanyDto);
     req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
@@ -40,34 +40,44 @@ public class EditComputerServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    long idComputerToEdit = req.getParameter("id") != null
-        ? Long.valueOf(req.getParameter("id"))
-        : 0L;
-    ComputerDto.Builder computerToEdit = new ComputerDto.Builder().id(idComputerToEdit);
 
-    Toaster toast;
+    ComputerDto computerDto = this.getUpdatedComputer(req);
+    this.doUpdateComputer(req, computerDto);
+
+    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.listCompanyDto;
+    req.setAttribute("computerToEdit", computerDto);
+    req.setAttribute("listCompanyDto", listCompanyDto);
+    req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
+  }
+
+  private long getIdComputer(HttpServletRequest req) {
+    return req.getParameter("id") != null ? Long.valueOf(req.getParameter("id")) : 0L;
+  }
+
+  private ComputerDto getUpdatedComputer(HttpServletRequest req) {
+
+    long idComputerToEdit = this.getIdComputer(req);
+
+    ComputerDto.Builder computerToEdit = new ComputerDto.Builder().id(idComputerToEdit);
     String name = req.getParameter("computerName");
     String discontinued = req.getParameter("discontinued");
     String introduced = req.getParameter("introduced");
     Long idCompanyDto = req.getParameter("companyId") != null
         ? Long.valueOf(req.getParameter("companyId"))
         : 0;
-    computerToEdit.name(name);
-    computerToEdit.introduced(introduced);
-    computerToEdit.discontinued(discontinued);
-    computerToEdit.companyDto(new CompanyDto.Builder().id(idCompanyDto).build());
-    ComputerDto computerDto = computerToEdit.build();
+    return computerToEdit.name(name).introduced(introduced).discontinued(discontinued)
+        .companyDto(new CompanyDto.Builder().id(idCompanyDto).build()).build();
+  }
+
+  private void doUpdateComputer(HttpServletRequest req, ComputerDto computerToEdit) {
+
+    Toaster toast;
     try {
-      ComputerService.INSTANCE.updateComputer(computerDto);
+      ComputerService.INSTANCE.updateComputer(computerToEdit);
     } catch (ComputerDbException e) {
       toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
       req.setAttribute("toast", toast);
     }
-
-    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.getAllCompany();
-    req.setAttribute("computerToEdit", computerDto);
-    req.setAttribute("listCompanyDto", listCompanyDto);
-    req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
   }
 
 }
