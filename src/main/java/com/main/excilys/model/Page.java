@@ -5,6 +5,9 @@ import com.main.excilys.service.ComputerService;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class Page {
   private int numPage = 0;
 
@@ -12,12 +15,16 @@ public class Page {
   private int nbObjectPerPage = 10;
   private int maxPage;
 
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private ComputerService computerService = (ComputerService) context.getBean("computerService");
+
   /**
    * Simple constructor with the number of project.
    */
   public Page() {
     CompletableFuture
-        .supplyAsync(() -> Page.nbObject = ComputerService.INSTANCE.getNbComputer(new HashMap<>()))
+        .supplyAsync(() -> Page.nbObject = computerService.getNbComputer(new HashMap<>()))
         .thenRun(() -> this.setMaxPage(Page.nbObject / nbObjectPerPage));
   }
 

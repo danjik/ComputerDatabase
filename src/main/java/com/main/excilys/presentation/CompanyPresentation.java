@@ -8,9 +8,15 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class CompanyPresentation {
   private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private CompanyService companyService = (CompanyService) context.getBean("companyService");
 
   /**
    * Presentation of all the company.
@@ -20,7 +26,7 @@ public class CompanyPresentation {
    */
 
   public void listAllCompany() throws ComputerDbException {
-    List<CompanyDto> listCompany = CompanyService.INSTANCE.getAllCompany();
+    List<CompanyDto> listCompany = companyService.getAllCompany();
     listCompany.forEach(company -> {
       System.out.println(company);
     });
@@ -47,7 +53,7 @@ public class CompanyPresentation {
    */
   public void deleteComputer(long idToDelete) {
     logger.debug("Action to delete company n°" + idToDelete);
-    CompanyService.INSTANCE.deleteCompanyById(idToDelete);
+    companyService.deleteCompanyById(idToDelete);
 
   }
 

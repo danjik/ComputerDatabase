@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
 
@@ -23,6 +26,10 @@ public class EditComputerServlet extends HttpServlet {
    * serial id.
    */
   private static final long serialVersionUID = 754616699436173610L;
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private CompanyService companyService = (CompanyService) context.getBean("companyService");
+  private ComputerService computerService = (ComputerService) context.getBean("computerService");
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -30,8 +37,8 @@ public class EditComputerServlet extends HttpServlet {
 
     long idComputerToEdit = this.getIdComputer(req);
 
-    ComputerDto computerToEdit = ComputerService.INSTANCE.getComputerById(idComputerToEdit);
-    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.listCompanyDto;
+    ComputerDto computerToEdit = computerService.getComputerById(idComputerToEdit);
+    List<CompanyDto> listCompanyDto = companyService.getAllCompany();
     req.setAttribute("computerToEdit", computerToEdit);
     req.setAttribute("listCompanyDto", listCompanyDto);
     req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
@@ -44,7 +51,7 @@ public class EditComputerServlet extends HttpServlet {
     ComputerDto computerDto = this.getUpdatedComputer(req);
     this.doUpdateComputer(req, computerDto);
 
-    List<CompanyDto> listCompanyDto = CompanyService.INSTANCE.listCompanyDto;
+    List<CompanyDto> listCompanyDto = companyService.getAllCompany();
     req.setAttribute("computerToEdit", computerDto);
     req.setAttribute("listCompanyDto", listCompanyDto);
     req.getRequestDispatcher("/views/editComputer.jsp").forward(req, resp);
@@ -73,7 +80,10 @@ public class EditComputerServlet extends HttpServlet {
 
     Toaster toast;
     try {
-      ComputerService.INSTANCE.updateComputer(computerToEdit);
+      computerService.updateComputer(computerToEdit);
+      toast = Toaster.INSTANCE.getToast("Computer n°" + computerToEdit.getId() + " updated !",
+          Toaster.SUCCESS, 3000);
+      req.setAttribute("toast", toast);
     } catch (ComputerDbException e) {
       toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
       req.setAttribute("toast", toast);

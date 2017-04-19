@@ -11,9 +11,14 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ComputerPresentation {
   private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private ComputerService computerService = (ComputerService) context.getBean("computerService");
 
   /**
    * Print a single computer details.
@@ -25,7 +30,7 @@ public class ComputerPresentation {
    */
   public void printComputerDetails(long idToSelect) throws ComputerDbException {
     logger.debug("Access to computer n°" + idToSelect);
-    ComputerDto computerDto = ComputerService.INSTANCE.getComputerById(idToSelect);
+    ComputerDto computerDto = computerService.getComputerById(idToSelect);
     if (computerDto == null) {
       logger.debug("No computer has this id");
       System.out.println("No computer has this id");
@@ -58,7 +63,7 @@ public class ComputerPresentation {
     ComputerDto newComputerDto = new ComputerDto.Builder().name(name)
         .introduced(introduced.toString()).discontinued(discontinued.toString())
         .companyDto(new CompanyDto.Builder().id(10).name("").build()).build();
-    long id = ComputerService.INSTANCE.createComputer(newComputerDto);
+    long id = computerService.createComputer(newComputerDto);
     logger.debug("createComputer : Computer " + newComputerDto + " well created with id : " + id);
     System.out.println("Computer n°" + id + " well created");
   }
@@ -71,7 +76,7 @@ public class ComputerPresentation {
    */
 
   public void countComputer() throws ComputerDbException {
-    int nbComputer = ComputerService.INSTANCE.getNbComputer(new HashMap<>());
+    int nbComputer = computerService.getNbComputer(new HashMap<>());
     logger.debug("countComputer : " + nbComputer + " has been counted");
     System.out.println("There is " + nbComputer + " computer inside the database");
   }
@@ -84,7 +89,7 @@ public class ComputerPresentation {
    */
 
   public void listAllComputer() throws ComputerDbException {
-    List<ComputerDto> listComputerDto = ComputerService.INSTANCE.getAllComputer();
+    List<ComputerDto> listComputerDto = computerService.getAllComputer();
     listComputerDto.forEach(computerDto -> {
       System.out.println(computerDto);
     });
@@ -99,7 +104,7 @@ public class ComputerPresentation {
   public void listComputerByPage(int numPage, int nbObjectPerPage) throws ComputerDbException {
     long idBegin = numPage * nbObjectPerPage;
     long idEnd = numPage * nbObjectPerPage + nbObjectPerPage;
-    ComputerService.INSTANCE.getComputerInRange(idBegin, idEnd, new HashMap<>())
+    computerService.getComputerInRange(idBegin, idEnd, new HashMap<>())
         .forEach(computer -> System.out.println(computer));
   }
 
@@ -113,13 +118,13 @@ public class ComputerPresentation {
    */
   public void deleteComputer(long idToDelete) throws ComputerDbException {
     logger.debug("deleteComputer : idToDelete = " + idToDelete);
-    ComputerDto computer = ComputerService.INSTANCE.getComputerById(idToDelete);
+    ComputerDto computer = computerService.getComputerById(idToDelete);
     if (computer == null) {
       logger.debug("deleteComputer : No computer has this id : " + idToDelete);
       System.out.println("No computer has this id : " + idToDelete);
 
     } else {
-      ComputerService.INSTANCE.deleteComputer(idToDelete);
+      computerService.deleteComputer(idToDelete);
       logger.debug("The computer n°" + idToDelete + " has been well deleted");
       System.out.println("Computer n°" + idToDelete + " has been deleted");
     }
@@ -136,7 +141,7 @@ public class ComputerPresentation {
    */
   public void updateComputer(long idToUpdate) throws ComputerDbException {
     logger.debug("updateComputer : idToUpdate = " + idToUpdate);
-    ComputerDto computer = ComputerService.INSTANCE.getComputerById(idToUpdate);
+    ComputerDto computer = computerService.getComputerById(idToUpdate);
     if (computer == null) {
       logger.debug("updateComputer : No computer has this id : " + idToUpdate);
       System.out.println("No computer has this id : " + idToUpdate);
@@ -180,7 +185,7 @@ public class ComputerPresentation {
         }
         if (choix < 5) {
 
-          ComputerService.INSTANCE.updateComputer(computer);
+          computerService.updateComputer(computer);
           logger.debug("Computer n°" + idToUpdate + " has been modified to : " + computer);
           System.out.println("Computer N°" + idToUpdate + " updated !");
         }

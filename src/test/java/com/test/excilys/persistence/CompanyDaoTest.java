@@ -7,6 +7,8 @@ import com.main.excilys.util.ComputerDbException;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Class to test the company.
@@ -16,24 +18,28 @@ import org.junit.Test;
  */
 public class CompanyDaoTest {
 
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private CompanyService companyService = (CompanyService) context.getBean("companyService");
+
   @Test
   public void testGetCompanyById() throws ComputerDbException {
     List<CompanyDto> listAllCompany;
-    listAllCompany = CompanyService.INSTANCE.getAllCompany();
+    listAllCompany = companyService.getAllCompany();
 
     CompanyDto randomCompany = listAllCompany.get((int) (Math.random() * listAllCompany.size()));
     long idToTest = randomCompany.getId();
 
-    CompanyDto selectCompany = CompanyService.INSTANCE.getCompanyById(idToTest);
+    CompanyDto selectCompany = companyService.getCompanyById(idToTest);
     assert idToTest == selectCompany.getId();
   }
 
   @Test
   public void testGetAllCompany() throws ComputerDbException {
     List<CompanyDto> listCompany;
-    listCompany = CompanyService.INSTANCE.getAllCompany();
+    listCompany = companyService.getAllCompany();
 
-    int nbCompany = CompanyService.INSTANCE.getNbCompany();
+    int nbCompany = companyService.getNbCompany();
 
     assert listCompany.size() == nbCompany;
   }

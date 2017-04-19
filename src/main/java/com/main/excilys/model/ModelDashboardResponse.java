@@ -11,12 +11,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class ModelDashboardResponse {
 
   private Map<String, String> options = new HashMap<>();
   private Page pageComputerDto = new Page();
   private List<ComputerDto> listComputerDto = new ArrayList<>();
   private final List<Integer> nbObjectAvailablePerPage = Arrays.asList(10, 50, 100);
+
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private ComputerService computerService = (ComputerService) context.getBean("computerService");
 
   /**
    * Constructor of a response model for the dashboard page.
@@ -32,7 +39,7 @@ public class ModelDashboardResponse {
   }
 
   private void setListComputer(HttpServletRequest req) {
-    listComputerDto = ComputerService.INSTANCE.getComputerInRange(
+    listComputerDto = computerService.getComputerInRange(
         pageComputerDto.getNumPage() * pageComputerDto.getNbObjectPerPage(),
         pageComputerDto.getNbObjectPerPage(), options);
 

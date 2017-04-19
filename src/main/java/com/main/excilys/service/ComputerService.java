@@ -3,17 +3,20 @@ package com.main.excilys.service;
 import com.main.excilys.mapper.ComputerToDtoMapper;
 import com.main.excilys.model.ComputerDto;
 import com.main.excilys.persistence.IComputerDao;
-import com.main.excilys.persistence.implementation.ComputerDao;
 import com.main.excilys.util.OptionValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public enum ComputerService {
-  INSTANCE;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-  private IComputerDao intComputerDao = ComputerDao.INSTANCE;
+@Service
+public class ComputerService {
+
+  @Autowired
+  private IComputerDao intComputerDao;
 
   /**
    * get all the computer.

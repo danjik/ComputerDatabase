@@ -1,5 +1,8 @@
 package com.main.excilys.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CompanyDto {
   private long id;
   private String name;
@@ -53,6 +56,10 @@ public class CompanyDto {
   private CompanyDto(long id, String name) {
     this.id = id;
     this.name = name;
+  }
+
+  public CompanyDto() {
+    // TODO Auto-generated constructor stub
   }
 
   public long getId() {

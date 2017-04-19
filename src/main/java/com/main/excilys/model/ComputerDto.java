@@ -1,5 +1,8 @@
 package com.main.excilys.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class ComputerDto {
   private long id;
   private String name;
@@ -101,6 +104,10 @@ public class ComputerDto {
     this.discontinued = discontinued;
     this.introduced = introduced;
     this.id = id;
+  }
+
+  public ComputerDto() {
+
   }
 
   public long getId() {

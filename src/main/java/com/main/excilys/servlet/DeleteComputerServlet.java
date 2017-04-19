@@ -13,10 +13,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 @WebServlet("/deleteComputer")
 public class DeleteComputerServlet extends HttpServlet {
 
   private static final long serialVersionUID = 6913245688455467027L;
+  private ApplicationContext context = new ClassPathXmlApplicationContext(
+      new String[] { "SpringBeans.xml" });
+  private ComputerService computerService = (ComputerService) context.getBean("computerService");
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -32,7 +38,7 @@ public class DeleteComputerServlet extends HttpServlet {
         : "";
     Arrays.asList(selection.split(",")).stream().filter(id -> id.matches("^[0-9]*$"))
         .collect(Collectors.toList()).forEach(id -> {
-          ComputerService.INSTANCE.deleteComputer(Long.valueOf(id));
+          computerService.deleteComputer(Long.valueOf(id));
           Page.decrementNbObject();
         });
   }

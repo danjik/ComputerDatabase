@@ -1,5 +1,8 @@
 package com.main.excilys.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Company {
 
   private long id;
@@ -12,7 +15,8 @@ public class Company {
     /**
      * Add id to the builder.
      *
-     * @param id the id to set
+     * @param id
+     *          the id to set
      * @return the updated builder
      */
 
@@ -24,7 +28,8 @@ public class Company {
     /**
      * Add name to the builder.
      *
-     * @param name the name to set
+     * @param name
+     *          the name to set
      * @return the updated builder
      */
 
@@ -47,13 +52,19 @@ public class Company {
   /**
    * Full constructor used by the builder.
    *
-   * @param id   id
-   * @param name name
+   * @param id
+   *          id
+   * @param name
+   *          name
    */
 
-  private Company(long id, String name) {
+  public Company(long id, String name) {
     this.id = id;
     this.name = name;
+  }
+
+  public Company() {
+
   }
 
   public long getId() {
