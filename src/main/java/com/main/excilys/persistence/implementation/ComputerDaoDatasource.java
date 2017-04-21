@@ -4,297 +4,139 @@ import com.main.excilys.model.Company;
 import com.main.excilys.model.Computer;
 import com.main.excilys.persistence.IComputerDao;
 import com.main.excilys.util.ComputerDbException;
+import com.mysql.jdbc.Statement;
 
-import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.ArgumentPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository("computerDao")
 public class ComputerDaoDatasource implements IComputerDao {
 
-  @Autowired
-  private DataSource dataSource;
   private Logger logger = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
-  private static final int COMPUTER_ID_COLUMN = 1;
-  private static final int COMPUTER_NAME_COLUMN = 2;
-  private static final int COMPUTER_INTRODUCED_COLUMN = 3;
-  private static final int COMPUTER_DISCONTINUED_COLUMN = 4;
-  private static final int COMPUTER_COMPANY_ID_COLUMN = 5;
-  private static final int COMPANY_ID_COLUMN = 6;
-  private static final int COMPANY_NAME_COLUMN = 7;
-
-  public void setDataSource(DataSource dataSource) {
-    this.dataSource = dataSource;
-  }
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 
   @Override
   public int getNbComputer(Map<String, String> options) throws ComputerDbException {
-    logger.debug("getNbComputer ");
     String query = "select count(co.id) from computer co "
         + "left join company c on co.company_id = c.id where co.name like ? or c.name like ?";
-    int nbComputer = -1;
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement selectPStatement = conn.prepareStatement(query)) {
-      conn.setReadOnly(true);
-      String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
-      selectPStatement.setString(1, optionSearch);
-      selectPStatement.setString(2, optionSearch);
-      try (ResultSet rs = selectPStatement.executeQuery()) {
-        while (rs.next()) {
-          nbComputer = rs.getInt(1);
-        }
-      }
-      selectPStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("getNbComputer  : " + e.getMessage());
-      throw new ComputerDbException("getNbComputer " + e);
-    }
-    logger.debug("getNbComputer " + nbComputer + " get");
+    String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
 
-    return nbComputer;
+    return jdbcTemplate.queryForObject(query, new Object[] { optionSearch, optionSearch },
+        Integer.class);
   }
 
   @Override
   public long createComputer(Computer newComputer) throws ComputerDbException {
     logger.debug("createComputer : " + newComputer + " computerToCreate ");
-    String query = "insert into computer(id,name,introduced,"
-        + "discontinued,company_id) values (?,?,?,?,?)";
-    long generateId = 0;
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement insertPStatement = conn.prepareStatement(query,
-            Statement.RETURN_GENERATED_KEYS);) {
-      insertPStatement.setLong(COMPUTER_ID_COLUMN, 0);
-      if (newComputer.getName() == null || !newComputer.getName().matches("^[a-zA-Z0-9 ._-]+$")) {
-        throw new ComputerDbException(
-            "The name must be composed at least by 3 chars" + newComputer.getName());
-      }
-      insertPStatement.setString(COMPUTER_NAME_COLUMN, newComputer.getName());
-      if (newComputer.getIntroduced() != null) {
-        insertPStatement.setTimestamp(COMPUTER_INTRODUCED_COLUMN,
-            Timestamp.valueOf(newComputer.getIntroduced().atStartOfDay()));
-      } else {
-        insertPStatement.setTimestamp(COMPUTER_INTRODUCED_COLUMN, null);
-      }
-      if (newComputer.getDiscontinued() != null) {
-        insertPStatement.setTimestamp(COMPUTER_DISCONTINUED_COLUMN,
-            Timestamp.valueOf(newComputer.getDiscontinued().atStartOfDay()));
-      } else {
-        insertPStatement.setTimestamp(COMPUTER_DISCONTINUED_COLUMN, null);
-      }
-      insertPStatement.setLong(COMPUTER_COMPANY_ID_COLUMN, newComputer.getCompany().getId());
-      insertPStatement.executeUpdate();
-      try (ResultSet rs = insertPStatement.getGeneratedKeys()) {
-        while (rs.next()) {
-          generateId = rs.getLong(1);
-        }
-      }
-      insertPStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("createComputer  : " + e.getMessage());
-      throw new ComputerDbException("createComputer " + e);
-    }
-    logger.debug("createComputer : " + newComputer + " added");
-    return generateId;
 
+    KeyHolder holder = new GeneratedKeyHolder();
+
+    PreparedStatementCreator psc = con -> {
+      String query = "insert into computer(id,name,introduced,"
+          + "discontinued,company_id) values (?,?,?,?,?)";
+      Object[] params = new Object[] { 0, newComputer.getName(), newComputer.getIntroduced(),
+          newComputer.getDiscontinued(), newComputer.getCompany().getId() };
+      PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+      new ArgumentPreparedStatementSetter(params).setValues(ps);
+      return ps;
+    };
+
+    jdbcTemplate.update(psc, holder);
+    return holder.getKey().longValue();
   }
 
   @Override
   public Computer getComputerById(Long idToSelect) throws ComputerDbException {
     logger.debug("updateComputer : " + idToSelect + " idToSelect ");
-    String query = "select * from computer co "
-        + "left join company c on co.company_id = c.id where co.id=?";
-    Computer selectComputer = null;
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement selectPStatement = conn.prepareStatement(query);) {
-      conn.setReadOnly(true);
+    String query = "select c.id,c.name,introduced, "
+        + "discontinued,co.id as company_id,co.name as company_name from computer c "
+        + "left join company co on c.company_id = co.id where c.id=?";
 
-      selectPStatement.setLong(1, idToSelect);
-      try (ResultSet rs = selectPStatement.executeQuery()) {
-        while (rs.next()) {
-          LocalDate getIntroduced = rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          selectComputer = new Computer.Builder().id(rs.getInt(COMPUTER_ID_COLUMN))
-              .name(rs.getString(COMPUTER_NAME_COLUMN)).introduced(getIntroduced)
-              .discontinued(getDiscontinued)
-              .company(new Company.Builder().id(rs.getLong(COMPANY_ID_COLUMN))
-                  .name(rs.getString(COMPANY_NAME_COLUMN)).build())
-              .build();
-        }
-      }
-      selectPStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("getComputerById  : " + e.getMessage());
-      throw new ComputerDbException("getComputerById " + e);
-    }
-    logger.debug("getComputerById : " + selectComputer + " selected");
-    return selectComputer;
+    RowMapper<Computer> beanPropertyRowMapper = (rs, rowNum) -> {
+      Computer computer = new Computer();
+      computer.setId(rs.getLong("c.id"));
+      computer.setName(rs.getString("c.name"));
+      LocalDate getDiscontinued = rs.getTimestamp("c.introduced") != null
+          ? rs.getTimestamp("c.introduced").toLocalDateTime().toLocalDate()
+          : null;
+      computer.setIntroduced(getDiscontinued);
+      LocalDate getIntroduced = rs.getTimestamp("c.discontinued") != null
+          ? rs.getTimestamp("c.discontinued").toLocalDateTime().toLocalDate()
+          : null;
+      computer.setDiscontinued(getIntroduced);
+      computer.setCompany(new Company(rs.getLong("company_id"), rs.getString("company_name")));
+      return computer;
+    };
+
+    return jdbcTemplate.queryForObject(query, new Object[] { idToSelect }, beanPropertyRowMapper);
   }
 
   @Override
-  public List<Computer> getAllComputer() throws ComputerDbException {
-    List<Computer> listComputer = new ArrayList<>();
-    String query = "select * from computer co left join company c on co.company_id = c.id";
-    Computer selectComputer = null;
-    try (Connection conn = dataSource.getConnection();
-        Statement selectPStatement = conn.createStatement()) {
-      try (ResultSet rs = selectPStatement.executeQuery(query)) {
-        while (rs.next()) {
-          LocalDate getIntroduced = rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          selectComputer = new Computer.Builder().id(rs.getInt(COMPUTER_ID_COLUMN))
-              .name(rs.getString(COMPUTER_NAME_COLUMN)).introduced(getIntroduced)
-              .discontinued(getDiscontinued)
-              .company(new Company.Builder().id(rs.getLong(COMPANY_ID_COLUMN))
-                  .name(rs.getString(COMPANY_NAME_COLUMN)).build())
-              .build();
-          listComputer.add(selectComputer);
-        }
-      }
-      selectPStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("getAllComputer  : " + e.getMessage());
-      e.printStackTrace();
-      throw new ComputerDbException("getAllComputer " + e);
-    }
-    logger.debug("getAllComputer : " + listComputer.size() + " computers has been selected");
-    return listComputer;
-  }
+  public void deleteComputer(long idToDelete) {
+    final String queryDeleteComputer = "delete from company where id = ?";
+    jdbcTemplate.update(queryDeleteComputer, new Object[] { idToDelete });
 
-  @Override
-  public void deleteComputer(long idToDelete) throws ComputerDbException {
-    logger.debug("deleteComputer : " + idToDelete + " to delete");
-    String query = "delete from computer where id=?";
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement deletePStatement = conn.prepareStatement(query)) {
-      deletePStatement.setLong(1, idToDelete);
-      deletePStatement.executeUpdate();
-      deletePStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("deleteComputer  : " + e.getMessage());
-      throw new ComputerDbException("deleteComputer " + e);
-    }
-    logger.debug("deleteComputer : " + idToDelete + " deleted");
-
-  }
-
-  @Override
-  public void updateComputer(Computer updateComputer) throws ComputerDbException {
-    logger.debug("updateComputer : " + updateComputer + " to update");
-    String query = "update computer set id=?, name=?,  "
-        + "introduced=?,discontinued=?,company_id=? where id=?";
-    final int idWhereColumn = 6;
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement updatePStatement = conn.prepareStatement(query)) {
-      if (updateComputer.getName() == null
-          || !updateComputer.getName().matches("^[a-zA-Z0-9 ._-]+$")) {
-        throw new ComputerDbException("The name must be composed at least by 3 chars : ");
-      }
-      updatePStatement.setLong(COMPUTER_ID_COLUMN, updateComputer.getId());
-      updatePStatement.setString(COMPUTER_NAME_COLUMN, updateComputer.getName());
-
-      if (updateComputer.getIntroduced() != null) {
-        updatePStatement.setTimestamp(COMPUTER_INTRODUCED_COLUMN,
-            Timestamp.valueOf(updateComputer.getIntroduced().atStartOfDay()));
-      } else {
-        updatePStatement.setTimestamp(COMPUTER_INTRODUCED_COLUMN, null);
-      }
-      if (updateComputer.getDiscontinued() != null) {
-        updatePStatement.setTimestamp(COMPUTER_DISCONTINUED_COLUMN,
-            Timestamp.valueOf(updateComputer.getDiscontinued().atStartOfDay()));
-      } else {
-        updatePStatement.setTimestamp(COMPUTER_DISCONTINUED_COLUMN, null);
-      }
-      updatePStatement.setLong(COMPUTER_COMPANY_ID_COLUMN, updateComputer.getCompany().getId());
-      updatePStatement.setLong(idWhereColumn, updateComputer.getId());
-      updatePStatement.executeUpdate();
-      updatePStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("updateComputer  : " + e);
-      throw new ComputerDbException("updateComputer " + e);
-    }
-    logger.debug("updateComputer : " + updateComputer + " updated");
   }
 
   @Override
   public List<Computer> getComputerInRange(long idBegin, long nbObjectToGet,
       Map<String, String> options) {
-    String query = "select * from computer "
-        + "left join company on computer.company_id = company.id  "
-        + "where computer.name like ? or company.name like ? %s limit ?,?";
+    String query = "select c.id,c.name,introduced, "
+        + "discontinued,co.id as company_id,co.name as company_name from computer c "
+        + "left join company co on c.company_id = co.id  "
+        + "where c.name like ? or co.name like ? %s limit ?,?";
     String optionColumn = options.get("column") != null && !options.get("column").isEmpty()
         ? "order by " + options.get("column") + " asc"
         : "";
     query = String.format(query, optionColumn);
-    List<Computer> listComputer = new ArrayList<>();
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement selectPStatement = conn.prepareStatement(query)) {
-      conn.setReadOnly(true);
-      String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
+    String optionSearch = options.get("search") != null ? options.get("search") + "%" : "%";
 
-      selectPStatement.setString(1, optionSearch);
-      selectPStatement.setString(2, optionSearch);
-      selectPStatement.setLong(3, idBegin);
-      selectPStatement.setLong(4, nbObjectToGet);
+    Object[] params = new Object[] { optionSearch, optionSearch, idBegin, nbObjectToGet };
+    RowMapper<Computer> beanPropertyRowMapper = (rs, rowNum) -> {
+      Computer computer = new Computer();
+      computer.setId(rs.getLong("c.id"));
+      computer.setName(rs.getString("c.name"));
+      LocalDate getDiscontinued = rs.getTimestamp("c.introduced") != null
+          ? rs.getTimestamp("c.introduced").toLocalDateTime().toLocalDate()
+          : null;
+      computer.setIntroduced(getDiscontinued);
+      LocalDate getIntroduced = rs.getTimestamp("c.discontinued") != null
+          ? rs.getTimestamp("c.discontinued").toLocalDateTime().toLocalDate()
+          : null;
+      computer.setDiscontinued(getIntroduced);
+      computer.setCompany(new Company(rs.getLong("company_id"), rs.getString("company_name")));
+      return computer;
+    };
 
-      try (ResultSet rs = selectPStatement.executeQuery()) {
-
-        while (rs.next()) {
-          LocalDate getIntroduced = rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          listComputer.add(new Computer.Builder().id(rs.getInt(COMPUTER_ID_COLUMN))
-              .name(rs.getString(COMPUTER_NAME_COLUMN)).introduced(getIntroduced)
-              .discontinued(getDiscontinued)
-              .company(new Company.Builder().id(rs.getLong(COMPANY_ID_COLUMN))
-                  .name(rs.getString(COMPANY_NAME_COLUMN)).build())
-              .build());
-        }
-        if (listComputer.size() == 0) {
-          System.out.println(
-              "Computer to search : " + options.get("search") + " query : " + selectPStatement);
-        }
-
-      }
-      selectPStatement.close();
-      conn.close();
-    } catch (SQLException e) {
-      logger.error("getComputerById  : " + e.getMessage());
-      throw new ComputerDbException("getComputerById " + e);
-    }
-
+    List<Computer> listComputer = jdbcTemplate.query(query, params, beanPropertyRowMapper);
     return listComputer;
   }
 
+  @Override
+  public void updateComputer(Computer updateComputer) {
+    logger.debug("updateComputer : " + updateComputer + " computerToUpdate ");
+    String query = "update computer set id=?, name=?, "
+        + "introduced=?,discontinued=?,company_id=? where id=?";
+    Object[] params = new Object[] { updateComputer.getId(), updateComputer.getName(),
+        Date.valueOf(updateComputer.getIntroduced()),
+        Date.valueOf(updateComputer.getDiscontinued()), updateComputer.getCompany().getId(),
+        updateComputer.getId() };
+    jdbcTemplate.update(query, params);
+  }
 }

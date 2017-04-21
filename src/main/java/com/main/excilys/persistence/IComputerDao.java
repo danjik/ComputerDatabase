@@ -37,14 +37,6 @@ public interface IComputerDao {
   Computer getComputerById(Long idToSelect);
 
   /**
-   * Method to get all the computers.
-   *
-   * @return list of all the computers
-   */
-
-  List<Computer> getAllComputer();
-
-  /**
    * Method to delete a computer.
    *
    * @param idToDelete

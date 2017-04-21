@@ -13,16 +13,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @WebServlet("/deleteComputer")
 public class DeleteComputerServlet extends HttpServlet {
 
   private static final long serialVersionUID = 6913245688455467027L;
-  private ApplicationContext context = new ClassPathXmlApplicationContext(
-      new String[] { "SpringBeans.xml" });
-  private ComputerService computerService = (ComputerService) context.getBean("computerService");
+  private WebApplicationContext ctx;
+  private ComputerService computerService;
+
+  @Override
+  public void init() throws ServletException {
+    // TODO Auto-generated method stub
+    super.init();
+    ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());
+    computerService = (ComputerService) ctx.getBean("computerService");
+  }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)

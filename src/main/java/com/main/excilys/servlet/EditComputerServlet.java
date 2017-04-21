@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @WebServlet("/editComputer")
 public class EditComputerServlet extends HttpServlet {
@@ -26,10 +26,17 @@ public class EditComputerServlet extends HttpServlet {
    * serial id.
    */
   private static final long serialVersionUID = 754616699436173610L;
-  private ApplicationContext context = new ClassPathXmlApplicationContext(
-      new String[] { "SpringBeans.xml" });
-  private CompanyService companyService = (CompanyService) context.getBean("companyService");
-  private ComputerService computerService = (ComputerService) context.getBean("computerService");
+  private WebApplicationContext ctx;
+  private CompanyService companyService;
+  private ComputerService computerService;
+
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());
+    companyService = (CompanyService) ctx.getBean("companyService");
+    computerService = (ComputerService) ctx.getBean("computerService");
+  }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -65,15 +72,14 @@ public class EditComputerServlet extends HttpServlet {
 
     long idComputerToEdit = this.getIdComputer(req);
 
-    ComputerDto.Builder computerToEdit = new ComputerDto.Builder().id(idComputerToEdit);
     String name = req.getParameter("computerName");
     String discontinued = req.getParameter("discontinued");
     String introduced = req.getParameter("introduced");
     Long idCompanyDto = req.getParameter("companyId") != null
         ? Long.valueOf(req.getParameter("companyId"))
         : 0;
-    return computerToEdit.name(name).introduced(introduced).discontinued(discontinued)
-        .companyDto(new CompanyDto.Builder().id(idCompanyDto).build()).build();
+    return new ComputerDto(idComputerToEdit, name, discontinued, introduced,
+        new CompanyDto.Builder().id(idCompanyDto).build());
   }
 
   private void doUpdateComputer(HttpServletRequest req, ComputerDto computerToEdit) {

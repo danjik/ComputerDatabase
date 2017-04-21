@@ -9,15 +9,26 @@ import com.main.excilys.util.ComputerDbException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ComputerDaoTest {
-  private ApplicationContext context = new ClassPathXmlApplicationContext(
-      new String[] { "SpringBeans.xml" });
-  private ComputerService computerService = (ComputerService) context.getBean("computerService");
-  private CompanyService companyService = (CompanyService) context.getBean("companyService");
+  private ApplicationContext context;
+  private ComputerService computerService;
+  private CompanyService companyService;
+
+  /**
+   * init test.
+   */
+  @Before
+  public void setUp() {
+    context = new ClassPathXmlApplicationContext(new String[] { "SpringBeans.xml" });
+    computerService = (ComputerService) context.getBean("computerService");
+    companyService = (CompanyService) context.getBean("companyService");
+    System.out.println("zaepojzpaeoj");
+  }
 
   @Test
   public void testGetComputerById() {
@@ -40,8 +51,8 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name("Nouveau computer")
-        .introduced(emptyStr).discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputerDto = new ComputerDto(0, "Nouveau computer", emptyStr, emptyStr,
+        randomCompany);
     computerService.createComputer(newComputerDto);
     assert computerService.getNbComputer(new HashMap<>()) == nbComputer + 1;
   }
@@ -51,8 +62,8 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name("Nouveau computer")
-        .introduced(emptyStr).discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputerDto = new ComputerDto(0, "Nouveau computer", emptyStr, emptyStr,
+        randomCompany);
     long generateId = computerService.createComputer(newComputerDto);
     newComputerDto.setId(generateId);
     ComputerDto testNewComputerDto = computerService.getComputerById(generateId);
@@ -64,8 +75,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name(null).introduced(emptyStr)
-        .discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputerDto = new ComputerDto(0, null, emptyStr, emptyStr, randomCompany);
     computerService.createComputer(newComputerDto);
   }
 
@@ -74,8 +84,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name("").introduced(emptyStr)
-        .discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputerDto = new ComputerDto(0, "", emptyStr, emptyStr, randomCompany);
     computerService.createComputer(newComputerDto);
   }
 
@@ -84,8 +93,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputerDto = new ComputerDto.Builder().name("3&az").introduced(emptyStr)
-        .discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputerDto = new ComputerDto(0, "3&az", emptyStr, emptyStr, randomCompany);
     computerService.createComputer(newComputerDto);
   }
 
@@ -176,8 +184,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputer = new ComputerDto.Builder().name("").introduced(emptyStr)
-        .discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputer = new ComputerDto(0, "", emptyStr, emptyStr, randomCompany);
     computerService.updateComputer(newComputer);
   }
 
@@ -186,8 +193,7 @@ public class ComputerDaoTest {
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
     String emptyStr = null;
-    ComputerDto newComputer = new ComputerDto.Builder().name("3&<az").introduced(emptyStr)
-        .discontinued(emptyStr).companyDto(randomCompany).build();
+    ComputerDto newComputer = new ComputerDto(0, "3&<az", emptyStr, emptyStr, randomCompany);
     computerService.updateComputer(newComputer);
   }
 }

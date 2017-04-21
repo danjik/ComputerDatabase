@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 @WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
@@ -26,10 +26,18 @@ public class AddComputerServlet extends HttpServlet {
    * Serial id.
    */
   private static final long serialVersionUID = -668189319785763106L;
-  private ApplicationContext context = new ClassPathXmlApplicationContext(
-      new String[] { "SpringBeans.xml" });
-  private CompanyService companyService = (CompanyService) context.getBean("companyService");
-  private ComputerService computerService = (ComputerService) context.getBean("computerService");
+  private WebApplicationContext ctx;
+  private CompanyService companyService;
+  private ComputerService computerService;
+
+  @Override
+  public void init() throws ServletException {
+    // TODO Auto-generated method stub
+    super.init();
+    ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext());
+    companyService = (CompanyService) ctx.getBean("companyService");
+    computerService = (ComputerService) ctx.getBean("computerService");
+  }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -59,8 +67,7 @@ public class AddComputerServlet extends HttpServlet {
             : 0;
 
     CompanyDto companyDto = new CompanyDto.Builder().id(idCompanyDto).build();
-    return new ComputerDto.Builder().name(name).introduced(introduced).discontinued(discontinued)
-        .companyDto(companyDto).build();
+    return new ComputerDto(0, name, discontinued, introduced, companyDto);
   }
 
   private void doAddComputer(HttpServletRequest req, ComputerDto newComputerDto) {

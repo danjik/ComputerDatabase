@@ -7,7 +7,6 @@ import com.main.excilys.util.ComputerDbException;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,9 +59,8 @@ public class ComputerPresentation {
     LocalDate discontinued = SecureInput.secureInputDate("discontinued");
     LocalDate introduced = SecureInput.secureInputDate("introduced");
     // TODO replace with a company selection
-    ComputerDto newComputerDto = new ComputerDto.Builder().name(name)
-        .introduced(introduced.toString()).discontinued(discontinued.toString())
-        .companyDto(new CompanyDto.Builder().id(10).name("").build()).build();
+    ComputerDto newComputerDto = new ComputerDto(0, name, introduced.toString(),
+        discontinued.toString(), new CompanyDto.Builder().id(10).name("").build());
     long id = computerService.createComputer(newComputerDto);
     logger.debug("createComputer : Computer " + newComputerDto + " well created with id : " + id);
     System.out.println("Computer n°" + id + " well created");
@@ -79,20 +77,6 @@ public class ComputerPresentation {
     int nbComputer = computerService.getNbComputer(new HashMap<>());
     logger.debug("countComputer : " + nbComputer + " has been counted");
     System.out.println("There is " + nbComputer + " computer inside the database");
-  }
-
-  /**
-   * Print all the computer.
-   *
-   * @throws ComputerDbException
-   *           exception
-   */
-
-  public void listAllComputer() throws ComputerDbException {
-    List<ComputerDto> listComputerDto = computerService.getAllComputer();
-    listComputerDto.forEach(computerDto -> {
-      System.out.println(computerDto);
-    });
   }
 
   /**

@@ -26,7 +26,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${ nbComputerDto }Computers found</h1>
+			<h1 id="homeTitle">${ nbComputerDto } Computers found</h1>
 
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left form-inline">
@@ -97,11 +97,11 @@
 					</tr>
 				</thead>
 				<tbody id="results">
-					<c:forEach items="${model.listComputerDto}" var="computerDto">
+					<c:forEach items="${ model.listComputerDto}" var="computerDto">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${computerDto.id }"></td>
-							<td><a href="editComputer?id=${computerDto.id }"
+								class="cb" value="${ computerDto.id }"></td>
+							<td><a href="editComputer?id=${ computerDto.id }"
 								class="labelComputerName" onclick="">${ computerDto.name }</a></td>
 							<td class="labelIntroduced">${ computerDto.introduced }</td>
 							<td class="labelDiscontinued">${ computerDto.discontinued }</td>

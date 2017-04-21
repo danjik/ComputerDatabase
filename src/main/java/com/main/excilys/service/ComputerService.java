@@ -19,18 +19,6 @@ public class ComputerService {
   private IComputerDao intComputerDao;
 
   /**
-   * get all the computer.
-   *
-   * @return list of all the computer
-   */
-  public List<ComputerDto> getAllComputer() {
-    List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getAllComputer()
-        .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
-    return listAllComputerDto;
-  }
-
-  /**
    * Return an instance of computer selected by his id.
    *
    * @param idToSelect

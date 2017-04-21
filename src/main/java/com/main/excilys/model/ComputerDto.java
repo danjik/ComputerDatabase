@@ -10,79 +10,8 @@ public class ComputerDto {
   private String introduced;
   private CompanyDto companyDto;
 
-  public static class Builder {
-    private long id;
-    private String name;
-    private String discontinued;
-    private String introduced;
-    private CompanyDto companyDto;
-
-    /**
-     * Add id to the builder.
-     *
-     * @param id
-     *          the id to set
-     * @return the updated builder
-     */
-    public Builder id(long id) {
-      this.id = id;
-      return this;
-    }
-
-    /**
-     * Add name to the builder.
-     *
-     * @param name
-     *          the name to set
-     * @return the updated builder
-     */
-    public Builder name(String name) {
-      this.name = name;
-      return this;
-
-    }
-
-    /**
-     * Add discontinued to the builder.
-     *
-     * @param discontinued
-     *          the discontinued to set
-     * @return the updated builder
-     */
-    public Builder discontinued(String discontinued) {
-      this.discontinued = discontinued;
-      return this;
-    }
-
-    public Builder introduced(String introduced) {
-      this.introduced = introduced;
-      return this;
-    }
-
-    /**
-     * Add companyDto to the builder.
-     *
-     * @param companyDto
-     *          the companyDto to set
-     * @return the updated builder
-     */
-    public Builder companyDto(CompanyDto companyDto) {
-      this.companyDto = companyDto;
-      return this;
-    }
-
-    /**
-     * Return the corresponding ComputerDTO of the builder.
-     *
-     * @return the computerDto
-     */
-    public ComputerDto build() {
-      return new ComputerDto(id, name, discontinued, introduced, companyDto);
-    }
-  }
-
   /**
-   * Full constructor used by the builder.
+   * Constructor full param.
    *
    * @param id
    *          id
@@ -95,8 +24,7 @@ public class ComputerDto {
    * @param companyDto
    *          companyDto
    */
-
-  private ComputerDto(long id, String name, String discontinued, String introduced,
+  public ComputerDto(long id, String name, String discontinued, String introduced,
       CompanyDto companyDto) {
     super();
     this.companyDto = companyDto;

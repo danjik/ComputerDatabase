@@ -50,7 +50,7 @@ public enum CompanyDao implements ICompanyDao {
       selectPStatement.setLong(1, idToTest);
       try (ResultSet rs = selectPStatement.executeQuery()) {
         while (rs.next()) {
-          selectCompany = new Company.Builder().id(rs.getInt(1)).name(rs.getString(2)).build();
+          selectCompany = new Company(rs.getInt(1), rs.getString(2));
         }
       }
 
@@ -75,7 +75,7 @@ public enum CompanyDao implements ICompanyDao {
       selectPStatement.setLong(2, idEnd);
       try (ResultSet rs = selectPStatement.executeQuery()) {
         while (rs.next()) {
-          listCompany.add(new Company.Builder().id(rs.getInt(1)).name(rs.getString(2)).build());
+          listCompany.add(new Company(rs.getInt(1), rs.getString(2)));
         }
       }
 

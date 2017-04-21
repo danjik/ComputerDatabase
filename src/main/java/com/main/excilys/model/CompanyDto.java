@@ -53,7 +53,7 @@ public class CompanyDto {
    *          name
    */
 
-  private CompanyDto(long id, String name) {
+  public CompanyDto(long id, String name) {
     this.id = id;
     this.name = name;
   }

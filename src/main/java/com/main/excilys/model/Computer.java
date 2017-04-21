@@ -9,86 +9,8 @@ public class Computer {
   private LocalDate introduced;
   private Company company;
 
-  public static class Builder {
-    private long id;
-    private String name;
-    private LocalDate discontinued;
-    private LocalDate introduced;
-    private Company company;
-
-    /**
-     * Add id to the builder.
-     *
-     * @param id
-     *          the id to set
-     * @return the updated builder
-     */
-
-    public Builder id(long id) {
-      this.id = id;
-      return this;
-    }
-    /**
-     * Add name to the builder.
-     *
-     * @param name
-     *          the name to set
-     * @return the updated builder
-     */
-
-    public Builder name(String name) {
-      this.name = name;
-      return this;
-    }
-    /**
-     * Add discontinued to the builder.
-     *
-     * @param discontinued
-     *          the discontinued to set
-     * @return the updated builder
-     */
-
-    public Builder discontinued(LocalDate discontinued) {
-      this.discontinued = discontinued;
-      return this;
-    }
-    /**
-     * Add introduced to the builder.
-     *
-     * @param introduced
-     *          the introduced to set
-     * @return the updated builder
-     */
-
-    public Builder introduced(LocalDate introduced) {
-      this.introduced = introduced;
-      return this;
-    }
-    /**
-     * Add companyDto to the builder.
-     *
-     * @param company
-     *          the companyDto to set
-     * @return the updated builder
-     */
-
-    public Builder company(Company company) {
-      this.company = company;
-      return this;
-    }
-    /**
-     * Return the corresponding ComputerDTO of the builder.
-     *
-     * @return the Computer
-     */
-
-    public Computer build() {
-      return new Computer(id, name, discontinued, introduced, company);
-    }
-  }
-
   /**
-   * Full constructor used by the builder.
+   * Full constructor.
    *
    * @param id
    *          id
@@ -101,7 +23,7 @@ public class Computer {
    * @param company
    *          company
    */
-  private Computer(long id, String name, LocalDate discontinued, LocalDate introduced,
+  public Computer(long id, String name, LocalDate discontinued, LocalDate introduced,
       Company company) {
     super();
     this.company = company;
@@ -109,6 +31,10 @@ public class Computer {
     this.discontinued = discontinued;
     this.introduced = introduced;
     this.id = id;
+  }
+
+  public Computer() {
+
   }
 
   @Override

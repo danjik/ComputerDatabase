@@ -120,12 +120,9 @@ public enum ComputerDao implements IComputerDao {
           LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
               ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
               : null;
-          selectComputer = new Computer.Builder().id(rs.getInt(COMPUTER_ID_COLUMN))
-              .name(rs.getString(COMPUTER_NAME_COLUMN)).introduced(getIntroduced)
-              .discontinued(getDiscontinued)
-              .company(new Company.Builder().id(rs.getLong(COMPANY_ID_COLUMN))
-                  .name(rs.getString(COMPANY_NAME_COLUMN)).build())
-              .build();
+          selectComputer = new Computer(rs.getInt(COMPUTER_ID_COLUMN),
+              rs.getString(COMPUTER_NAME_COLUMN), getIntroduced, getDiscontinued,
+              new Company(rs.getLong(COMPANY_ID_COLUMN), rs.getString(COMPANY_NAME_COLUMN)));
         }
       }
     } catch (SQLException e) {
@@ -136,38 +133,35 @@ public enum ComputerDao implements IComputerDao {
     return selectComputer;
   }
 
-  @Override
-  public List<Computer> getAllComputer() throws ComputerDbException {
-    List<Computer> listComputer = new ArrayList<>();
-    String query = "select * from computer co left join company c on co.company_id = c.id";
-    Computer selectComputer = null;
-    try (Connection conn = ConnectionDb.CONNECTION.getConnection();
-        Statement selectPStatement = conn.createStatement()) {
-      try (ResultSet rs = selectPStatement.executeQuery(query)) {
-        while (rs.next()) {
-          LocalDate getIntroduced = rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
-              ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
-              : null;
-          selectComputer = new Computer.Builder().id(rs.getInt(COMPUTER_ID_COLUMN))
-              .name(rs.getString(COMPUTER_NAME_COLUMN)).introduced(getIntroduced)
-              .discontinued(getDiscontinued)
-              .company(new Company.Builder().id(rs.getLong(COMPANY_ID_COLUMN))
-                  .name(rs.getString(COMPANY_NAME_COLUMN)).build())
-              .build();
-          listComputer.add(selectComputer);
-        }
-      }
-    } catch (SQLException e) {
-      logger.error("getAllComputer  : " + e.getMessage());
-      e.printStackTrace();
-      throw new ComputerDbException("getAllComputer " + e);
-    }
-    logger.debug("getAllComputer : " + listComputer.size() + " computers has been selected");
-    return listComputer;
-  }
+  // @Override
+  // public List<Computer> getAllComputer() throws ComputerDbException {
+  // List<Computer> listComputer = new ArrayList<>();
+  // String query = "select * from computer co left join company c on co.company_id = c.id";
+  // Computer selectComputer = null;
+  // try (Connection conn = ConnectionDb.CONNECTION.getConnection();
+  // Statement selectPStatement = conn.createStatement()) {
+  // try (ResultSet rs = selectPStatement.executeQuery(query)) {
+  // while (rs.next()) {
+  // LocalDate getIntroduced = rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN) != null
+  // ? rs.getTimestamp(COMPUTER_INTRODUCED_COLUMN).toLocalDateTime().toLocalDate()
+  // : null;
+  // LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
+  // ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
+  // : null;
+  // selectComputer = new Computer(rs.getInt(COMPUTER_ID_COLUMN),
+  // rs.getString(COMPUTER_NAME_COLUMN), getIntroduced, getDiscontinued,
+  // new Company(rs.getLong(COMPANY_ID_COLUMN), rs.getString(COMPANY_NAME_COLUMN)));
+  // listComputer.add(selectComputer);
+  // }
+  // }
+  // } catch (SQLException e) {
+  // logger.error("getAllComputer : " + e.getMessage());
+  // e.printStackTrace();
+  // throw new ComputerDbException("getAllComputer " + e);
+  // }
+  // logger.debug("getAllComputer : " + listComputer.size() + " computers has been selected");
+  // return listComputer;
+  // }
 
   @Override
   public void deleteComputer(long idToDelete) throws ComputerDbException {
@@ -252,12 +246,9 @@ public enum ComputerDao implements IComputerDao {
           LocalDate getDiscontinued = rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN) != null
               ? rs.getTimestamp(COMPUTER_DISCONTINUED_COLUMN).toLocalDateTime().toLocalDate()
               : null;
-          listComputer.add(new Computer.Builder().id(rs.getInt(COMPUTER_ID_COLUMN))
-              .name(rs.getString(COMPUTER_NAME_COLUMN)).introduced(getIntroduced)
-              .discontinued(getDiscontinued)
-              .company(new Company.Builder().id(rs.getLong(COMPANY_ID_COLUMN))
-                  .name(rs.getString(COMPANY_NAME_COLUMN)).build())
-              .build());
+          listComputer.add(new Computer(rs.getInt(COMPUTER_ID_COLUMN),
+              rs.getString(COMPUTER_NAME_COLUMN), getIntroduced, getDiscontinued,
+              new Company(rs.getLong(COMPANY_ID_COLUMN), rs.getString(COMPANY_NAME_COLUMN))));
         }
         if (listComputer.size() == 0) {
           System.out.println(

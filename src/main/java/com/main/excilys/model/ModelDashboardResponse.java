@@ -11,29 +11,29 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ModelDashboardResponse {
 
   private Map<String, String> options = new HashMap<>();
-  private Page pageComputerDto = new Page();
+
+  @Autowired
+  private Page pageComputerDto;
+
   private List<ComputerDto> listComputerDto = new ArrayList<>();
   private final List<Integer> nbObjectAvailablePerPage = Arrays.asList(10, 50, 100);
 
-  private ApplicationContext context = new ClassPathXmlApplicationContext(
-      new String[] { "SpringBeans.xml" });
-  private ComputerService computerService = (ComputerService) context.getBean("computerService");
+  @Autowired
+  private ComputerService computerService;
 
-  /**
-   * Constructor of a response model for the dashboard page.
-   *
-   * @param req
-   *          the request
-   * @param resp
-   *          the response
-   */
-  public ModelDashboardResponse(HttpServletRequest req, HttpServletResponse resp) {
+  public ModelDashboardResponse() {
+    super();
+
+  }
+
+  public void fill(HttpServletRequest req, HttpServletResponse resp) {
     this.doSetAttribute(req);
     this.setListComputer(req);
   }
@@ -42,7 +42,6 @@ public class ModelDashboardResponse {
     listComputerDto = computerService.getComputerInRange(
         pageComputerDto.getNumPage() * pageComputerDto.getNbObjectPerPage(),
         pageComputerDto.getNbObjectPerPage(), options);
-
   }
 
   private void doSetAttribute(HttpServletRequest req) {

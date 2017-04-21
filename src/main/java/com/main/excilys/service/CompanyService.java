@@ -20,13 +20,6 @@ public class CompanyService {
   private ICompanyDao intCompanyDao;
 
   /**
-   * aze.
-   */
-  public CompanyService() {
-
-  }
-
-  /**
    * Method to get all the company.
    *
    * @return list of the company

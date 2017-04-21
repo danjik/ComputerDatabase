@@ -23,9 +23,8 @@ public class ComputerToDtoMapper {
     LocalDate introduced = StringToLocalDateMapper
         .strToLocalDateMapper(computerDto.getIntroduced());
 
-    return new Computer.Builder().id(computerDto.getId()).name(computerDto.getName())
-        .introduced(introduced).discontinued(discontinued)
-        .company(CompanyToDtoMapper.toCompany(computerDto.getCompanyDto())).build();
+    return new Computer(computerDto.getId(), computerDto.getName(), discontinued, introduced,
+        CompanyToDtoMapper.toCompany(computerDto.getCompanyDto()));
   }
 
   /**
@@ -39,9 +38,9 @@ public class ComputerToDtoMapper {
     if (computer == null) {
       return null;
     }
-    return new ComputerDto.Builder().id(computer.getId()).name(computer.getName())
-        .introduced(StringToLocalDateMapper.localDateToStringMapper(computer.getIntroduced()))
-        .discontinued(StringToLocalDateMapper.localDateToStringMapper(computer.getDiscontinued()))
-        .companyDto(CompanyToDtoMapper.toCompanyDto(computer.getCompany())).build();
+    return new ComputerDto(computer.getId(), computer.getName(),
+        StringToLocalDateMapper.localDateToStringMapper(computer.getDiscontinued()),
+        StringToLocalDateMapper.localDateToStringMapper(computer.getIntroduced()),
+        CompanyToDtoMapper.toCompanyDto(computer.getCompany()));
   }
 }

@@ -32,11 +32,7 @@ public class Application {
             case 3 :
               computerView.countComputer();
               break;
-            case 4 :
-              computerView.listAllComputer();
-              break;
             case 5 :
-
               id = SecureInput.secureInputLong("id");
               computerView.deleteComputer(id);
               break;
@@ -79,7 +75,6 @@ public class Application {
     System.out.println("= 1 - Show a computer details");
     System.out.println("= 2 - Create a new computer");
     System.out.println("= 3 - Count the computer");
-    System.out.println("= 4 - List all computers");
     System.out.println("= 5 - Delete a computer");
     System.out.println("= 6 - Update a computer");
     System.out.println("= 7 - List page of computer");
