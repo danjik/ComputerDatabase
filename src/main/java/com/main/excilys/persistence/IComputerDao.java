@@ -64,4 +64,6 @@ public interface IComputerDao {
    * @return the list of computers from item n°idBegin to n°idBegin + nbObject.
    */
   List<Computer> getComputerInRange(long idBegin, long nbObjectToGet, Map<String, String> options);
+
+  List<Computer> getAllComputer();
 }

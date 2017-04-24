@@ -94,4 +94,16 @@ public class ComputerService {
     return listAllComputerDto;
   }
 
+  /**
+   * Get all computer.
+   *
+   * @return list of all computer
+   */
+  public List<ComputerDto> getAllComputer() {
+    List<ComputerDto> listAllComputerDto = new ArrayList<>();
+    intComputerDao.getAllComputer()
+        .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
+    return listAllComputerDto;
+  }
+
 }

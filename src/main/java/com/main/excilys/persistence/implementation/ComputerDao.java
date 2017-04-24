@@ -264,4 +264,10 @@ public enum ComputerDao implements IComputerDao {
     return listComputer;
   }
 
+  @Override
+  public List<Computer> getAllComputer() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }
