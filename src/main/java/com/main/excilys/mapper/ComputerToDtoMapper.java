@@ -1,5 +1,6 @@
 package com.main.excilys.mapper;
 
+import com.main.excilys.model.CompanyDto;
 import com.main.excilys.model.Computer;
 import com.main.excilys.model.ComputerDto;
 
@@ -24,7 +25,8 @@ public class ComputerToDtoMapper {
         .strToLocalDateMapper(computerDto.getIntroduced());
 
     return new Computer(computerDto.getId(), computerDto.getName(), discontinued, introduced,
-        CompanyToDtoMapper.toCompany(computerDto.getCompanyDto()));
+        CompanyToDtoMapper
+            .toCompany(new CompanyDto(computerDto.getCompanyId(), computerDto.getCompanyName())));
   }
 
   /**
@@ -41,6 +43,6 @@ public class ComputerToDtoMapper {
     return new ComputerDto(computer.getId(), computer.getName(),
         StringToLocalDateMapper.localDateToStringMapper(computer.getDiscontinued()),
         StringToLocalDateMapper.localDateToStringMapper(computer.getIntroduced()),
-        CompanyToDtoMapper.toCompanyDto(computer.getCompany()));
+        computer.getCompany().getId(), computer.getCompany().getName());
   }
 }

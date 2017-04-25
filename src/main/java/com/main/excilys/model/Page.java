@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Page {
-  private int numPage = 0;
+  private int page = 0;
 
   public static int nbObject;
   private int nbObjectPerPage = 10;
@@ -36,12 +36,12 @@ public class Page {
    *
    * @return the n° of the actual page
    */
-  public int getNumPage() {
-    return numPage;
+  public int getPage() {
+    return page;
   }
 
-  public void setNumPage(int numPage) {
-    this.numPage = numPage;
+  public void setPage(int page) {
+    this.page = page;
   }
 
   /**
@@ -49,7 +49,7 @@ public class Page {
    */
 
   public void nextPage() {
-    this.numPage++;
+    this.page++;
   }
 
   /**
@@ -58,7 +58,7 @@ public class Page {
    * @return true if page has a next
    */
   public boolean hasNext() {
-    if (this.numPage + 1 <= maxPage) {
+    if (this.page + 1 <= maxPage) {
       return true;
     }
     return false;
@@ -70,7 +70,7 @@ public class Page {
    * @return true if page has a previous
    */
   public boolean hasPrevious() {
-    if (this.numPage - 1 >= 0) {
+    if (this.page - 1 >= 0) {
       return true;
     }
     return false;
@@ -81,7 +81,7 @@ public class Page {
    */
 
   public void previousPage() {
-    this.numPage--;
+    this.page--;
   }
 
   public int getNbObjectPerPage() {

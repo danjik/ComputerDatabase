@@ -26,8 +26,7 @@ public enum OptionValidator {
           break;
         case "column" :
           if (!value.isEmpty()) {
-            String[] correctOptions = { "computer.name", "computer.introduced",
-                "computer.discontinued", "company.name" };
+            String[] correctOptions = { "name", "introduced", "discontinued", "co.name" };
             if (!Stream.of(correctOptions).anyMatch(str -> str.equals(value.trim()))) {
               options.remove(key);
               throw new ComputerDbException("The sort value : " + value + " is incorrect");

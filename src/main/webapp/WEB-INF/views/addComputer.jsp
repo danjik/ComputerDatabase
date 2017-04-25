@@ -4,12 +4,12 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet"
-	media="screen">
-<link href="resources/css/font-awesome.css" rel="stylesheet"
-	media="screen">
-<link href="resources/css/main.css" rel="stylesheet" media="screen">
-<link href="resources/css/toaster.css" rel="stylesheet" media="screen">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/font-awesome.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/toaster.css" />" rel="stylesheet">
+
 </head>
 <body id="addComputer">
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -26,7 +26,7 @@
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
-									type="text" name="computerName" class="form-control" id="computerName"
+									type="text" name="name" class="form-control" id="computerName"
                   oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
 									placeholder="Computer name" required/>
 							</div>
@@ -60,6 +60,6 @@
 		</div>
 	</section>
 	<%@ include file="core/footer.jsp"%>
-	<script src="resources/js/addComputer.js"></script>
+	<script src="../resources/js/addComputer.js"></script>
 </body>
 </html>

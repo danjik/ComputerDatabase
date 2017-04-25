@@ -5,23 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet"
-	media="screen">
-<link href="resources/css/font-awesome.css" rel="stylesheet"
-	media="screen">
-<link href="resources/css/main.css" rel="stylesheet" media="screen">
-<link href="resources/css/toaster.css" rel="stylesheet" media="screen">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="page" uri="/WEB-INF/pagination.tld"%>
+
+<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/font-awesome.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/toaster.css" />" rel="stylesheet">
 
 </head>
 <body id="dashboard">
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<%@ include file="core/header.jsp"%>
-		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-		<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-		<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
-		<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
-		<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-		<%@ taglib prefix="page" uri="/WEB-INF/pagination.tld"%>
+		
 	</header>
 
 	<section id="main">
@@ -64,7 +62,7 @@
 			method="POST">
 			<input type="hidden" name="nbObject"
 				value="${ model.pageComputerDto.nbObjectPerPage }" /> <input
-				type="hidden" name="page" value="${ model.pageComputerDto.numPage }" />
+				type="hidden" name="page" value="${ model.pageComputerDto.page }" />
 			<input type="hidden" name="column" value="${ model.options.column }" />
 			<input type="hidden" name="search" value="${ model.options.search }" />
 			<input type="hidden" name="selection" value="">
@@ -83,16 +81,16 @@
 							</a>
 						</span></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.name&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Computer
+							href="dashboard?column=name&page=${ model.pageComputerDto.page }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Computer
 								name</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.introduced&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Introduced
+							href="dashboard?column=introduced&page=${ model.pageComputerDto.page }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Introduced
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=computer.discontinued&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Discontinued
+							href="dashboard?column=discontinued&page=${ model.pageComputerDto.page }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Discontinued
 								date</a></th>
 						<th class="sortCol"><a
-							href="dashboard?column=company.name&page=${ model.pageComputerDto.numPage }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Company</a></th>
+							href="dashboard?column=co.name&page=${ model.pageComputerDto.page }&nbObject=${model.pageComputerDto.nbObjectPerPage}&search=${model.options.search}">Company</a></th>
 
 					</tr>
 				</thead>
@@ -105,7 +103,7 @@
 								class="labelComputerName" onclick="">${ computerDto.name }</a></td>
 							<td class="labelIntroduced">${ computerDto.introduced }</td>
 							<td class="labelDiscontinued">${ computerDto.discontinued }</td>
-							<td>${ computerDto.companyDto.name }</td>
+							<td>${ computerDto.companyName }</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -129,23 +127,23 @@
 		<%@ include file="core/footer.jsp"%>
 		<div class="container text-center">
 			<ul class="pagination">
-				<page:link numPage="0" type="first" label="&laquo;"
+				<page:link page="0" type="first" label="&laquo;"
 					column="${model.options.column }"
 					search="${ model.options.search }"
 					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
-				<page:link numPage="${ model.pageComputerDto.numPage-1 }" type="previous"
+				<page:link page="${ model.pageComputerDto.page-1 }" type="previous"
 					label="&lt;" column="${model.options.column }"
 					search="${ model.options.search }"
 					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
-				<page:pagination numPage="${ model.pageComputerDto.numPage }"
+				<page:pagination page="${ model.pageComputerDto.page }"
 					maxPage="${ model.pageComputerDto.maxPage }" column="${model.options.column }"
 					search="${ model.options.search }"
 					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
-				<page:link numPage="${ model.pageComputerDto.numPage+1 }" type="next"
+				<page:link page="${ model.pageComputerDto.page+1 }" type="next"
 					label="&gt;" column="${model.options.column }"
 					search="${ model.options.search }"
 					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
-				<page:link numPage="${ model.pageComputerDto.maxPage }" type="last"
+				<page:link page="${ model.pageComputerDto.maxPage }" type="last"
 					label="&raquo;" column="${model.options.column }"
 					search="${ model.options.search }"
 					nbObject="${ model.pageComputerDto.nbObjectPerPage }" />
@@ -165,10 +163,9 @@
 			</div>
 		</div>
 	</footer>
-	<script src="resources/js/jquery.min.js"></script>
-	<script src="resources/js/bootstrap.min.js"></script>
-	<script src="resources/js/dashboard.js"></script>
-	<script src="resources/js/main.js"></script>
-
+    <script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+    <script src="<c:url value="/resources/js/dashboard.js" />"></script>
+    <script src="<c:url value="/resources/js/main.js" />"></script>
 </body>
 </html>

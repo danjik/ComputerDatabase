@@ -74,14 +74,14 @@ public class ComputerDaoDatasource implements IComputerDao {
       Computer computer = new Computer();
       computer.setId(rs.getLong("c.id"));
       computer.setName(rs.getString("c.name"));
-      LocalDate getDiscontinued = rs.getTimestamp("c.introduced") != null
-          ? rs.getTimestamp("c.introduced").toLocalDateTime().toLocalDate()
-          : null;
-      computer.setIntroduced(getDiscontinued);
-      LocalDate getIntroduced = rs.getTimestamp("c.discontinued") != null
-          ? rs.getTimestamp("c.discontinued").toLocalDateTime().toLocalDate()
-          : null;
-      computer.setDiscontinued(getIntroduced);
+
+      LocalDate getDiscontinued = LocalDateToSqlTimestampMapper
+          .sqlTimestampToLocalDate(rs.getTimestamp("c.discontinued"));
+      computer.setDiscontinued(getDiscontinued);
+      LocalDate getIntroduced = LocalDateToSqlTimestampMapper
+          .sqlTimestampToLocalDate(rs.getTimestamp("c.introduced"));
+      computer.setIntroduced(getIntroduced);
+
       computer.setCompany(new Company(rs.getLong("company_id"), rs.getString("company_name")));
       return computer;
     };
@@ -91,7 +91,7 @@ public class ComputerDaoDatasource implements IComputerDao {
 
   @Override
   public void deleteComputer(long idToDelete) {
-    final String queryDeleteComputer = "delete from company where id = ?";
+    final String queryDeleteComputer = "delete from computer where id = ?";
     jdbcTemplate.update(queryDeleteComputer, new Object[] { idToDelete });
 
   }
@@ -106,14 +106,15 @@ public class ComputerDaoDatasource implements IComputerDao {
       Computer computer = new Computer();
       computer.setId(rs.getLong("c.id"));
       computer.setName(rs.getString("c.name"));
-      LocalDate getDiscontinued = rs.getTimestamp("c.introduced") != null
-          ? rs.getTimestamp("c.introduced").toLocalDateTime().toLocalDate()
-          : null;
-      computer.setIntroduced(getDiscontinued);
-      LocalDate getIntroduced = rs.getTimestamp("c.discontinued") != null
-          ? rs.getTimestamp("c.discontinued").toLocalDateTime().toLocalDate()
-          : null;
-      computer.setDiscontinued(getIntroduced);
+
+      LocalDate getDiscontinued = LocalDateToSqlTimestampMapper
+          .sqlTimestampToLocalDate(rs.getTimestamp("c.discontinued"));
+      computer.setDiscontinued(getDiscontinued);
+
+      LocalDate getIntroduced = LocalDateToSqlTimestampMapper
+          .sqlTimestampToLocalDate(rs.getTimestamp("c.introduced"));
+      computer.setIntroduced(getIntroduced);
+
       computer.setCompany(new Company(rs.getLong("company_id"), rs.getString("company_name")));
       return computer;
     };
@@ -129,6 +130,7 @@ public class ComputerDaoDatasource implements IComputerDao {
         + "discontinued,co.id as company_id,co.name as company_name from computer c "
         + "left join company co on c.company_id = co.id  "
         + "where c.name like ? or co.name like ? %s limit ?,?";
+
     String optionColumn = options.get("column") != null && !options.get("column").isEmpty()
         ? "order by " + options.get("column") + " asc"
         : "";
@@ -140,12 +142,15 @@ public class ComputerDaoDatasource implements IComputerDao {
       Computer computer = new Computer();
       computer.setId(rs.getLong("c.id"));
       computer.setName(rs.getString("c.name"));
+
       LocalDate getDiscontinued = LocalDateToSqlTimestampMapper
           .sqlTimestampToLocalDate(rs.getTimestamp("c.discontinued"));
       computer.setDiscontinued(getDiscontinued);
+
       LocalDate getIntroduced = LocalDateToSqlTimestampMapper
           .sqlTimestampToLocalDate(rs.getTimestamp("c.introduced"));
       computer.setIntroduced(getIntroduced);
+
       computer.setCompany(new Company(rs.getLong("company_id"), rs.getString("company_name")));
       return computer;
     };
@@ -168,6 +173,7 @@ public class ComputerDaoDatasource implements IComputerDao {
         .localDateToSqlTimestamp(computer.getIntroduced());
     Timestamp timestampDiscontinued = LocalDateToSqlTimestampMapper
         .localDateToSqlTimestamp(computer.getDiscontinued());
+
     return new Object[] { computer.getId(), computer.getName(), timestampIntroduced,
         timestampDiscontinued, computer.getCompany().getId(), computer.getId() };
   }

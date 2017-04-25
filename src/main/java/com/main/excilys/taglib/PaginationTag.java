@@ -8,7 +8,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 public class PaginationTag extends SimpleTagSupport {
-  private int numPage;
+  private int page;
   private int maxPage;
   private String column;
   private String search;
@@ -19,12 +19,12 @@ public class PaginationTag extends SimpleTagSupport {
 
     int[] listToPrint = new int[5];
     for (int j = -2; j < 3; j++) {
-      if (numPage + j < 0) {
+      if (page + j < 0) {
         listToPrint[j + 2] = -(j - 2) + 1;
-      } else if (numPage + j > maxPage) {
+      } else if (page + j > maxPage) {
         listToPrint[j + 2] = maxPage - j - 1;
       } else {
-        listToPrint[j + 2] = numPage + j + 1;
+        listToPrint[j + 2] = page + j + 1;
       }
     }
     Arrays.sort(listToPrint);
@@ -32,11 +32,11 @@ public class PaginationTag extends SimpleTagSupport {
     for (int element : listToPrint) {
       JspWriter out = this.getJspContext().getOut();
       out.println("<li");
-      if (element - 1 == numPage) {
+      if (element - 1 == page) {
         out.println("class=active");
 
       }
-      out.println("><a href='dashboard?page=" + (element - 1) + "&column=" + column + "&search="
+      out.println("><a href='dashboard?numPage=" + (element - 1) + "&column=" + column + "&search="
           + search + "&nbObject=" + nbObject + "'>" + element + "</a></li>");
     }
 
@@ -46,8 +46,8 @@ public class PaginationTag extends SimpleTagSupport {
     this.column = column;
   }
 
-  public void setNumPage(int numPage) {
-    this.numPage = numPage;
+  public void setPage(int page) {
+    this.page = page;
   }
 
   public void setMaxPage(int maxPage) {

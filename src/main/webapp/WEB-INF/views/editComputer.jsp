@@ -3,13 +3,11 @@
 <head>
   <title>Computer Database</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap -->
-  <link href="resources/css/bootstrap.min.css" rel="stylesheet"
-        media="screen">
-  <link href="resources/css/font-awesome.css" rel="stylesheet"
-        media="screen">
-  <link href="resources/css/main.css" rel="stylesheet" media="screen">
-  <link href="resources/css/toaster.css" rel="stylesheet" media="screen">
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/font-awesome.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/toaster.css" />" rel="stylesheet">
 </head>
 <body id="editComputer">
 <header class="navbar navbar-inverse navbar-fixed-top">
@@ -29,8 +27,8 @@
           <input type="hidden" value="${ computerToEdit.id }" name="id" id="id"/>
           <fieldset>
             <div class="form-group">
-              <label for="computerName">Computer name</label> <input
-              type="text" class="form-control" name="computerName" id="computerName"
+              <label for="name">Computer name</label> <input
+              type="text" class="form-control" name="name" id="computerName"
               oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
               value="${ computerToEdit.name }" placeholder="Computer name" required>
             </div>
@@ -51,7 +49,7 @@
                                                              class="form-control" id="companyId">
               <c:forEach items="${listCompanyDto}" var="companyDto">
                 <option value="${companyDto.id }"
-                  <c:if test="${ companyDto.id  == computerToEdit.companyDto.id}">
+                  <c:if test="${ companyDto.id  == computerToEdit.companyId}">
                     <c:out value="selected"/>
                   </c:if>>
                     ${companyDto.name }</option>

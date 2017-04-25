@@ -7,7 +7,7 @@
 		<tag-class>com.main.excilys.taglib.LinkTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<name>numPage</name>
+			<name>page</name>
 			<required>true</required>
 			<type>number</type>
 			<rtexprvalue>true</rtexprvalue>
@@ -48,7 +48,7 @@
 		<tag-class>com.main.excilys.taglib.PaginationTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<name>numPage</name>
+			<name>page</name>
 			<required>true</required>
 			<type>number</type>
 			<rtexprvalue>true</rtexprvalue>
