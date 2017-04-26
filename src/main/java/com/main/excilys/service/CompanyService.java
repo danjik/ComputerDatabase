@@ -2,13 +2,10 @@ package com.main.excilys.service;
 
 import com.main.excilys.mapper.CompanyToDtoMapper;
 import com.main.excilys.model.CompanyDto;
-import com.main.excilys.persistence.ICompanyDao;
 import com.main.excilys.repository.CompanyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,9 +17,6 @@ public class CompanyService {
 
   @Autowired
   CompanyRepository companyRepository;
-
-  @Resource(name = "companyDao")
-  private ICompanyDao intCompanyDao;
 
   /**
    * Method to get all the company.

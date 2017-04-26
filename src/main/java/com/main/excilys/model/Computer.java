@@ -27,13 +27,13 @@ public class Computer implements Serializable {
   private long id;
   @Column(nullable = false)
   private String name;
-  
+
   @Column
   private LocalDate discontinued;
   @Column
   private LocalDate introduced;
 
-  @ManyToOne
+  @ManyToOne(optional = true)
   private Company company;
 
   /**

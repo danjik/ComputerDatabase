@@ -24,9 +24,12 @@ public class ComputerToDtoMapper {
     LocalDate introduced = StringToLocalDateMapper
         .strToLocalDateMapper(computerDto.getIntroduced());
 
+    CompanyDto companyDto = computerDto.getCompanyId() != 0
+        ? new CompanyDto(computerDto.getCompanyId(), computerDto.getCompanyName())
+        : null;
+
     return new Computer(computerDto.getId(), computerDto.getName(), discontinued, introduced,
-        CompanyToDtoMapper
-            .toCompany(new CompanyDto(computerDto.getCompanyId(), computerDto.getCompanyName())));
+        CompanyToDtoMapper.toCompany(companyDto));
   }
 
   /**

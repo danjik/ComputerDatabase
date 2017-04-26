@@ -7,12 +7,11 @@ import com.main.excilys.service.ComputerService;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -30,7 +29,7 @@ public class DeleteComputerController {
    */
   @PostMapping(value = "/deleteComputer")
   public ModelAndView doPost(@ModelAttribute DashboardRequest dashboardRequest,
-      @PathParam("selection") String selection) {
+      @RequestParam("selection") String selection) {
     this.doDelete(selection);
 
     return new ModelAndView("redirect:/dashboard");
