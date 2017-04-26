@@ -1,14 +1,29 @@
 package com.main.excilys.model;
 
-import org.springframework.stereotype.Component;
+import javax.validation.constraints.Pattern;
 
-@Component
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
 public class ComputerDto {
+
+  @NumberFormat(style = Style.NUMBER)
   private long id;
+
+  @Pattern(regexp = "^[a-zA-Z0-9 ._-]+$", message = "The name need at least one char or number")
   private String name;
+
+  @DateTimeFormat(iso = ISO.DATE)
   private String discontinued;
+
+  @DateTimeFormat(iso = ISO.DATE)
   private String introduced;
+
+  @NumberFormat(style = Style.NUMBER)
   private long companyId;
+
   private String companyName;
 
   /**

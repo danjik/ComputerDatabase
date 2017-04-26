@@ -2,7 +2,7 @@ package com.main.excilys.service;
 
 import com.main.excilys.mapper.ComputerToDtoMapper;
 import com.main.excilys.model.ComputerDto;
-import com.main.excilys.persistence.IComputerDao;
+import com.main.excilys.repository.ComputerRepository;
 import com.main.excilys.util.OptionValidator;
 
 import java.util.ArrayList;
@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository
 public class ComputerService {
 
   @Autowired
-  private IComputerDao intComputerDao;
+  private ComputerRepository computerRepository;
 
   /**
    * Return an instance of computer selected by his id.
@@ -26,7 +27,7 @@ public class ComputerService {
    * @return the computer selected
    */
   public ComputerDto getComputerById(long idToSelect) {
-    return ComputerToDtoMapper.toComputerDto(intComputerDao.getComputerById(idToSelect));
+    return ComputerToDtoMapper.toComputerDto(computerRepository.findOne(idToSelect));
   }
 
   /**
@@ -37,7 +38,7 @@ public class ComputerService {
    * @return the generated id of the computer
    */
   public long createComputer(ComputerDto newComputer) {
-    return intComputerDao.createComputer(ComputerToDtoMapper.toComputer(newComputer));
+    return computerRepository.save(ComputerToDtoMapper.toComputer(newComputer)).getId();
   }
 
   /**
@@ -47,9 +48,9 @@ public class ComputerService {
    *          the options of the selected list
    * @return the number of computer
    */
-  public int getNbComputer(Map<String, String> options) {
+  public long getNbComputer(Map<String, String> options) {
     OptionValidator.validate(options);
-    return intComputerDao.getNbComputer(options);
+    return computerRepository.count();
   }
 
   /**
@@ -60,7 +61,7 @@ public class ComputerService {
    */
 
   public void deleteComputer(long idToDelete) {
-    intComputerDao.deleteComputer(idToDelete);
+    computerRepository.delete(idToDelete);
   }
 
   /**
@@ -71,26 +72,30 @@ public class ComputerService {
    */
 
   public void updateComputer(ComputerDto computer) {
-    intComputerDao.updateComputer(ComputerToDtoMapper.toComputer(computer));
+    computerRepository.save(ComputerToDtoMapper.toComputer(computer));
   }
 
   /**
    * Get the computer provided by the page.
    *
-   * @param idBegin
-   *          first n° item to get
+   * @param numPage
+   *          numPage
    * @param nbObjectToGet
    *          number of item to get
    * @param options
    *          the options of the selected list
    * @return list of item provided by the page
    */
-  public List<ComputerDto> getComputerInRange(long idBegin, long nbObjectToGet,
+  public List<ComputerDto> getComputerInRange(int numPage, int nbObjectToGet,
       Map<String, String> options) {
     OptionValidator.validate(options);
+    
+    PageRequest pageRequest = new PageRequest(numPage, nbObjectToGet);
+    
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getComputerInRange(idBegin, nbObjectToGet, options)
+    computerRepository.findAll(pageRequest)
         .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
+
     return listAllComputerDto;
   }
 
@@ -101,7 +106,7 @@ public class ComputerService {
    */
   public List<ComputerDto> getAllComputer() {
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    intComputerDao.getAllComputer()
+    computerRepository.findAll()
         .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
     return listAllComputerDto;
   }

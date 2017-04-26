@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -12,8 +13,10 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc // <mvc:annotation-driven />
 @Configuration
-@ImportResource("/WEB-INF/spring-database.xml")
-@ComponentScan({ "com.main.excilys" })
+
+@ImportResource("classpath:config.xml")
+@ComponentScan(basePackages = { "com.main.excilys" })
+@EnableJpaRepositories(basePackages = { "com.main.excilys" })
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 
   @Override

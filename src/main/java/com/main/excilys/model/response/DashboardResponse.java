@@ -1,4 +1,4 @@
-package com.main.excilys.response;
+package com.main.excilys.model.response;
 
 import com.main.excilys.model.ComputerDto;
 import com.main.excilys.model.Page;
@@ -46,8 +46,7 @@ public class DashboardResponse {
   }
 
   private void setListComputer() {
-    listComputerDto = computerService.getComputerInRange(
-        pageComputerDto.getPage() * pageComputerDto.getNbObjectPerPage(),
+    listComputerDto = computerService.getComputerInRange(pageComputerDto.getPage(),
         pageComputerDto.getNbObjectPerPage(), options);
   }
 

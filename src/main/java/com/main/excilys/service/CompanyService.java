@@ -3,18 +3,23 @@ package com.main.excilys.service;
 import com.main.excilys.mapper.CompanyToDtoMapper;
 import com.main.excilys.model.CompanyDto;
 import com.main.excilys.persistence.ICompanyDao;
+import com.main.excilys.repository.CompanyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository
 public class CompanyService {
 
   private List<CompanyDto> listCompanyDto = new ArrayList<>();
+
+  @Autowired
+  CompanyRepository companyRepository;
 
   @Resource(name = "companyDao")
   private ICompanyDao intCompanyDao;
@@ -25,7 +30,7 @@ public class CompanyService {
    * @return list of the company
    */
   public List<CompanyDto> getAllCompany() {
-    intCompanyDao.getAllCompany().forEach(company -> {
+    companyRepository.findAll().forEach(company -> {
       CompanyDto companyDto = CompanyToDtoMapper.toCompanyDto(company);
       listCompanyDto.add(companyDto);
     });
@@ -41,32 +46,15 @@ public class CompanyService {
    */
 
   public CompanyDto getCompanyById(long idToTest) {
-    return CompanyToDtoMapper.toCompanyDto(intCompanyDao.getCompanyById(idToTest));
+    return CompanyToDtoMapper.toCompanyDto(companyRepository.findOne(idToTest));
   }
 
-  public int getNbCompany() {
-    return listCompanyDto.size();
-  }
-
-  /**
-   * Get the item provided by the page.
-   *
-   * @param idBegin
-   *          the begin id of the item
-   * @param idEnd
-   *          the end id of the item
-   * @return the list of company
-   */
-  public List<CompanyDto> getCompanyInRange(long idBegin, long idEnd) {
-    List<CompanyDto> listCompanyDto = new ArrayList<>();
-    intCompanyDao.getCompanyInRange(idBegin, idEnd).forEach(company -> {
-      listCompanyDto.add(CompanyToDtoMapper.toCompanyDto(company));
-    });
-    return listCompanyDto;
+  public long getNbCompany() {
+    return companyRepository.count();
   }
 
   public void deleteCompanyById(long idToDelete) {
-    intCompanyDao.deleteCompany(idToDelete);
+    companyRepository.delete(idToDelete);
   }
 
 }

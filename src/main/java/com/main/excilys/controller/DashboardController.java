@@ -2,10 +2,13 @@ package com.main.excilys.controller;
 
 import com.main.excilys.model.Page;
 import com.main.excilys.model.request.DashboardRequest;
-import com.main.excilys.response.DashboardResponse;
+import com.main.excilys.model.response.DashboardResponse;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +25,8 @@ public class DashboardController {
    * @return the view
    */
   @GetMapping(value = "/dashboard")
-  public ModelAndView doGet(@ModelAttribute DashboardRequest dashboardRequest) {
+  public ModelAndView doGet(@Valid @ModelAttribute DashboardRequest dashboardRequest,
+      BindingResult result) {
 
     ModelAndView model = new ModelAndView();
     model.setViewName("dashboard");

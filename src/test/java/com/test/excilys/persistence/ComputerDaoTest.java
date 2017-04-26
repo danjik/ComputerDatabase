@@ -1,5 +1,6 @@
 package com.test.excilys.persistence;
 
+import com.main.excilys.config.WebInitializer;
 import com.main.excilys.model.CompanyDto;
 import com.main.excilys.model.ComputerDto;
 import com.main.excilys.service.CompanyService;
@@ -9,26 +10,23 @@ import com.main.excilys.util.ComputerDbException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = WebInitializer.class)
 public class ComputerDaoTest {
-  private ApplicationContext context;
-  private ComputerService computerService;
-  private CompanyService companyService;
 
-  /**
-   * init test.
-   */
-  @Before
-  public void setUp() {
-    context = new ClassPathXmlApplicationContext(new String[] { "SpringBeans.xml" });
-    computerService = (ComputerService) context.getBean("computerService");
-    companyService = (CompanyService) context.getBean("companyService");
-    System.out.println("zaepojzpaeoj");
-  }
+  @Autowired
+  private ComputerService computerService;
+
+  @Autowired
+  private CompanyService companyService;
 
   @Test
   public void testGetComputerById() {
@@ -46,7 +44,7 @@ public class ComputerDaoTest {
 
   @Test
   public void testGetNbComputer() {
-    int nbComputer;
+    long nbComputer;
     nbComputer = computerService.getNbComputer(new HashMap<>());
     List<CompanyDto> listCompany = companyService.getAllCompany();
     CompanyDto randomCompany = listCompany.get((int) (Math.random() * listCompany.size()));
@@ -102,7 +100,7 @@ public class ComputerDaoTest {
 
   @Test
   public void testListAllComputer() throws ComputerDbException {
-    int nbComputer;
+    long nbComputer;
     nbComputer = computerService.getNbComputer(new HashMap<>());
 
     List<ComputerDto> listComputer = computerService.getAllComputer();

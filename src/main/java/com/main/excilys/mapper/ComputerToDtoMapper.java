@@ -40,9 +40,11 @@ public class ComputerToDtoMapper {
     if (computer == null) {
       return null;
     }
+    long companyId = computer.getCompany() != null ? computer.getCompany().getId() : 0;
+    String companyName = computer.getCompany() != null ? computer.getCompany().getName() : "";
     return new ComputerDto(computer.getId(), computer.getName(),
         StringToLocalDateMapper.localDateToStringMapper(computer.getDiscontinued()),
-        StringToLocalDateMapper.localDateToStringMapper(computer.getIntroduced()),
-        computer.getCompany().getId(), computer.getCompany().getName());
+        StringToLocalDateMapper.localDateToStringMapper(computer.getIntroduced()), companyId,
+        companyName);
   }
 }

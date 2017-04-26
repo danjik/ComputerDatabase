@@ -1,17 +1,19 @@
 package com.main.excilys.model.request;
 
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DashboardRequest {
   private String search;
   private String column;
-  private int page;
-  private int nbObject;
 
-  public DashboardRequest() {
-    super();
-  }
+  @NumberFormat(style = Style.NUMBER)
+  private int page;
+
+  @NumberFormat(style = Style.NUMBER)
+  private int nbObject;
 
   /**
    * set the N° of the page.

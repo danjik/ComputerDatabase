@@ -1,11 +1,31 @@
 package com.main.excilys.model;
 
-import org.springframework.stereotype.Component;
+import java.io.Serializable;
 
-@Component
-public class Company {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "company")
+public class Company implements Serializable {
+
+  /**
+   * serial id.
+   */
+  private static final long serialVersionUID = 7545131915502838221L;
+
+  @Id
+  @GeneratedValue(generator = "increment")
+  @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(updatable = false, nullable = false)
   private long id;
+
+  @Column
   private String name;
 
   public Company(long id, String name) {

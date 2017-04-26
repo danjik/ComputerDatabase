@@ -9,9 +9,11 @@ import com.main.excilys.util.ComputerDbException;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +38,12 @@ public class AddComputerController {
   }
 
   @PostMapping(value = "/addComputer")
-  protected ModelAndView doPost(@ModelAttribute ComputerDto computerDto)
-      throws ServletException, IOException {
+  protected ModelAndView doPost(@Valid @ModelAttribute("computerDto") ComputerDto computerDto,
+      BindingResult result) throws ServletException, IOException {
+    if (result.hasErrors()) {
+      result.getAllErrors().forEach(error -> System.out.println(error));
+      return new ModelAndView("redirect:/addComputer");
+    }
 
     this.doAddComputer(computerDto);
 

@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 public class Page {
   private int page = 0;
 
-  public static int nbObject;
+  public static long nbObject;
   private int nbObjectPerPage = 10;
-  private int maxPage;
+  private long maxPage;
 
   @Autowired
   private ComputerService computerService;
@@ -99,21 +99,21 @@ public class Page {
     this.setMaxPage(Page.nbObject / nbObjectPerPage);
   }
 
-  public int getMaxPage() {
+  public long getMaxPage() {
     return maxPage;
   }
 
   /**
    * Setter for the maxPage.
    *
-   * @param maxPage
+   * @param l
    *          the maxPage to set
    */
-  public void setMaxPage(int maxPage) {
+  public void setMaxPage(long l) {
     if (nbObject != 0 && nbObject % nbObjectPerPage > 0) {
-      this.maxPage = maxPage;
+      this.maxPage = l;
     } else {
-      this.maxPage = maxPage - 1;
+      this.maxPage = l - 1;
     }
 
   }

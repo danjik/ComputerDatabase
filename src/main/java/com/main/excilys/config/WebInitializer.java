@@ -1,7 +1,11 @@
 package com.main.excilys.config;
 
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+@ComponentScan(basePackages = { "com.main.excilys" })
+@EnableTransactionManagement
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
   @Override
@@ -16,8 +20,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
   @Override
   protected String[] getServletMappings() {
-    System.out.println("test");
-    return new String[] { "/", "/dashboard" };
+    return new String[] { "/" };
   }
 
 }

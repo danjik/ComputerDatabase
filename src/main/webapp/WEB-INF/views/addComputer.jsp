@@ -27,7 +27,6 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" name="name" class="form-control" id="computerName"
-                  oninvalid="setCustomValidity('The name must be composed by char and at least 3')"
 									placeholder="Computer name" required/>
 							</div>
 							<div class="form-group">

@@ -8,10 +8,12 @@ import com.main.excilys.util.ComputerDbException;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,14 +39,12 @@ public class EditComputerController {
   }
 
   @PostMapping(value = "/editComputer")
-  protected ModelAndView doPost(@ModelAttribute ComputerDto computerDto) {
+  protected ModelAndView doPost(@Valid @ModelAttribute ComputerDto computerDto,
+      BindingResult result) {
     ModelAndView model = new ModelAndView();
     // Toaster toast;
     try {
       computerService.updateComputer(computerDto);
-      // toast = Toaster.INSTANCE.getToast("Computer n°" + computerDto.getId() + " updated !",
-      // Toaster.SUCCESS, 3000);
-      // req.setAttribute("toast", toast);
     } catch (ComputerDbException e) {
       // toast = Toaster.INSTANCE.getToast(e.getMessage(), Toaster.ERROR, 3000);
       // req.setAttribute("toast", toast);
