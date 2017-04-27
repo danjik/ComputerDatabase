@@ -1,6 +1,7 @@
 package com.main.excilys.service;
 
 import com.main.excilys.mapper.ComputerToDtoMapper;
+import com.main.excilys.model.Computer;
 import com.main.excilys.model.ComputerDto;
 import com.main.excilys.repository.ComputerRepository;
 import com.main.excilys.util.OptionValidator;
@@ -10,7 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -89,11 +94,15 @@ public class ComputerService {
   public List<ComputerDto> getComputerInRange(int numPage, int nbObjectToGet,
       Map<String, String> options) {
     OptionValidator.validate(options);
-    
-    PageRequest pageRequest = new PageRequest(numPage, nbObjectToGet);
-    
+
+    Sort sort = !options.get("column").isEmpty()
+        ? new Sort(new Order(Direction.ASC, options.get("column")))
+        : new Sort(new Order(Direction.ASC, "id"));
+    PageRequest pageRequest = new PageRequest(numPage, nbObjectToGet, sort);
+    Page<Computer> pageComputer = computerRepository.findByNameStartingWith(options.get("search"),
+        pageRequest);
     List<ComputerDto> listAllComputerDto = new ArrayList<>();
-    computerRepository.findAll(pageRequest)
+    pageComputer
         .forEach(computer -> listAllComputerDto.add(ComputerToDtoMapper.toComputerDto(computer)));
 
     return listAllComputerDto;
