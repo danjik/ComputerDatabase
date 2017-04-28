@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author excilys
- *
- */
-package webapp;
