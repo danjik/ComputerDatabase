@@ -1,4 +1,6 @@
-package com.main.excilys;
+package com.main.excilys.repository;
+
+import com.main.excilys.model.Computer;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

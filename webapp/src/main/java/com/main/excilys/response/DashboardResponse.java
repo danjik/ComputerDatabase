@@ -1,9 +1,9 @@
 package com.main.excilys.response;
 
-import com.main.excilys.ComputerDto;
-import com.main.excilys.ComputerService;
-import com.main.excilys.Page;
+import com.main.excilys.model.dto.ComputerDto;
+import com.main.excilys.presentation.Page;
 import com.main.excilys.request.DashboardRequest;
+import com.main.excilys.service.ComputerService;
 
 import java.util.ArrayList;
 import java.util.Arrays;

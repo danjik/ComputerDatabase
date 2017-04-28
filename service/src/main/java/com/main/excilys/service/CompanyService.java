@@ -1,4 +1,8 @@
-package com.main.excilys;
+package com.main.excilys.service;
+
+import com.main.excilys.mapper.CompanyToDtoMapper;
+import com.main.excilys.model.dto.CompanyDto;
+import com.main.excilys.repository.CompanyRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.main.excilys;
+package com.main.excilys.util;
 
 import java.util.Map;
 import java.util.stream.Stream;

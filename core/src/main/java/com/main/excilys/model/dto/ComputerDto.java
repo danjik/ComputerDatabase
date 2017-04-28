@@ -1,4 +1,4 @@
-package com.main.excilys;
+package com.main.excilys.model.dto;
 
 import javax.validation.constraints.Pattern;
 

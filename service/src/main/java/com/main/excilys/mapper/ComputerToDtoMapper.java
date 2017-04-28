@@ -1,4 +1,8 @@
-package com.main.excilys;
+package com.main.excilys.mapper;
+
+import com.main.excilys.model.Computer;
+import com.main.excilys.model.dto.CompanyDto;
+import com.main.excilys.model.dto.ComputerDto;
 
 import java.time.LocalDate;
 

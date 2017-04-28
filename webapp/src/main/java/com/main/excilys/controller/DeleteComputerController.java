@@ -1,6 +1,8 @@
-package com.main.excilys;
+package com.main.excilys.controller;
 
+import com.main.excilys.presentation.Page;
 import com.main.excilys.request.DashboardRequest;
+import com.main.excilys.service.ComputerService;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

@@ -1,4 +1,9 @@
-package com.main.excilys;
+package com.main.excilys.controller;
+
+import com.main.excilys.model.dto.ComputerDto;
+import com.main.excilys.service.CompanyService;
+import com.main.excilys.service.ComputerService;
+import com.main.excilys.util.ComputerDbException;
 
 import javax.validation.Valid;
 

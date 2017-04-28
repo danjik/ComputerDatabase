@@ -4,7 +4,7 @@
 	<short-name>Pagination TLD</short-name>
 	<tag>
 		<name>link</name>
-		<tag-class>com.main.excilys.taglib.LinkTag</tag-class>
+		<tag-class>com.main.excilys.presentation.taglib.LinkTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>page</name>
@@ -45,7 +45,7 @@
 	</tag>
 	<tag>
 		<name>pagination</name>
-		<tag-class>com.main.excilys.taglib.PaginationTag</tag-class>
+		<tag-class>com.main.excilys.presentation.taglib.PaginationTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>page</name>

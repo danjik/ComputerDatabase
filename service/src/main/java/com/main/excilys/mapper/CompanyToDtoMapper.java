@@ -1,4 +1,7 @@
-package com.main.excilys;
+package com.main.excilys.mapper;
+
+import com.main.excilys.model.Company;
+import com.main.excilys.model.dto.CompanyDto;
 
 public class CompanyToDtoMapper {
 

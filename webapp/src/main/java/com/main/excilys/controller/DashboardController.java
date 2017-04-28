@@ -1,5 +1,6 @@
-package com.main.excilys;
+package com.main.excilys.controller;
 
+import com.main.excilys.presentation.Page;
 import com.main.excilys.request.DashboardRequest;
 import com.main.excilys.response.DashboardResponse;
 

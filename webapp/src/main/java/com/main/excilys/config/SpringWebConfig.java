@@ -1,4 +1,4 @@
-package com.main.excilys;
+package com.main.excilys.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

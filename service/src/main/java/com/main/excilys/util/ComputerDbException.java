@@ -1,4 +1,4 @@
-package com.main.excilys;
+package com.main.excilys.util;
 
 /**
  * This Exception class is used to represent the exceptions thrown by the application.
