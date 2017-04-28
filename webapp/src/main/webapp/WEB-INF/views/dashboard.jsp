@@ -30,6 +30,7 @@
 				<div class="pull-left form-inline">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
+						
 						<input type="hidden" name="page" value="${ 0 }" /><input
 							type="hidden" name="nbObject"
 							value="${ model.pageComputerDto.nbObjectPerPage }" /> <input
@@ -60,6 +61,8 @@
 
 		<form id="deleteForm" action="deleteComputer"
 			method="POST">
+			<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" />
 			<input type="hidden" name="nbObject"
 				value="${ model.pageComputerDto.nbObjectPerPage }" /> <input
 				type="hidden" name="page" value="${ model.pageComputerDto.page }" />
