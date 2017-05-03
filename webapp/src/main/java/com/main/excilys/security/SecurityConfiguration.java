@@ -1,21 +1,35 @@
 package com.main.excilys.security;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
-    auth.inMemoryAuthentication().withUser("admin").password("root123").roles("ADMIN");
-    auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN", "DBA");
+  DataSource dataSource;
+
+  @Autowired
+  public void configAuthentication(AuthenticationManagerBuilder auth, PasswordEncoder passEncoder)
+      throws Exception {
+    auth.jdbcAuthentication().dataSource(dataSource)
+        .usersByUsernameQuery("select username,password, enabled from users where username=?")
+        .authoritiesByUsernameQuery("select username, role from user_roles where username=?")
+        .passwordEncoder(passEncoder);
+  }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   @Override
@@ -24,9 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests().antMatchers("/", "/dashboard").permitAll()
         .antMatchers("/addComputer", "/editComputer", "/deleteComputer")
         .access("hasRole('ADMIN') or hasRole('USER')").and().formLogin().loginPage("/login")
-        .defaultSuccessUrl("/dashboard").and().logout().permitAll().and().exceptionHandling()
-        .accessDeniedPage("/dashboard");
-
+        .defaultSuccessUrl("/dashboard").and().logout().permitAll();
+    http.requiresChannel().antMatchers("*").requiresSecure();
   }
 
 }

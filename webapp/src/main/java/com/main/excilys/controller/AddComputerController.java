@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -33,7 +34,7 @@ public class AddComputerController {
 
   }
 
-  @GetMapping(value = "/addComputerAction")
+  @PostMapping(value = "/addComputer")
   protected ModelAndView doPost(@Valid @ModelAttribute("computerDto") ComputerDto computerDto,
       BindingResult result) {
     if (result.hasErrors()) {

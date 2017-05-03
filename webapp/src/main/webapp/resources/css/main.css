@@ -1,3 +1,8 @@
+.navbar-cdb {
+	height: 64px;
+	width: 70%;
+}
+
 body {
 	background: #EAF0FD;
 	padding-top: 70px;
@@ -93,4 +98,49 @@ th {
 
 .options span:first-child {
 	font-weight: bold;
+}
+
+#header-form-login {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #FFF;
+}
+
+#header-form-login * {
+	color: #FFF;
+}
+
+form#header-form-login .group {
+	width: 100%;
+	margin-right: 16px;
+}
+
+.navbar-cdb #brand-cdb {
+	color: #FFF;
+}
+
+.form-login-panel {
+	float: right;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.brand-panel #brand-cdb {
+	padding: 20px 15px 15px 15px;
+}
+
+.picto-flag {
+	width: 24px;
+	height: 24px;
+	margin-left: 16px;
+}
+
+.brand-panel {
+	float: left;
+	display: flex;
+	justify-content : center;
+	align-items :center ;
 }

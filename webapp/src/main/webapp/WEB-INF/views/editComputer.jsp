@@ -2,12 +2,15 @@
 <html>
 <head>
   <title>Computer Database</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/font-awesome.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/toaster.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/material.css" />" rel="stylesheet">
 </head>
 <body id="editComputer">
 <header class="navbar navbar-inverse navbar-fixed-top">
@@ -23,7 +26,9 @@
         <div class="label label-default pull-right">id: ${ computerToEdit.id }</div>
         <h1>Edit Computer</h1>
 
-        <form id="editComputerForm" action="editComputerAction" method="GET">
+        <form id="editComputerForm" action="editComputer" method="POST">
+        <input type="hidden" name="${_csrf.parameterName}" id="_csrf"
+						value="${_csrf.token}" />
           <input type="hidden" value="${ computerToEdit.id }" name="id" id="id"/>
           <fieldset>
             <div class="form-group">
