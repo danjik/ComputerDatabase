@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CompanyService {
 
-  private List<CompanyDto> listCompanyDto = new ArrayList<>();
-
   @Autowired
   CompanyRepository companyRepository;
 
@@ -24,6 +22,7 @@ public class CompanyService {
    * @return list of the company
    */
   public List<CompanyDto> getAllCompany() {
+    List<CompanyDto> listCompanyDto = new ArrayList<>();
     companyRepository.findAll().forEach(company -> {
       CompanyDto companyDto = CompanyToDtoMapper.toCompanyDto(company);
       listCompanyDto.add(companyDto);

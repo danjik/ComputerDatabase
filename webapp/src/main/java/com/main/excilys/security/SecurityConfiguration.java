@@ -35,11 +35,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    http.authorizeRequests().antMatchers("/", "/dashboard").permitAll()
-        .antMatchers("/addComputer", "/editComputer", "/deleteComputer")
-        .access("hasRole('ADMIN') or hasRole('USER')").and().formLogin().loginPage("/login")
-        .defaultSuccessUrl("/dashboard").and().logout().permitAll();
-    http.requiresChannel().antMatchers("*").requiresSecure();
+    http.csrf().ignoringAntMatchers("/computers**", "/computers/**").and().authorizeRequests()
+        .antMatchers("/", "/dashboard").permitAll()
+        .antMatchers("/addComputer", "/editComputer", "/deleteComputer").hasAnyRole("ADMIN", "USER")
+        .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard").and().logout()
+        .permitAll();
   }
 
 }

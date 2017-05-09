@@ -95,7 +95,7 @@ public class ComputerService {
       Map<String, String> options) {
     OptionValidator.validate(options);
 
-    Sort sort = !options.get("column").isEmpty()
+    Sort sort = options.get("column") != null && !options.get("column").isEmpty()
         ? new Sort(new Order(Direction.ASC, options.get("column")))
         : new Sort(new Order(Direction.ASC, "id"));
     PageRequest pageRequest = new PageRequest(numPage, nbObjectToGet, sort);

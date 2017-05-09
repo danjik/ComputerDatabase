@@ -39,7 +39,6 @@
 				<div class="pull-left form-inline">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
-
 						<input type="hidden" name="page" value="${ 0 }" /><input
 							type="hidden" name="nbObject"
 							value="${ model.pageComputerDto.nbObjectPerPage }" /> <input
@@ -47,7 +46,7 @@
 							type="search" id="searchbox" name="search" class="form-control"
 							placeholder="<spring:message code="dashboard.actual_options_search"/>" />
 						<input type="submit" id="searchsubmit"
-							value="<spring:message code="dashboard.actual_search"/>"
+							value="<spring:message code="dashboard.actual_reset"/>"
 							class="btn btn-primary" />
 					</form>
 					<a class="btn btn-danger btn-md"
@@ -55,7 +54,7 @@
 							code="dashboard.actual_options" /></a>
 					<c:if test="${fn:length(model.options) > 0 }">
 						<p class="options">
-							<span><spring:message code="dashboard.actual_reset" /></span>
+							<span><spring:message code="dashboard.actual_search" /></span>
 							<c:forEach items="${ model.options }" var="option">
 								<span> ${option.key } value : ${option.value }</span>
 							</c:forEach>

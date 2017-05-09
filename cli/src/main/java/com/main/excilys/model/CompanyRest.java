@@ -1,18 +1,15 @@
-package com.main.excilys.model.dto;
+package com.main.excilys.model;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class CompanyDto {
+public class CompanyRest {
   private long id;
   private String name;
 
-  public CompanyDto(long id, String name) {
+  public CompanyRest(long id, String name) {
     this.id = id;
     this.name = name;
   }
 
-  public CompanyDto() {
+  public CompanyRest() {
     // TODO Auto-generated constructor stub
   }
 
@@ -58,7 +55,7 @@ public class CompanyDto {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    CompanyDto other = (CompanyDto) obj;
+    CompanyRest other = (CompanyRest) obj;
     if (id != other.id) {
       return false;
     }

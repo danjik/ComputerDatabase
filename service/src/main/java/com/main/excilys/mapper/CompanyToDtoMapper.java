@@ -29,7 +29,7 @@ public class CompanyToDtoMapper {
 
   public static CompanyDto toCompanyDto(Company company) {
     CompanyDto companyDto = company != null
-        ? new CompanyDto.Builder().id(company.getId()).name(company.getName()).build()
+        ? new CompanyDto(company.getId(), company.getName())
         : null;
     return companyDto;
   }

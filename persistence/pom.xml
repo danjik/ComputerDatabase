@@ -56,6 +56,10 @@
 			<artifactId>spring-test</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
@@ -75,12 +79,13 @@
 			<artifactId>mariadb-java-client</artifactId>
 		</dependency>
 		<dependency>
-			  <groupId>org.hibernate.javax.persistence</groupId>
-			  <artifactId>hibernate-jpa-2.1-api</artifactId>
-			</dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>ComputerDatabase</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

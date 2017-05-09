@@ -16,12 +16,12 @@
 	<div class="main-panel">
 		<div class="login-panel">
 
-			<form action="login" method="post">
+			<form id="form-login" action="login" method="post">
 				<div class="title-login">
 					<span id="text-title-login"><spring:message code="login.title"/></span>
 				</div>
-				<input type="hidden" name="${_csrf.parameterName}"
-					value="${_csrf.token}" />
+				<input type="hidden" name="${_csrf.parameterName}" id="_csrf"
+					value="${_csrf.token}" />${param.error}
 				<c:if test="${param.error}">
 					<div class="alert alert-error">Invalid username and password.
 					</div>
@@ -39,7 +39,7 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="submit" class="button buttonBlue">
+					<button id="submit" type="submit" class="button buttonBlue">
 						<spring:message code="login.signin"/>
 						<div class="ripples buttonRipples">
 							<span class="ripplesCircle"></span>

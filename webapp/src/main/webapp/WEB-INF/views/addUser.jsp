@@ -30,7 +30,7 @@
 			<div class="addComputer-main-panel">
 				<div class="addComputer-form-panel">
 					
-					<form id="addComputerForm" action="addUser"
+					<form id="addUserForm" action="addUser"
 							method="POST">
 							<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
@@ -46,7 +46,7 @@
 							<span class="highlight"></span> <span class="bar"></span> <label><spring:message code="addUser.password"/></label>
 						</div>
 						<div class="form-actions">
-							<button type="submit" class="button buttonBlue">
+							<button type="button" id="action-add-user" class="button buttonBlue">
 								<spring:message code="login.signin"/>
 								<div class="ripples buttonRipples">
 									<span class="ripplesCircle"></span>
@@ -57,5 +57,9 @@
 				</div>
 			</div>
 		</div>
+		
+	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+	<script src="<c:url value="/resources/js/addUser.js" />"></script>
 	</body>
+	
 </html>
